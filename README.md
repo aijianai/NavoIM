@@ -73,8 +73,7 @@ NavoIM/
 ├── shared/          # 共享类型
 ├── server/          # 后端 API + WebSocket + SFU
 ├── web/             # 前端 React 应用
-├── docs-src/        # 模块文档（开发参考）
-└── tests/           # 服务端测试
+└── CHANGELOG.md     # 版本变更记录
 ```
 
 ## 发布说明
