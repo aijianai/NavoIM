@@ -1,0 +1,27 @@
+# Dependencies and build output
+node_modules/
+**/node_modules/
+**/dist/
+**/.gradle/
+**/build/
+
+# Runtime data
+server/data/
+server/uploads/
+
+# Android build artifacts
+android/app/build/
+android/build/
+android/.gradle/
+android/.kotlin/
+
+# Web build variants
+web/dist_apk/
+
+# Large static assets
+web/public/emoji/
+
+# Environment secrets
+.env
+.env.local
+.env.*.local

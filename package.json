@@ -1,0 +1,22 @@
+{
+  "name": "navo-im",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Navo IM - 下一代 IM 聊天软件",
+  "workspaces": [
+    "shared",
+    "server",
+    "web"
+  ],
+  "scripts": {
+    "dev": "concurrently -n server,web -c blue,magenta \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:server": "npm -w @navo/server run dev",
+    "dev:web": "npm -w @navo/web run dev",
+    "build": "npm -w @navo/shared run build && npm -w @navo/server run build && npm -w @navo/web run build",
+    "typecheck": "npm -w @navo/server run typecheck && npm -w @navo/web run typecheck",
+    "start": "npm -w @navo/server run start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

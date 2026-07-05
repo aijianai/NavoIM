@@ -1,0 +1,120 @@
+{
+  "name": "navo-im-index",
+  "version": "1.0.0",
+  "description": "Navo IM 项目索引配置",
+  "indexFile": "INDEX.md",
+  "guideFile": "AI_INDEX_GUIDE.md",
+  
+  "include": {
+    "fileTypes": [
+      ".ts",
+      ".tsx",
+      ".js",
+      ".jsx",
+      ".json",
+      ".md",
+      ".css",
+      ".html",
+      ".env.example",
+      ".gitignore"
+    ],
+    "directories": [
+      "shared/src",
+      "server/src",
+      "web/src",
+      "web/public"
+    ],
+    "rootFiles": [
+      "package.json",
+      ".env.example",
+      ".gitignore",
+      "test_sfu.py",
+      "web/package.json",
+      "server/package.json",
+      "shared/package.json",
+      "web/tsconfig.json",
+      "server/tsconfig.json",
+      "shared/tsconfig.json",
+      "web/vite.config.ts",
+      "web/tailwind.config.js",
+      "web/postcss.config.js",
+      "web/index.html"
+    ]
+  },
+  
+  "exclude": {
+    "directories": [
+      "node_modules",
+      "dist",
+      "produce",
+      ".git",
+      ".qwen",
+      "server/data",
+      "server/uploads"
+    ],
+    "fileTypes": [
+      ".webp",
+      ".png",
+      ".jpg",
+      ".jpeg",
+      ".gif",
+      ".ico",
+      ".svg",
+      ".woff",
+      ".woff2",
+      ".ttf",
+      ".eot"
+    ],
+    "files": [
+      "package-lock.json",
+      "*.tar.gz",
+      "*.sqlite*",
+      "*.tsbuildinfo",
+      ".env",
+      ".env.local",
+      ".env.*.local"
+    ]
+  },
+  
+  "indexDetails": {
+    "fileInfo": {
+      "name": true,
+      "path": true,
+      "size": true,
+      "lastModified": true,
+      "type": true
+    },
+    "codeStructure": {
+      "functions": true,
+      "classes": true,
+      "interfaces": true,
+      "types": true,
+      "exports": true,
+      "imports": true
+    },
+    "contentSummary": {
+      "enabled": true,
+      "maxLines": 50,
+      "includeKeyFunctions": true,
+      "includeMainClasses": true
+    }
+  },
+  
+  "updateStrategy": {
+    "autoUpdate": true,
+    "triggerOn": [
+      "fileCreate",
+      "fileDelete",
+      "fileModify",
+      "directoryChange"
+    ],
+    "debounceMs": 5000,
+    "maxIndexSize": "1MB"
+  },
+  
+  "format": {
+    "type": "markdown",
+    "encoding": "utf-8",
+    "lineEnding": "unix"
+  }
+}

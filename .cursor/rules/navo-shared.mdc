@@ -1,0 +1,23 @@
+---
+description: Navo IM shared types and i18n
+globs: shared/**/*
+alwaysApply: false
+---
+
+# Shared Package (`@navo/shared`)
+
+## Files
+
+- `shared/src/index.ts` — Shared TypeScript types (`ServerEvent`, message types, user types)
+- `shared/src/i18n.ts` — i18n key definitions used by server and web
+
+## Conventions
+
+- Must build first: `npm -w @navo/shared run build` before server/web build
+- Imported as source via tsconfig paths in dev; built dist in production
+- Changes here affect both server and web — update both consumers
+
+## Doc Reference
+
+- `docs-src/shared/src/index.md`
+- `docs-src/shared/src/i18n.md`

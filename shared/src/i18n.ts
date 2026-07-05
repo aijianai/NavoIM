@@ -1,0 +1,5151 @@
+export type Language = "zh-CN" | "en" | "ja";
+
+export const LANGUAGES: { value: Language; label: string }[] = [
+  { value: "zh-CN", label: "简体中文" },
+  { value: "en", label: "English" },
+  { value: "ja", label: "日本语" },
+];
+
+export function detectBrowserLanguage(): Language {
+  if (typeof navigator === "undefined") return "zh-CN";
+  const lang = navigator.language || (navigator as any).userLanguage || "";
+  if (lang.startsWith("ja")) return "ja";
+  if (lang.startsWith("en")) return "en";
+  return "zh-CN";
+}
+
+export type TranslationKey =
+  | "app.name"
+  | "app.tagline"
+  | "app.description"
+  | "login.title"
+  | "login.subtitle"
+  | "login.username"
+  | "login.password"
+  | "login.confirmPassword"
+  | "login.displayName"
+  | "login.inviteCode"
+  | "login.login"
+  | "login.register"
+  | "login.loggingIn"
+  | "login.registering"
+  | "login.noAccount"
+  | "login.hasAccount"
+  | "login.directLogin"
+  | "login.quickRegister"
+  | "login.welcomeBack"
+  | "login.startChat"
+  | "login.passwordStrength.weak"
+  | "login.passwordStrength.medium"
+  | "login.passwordStrength.strong"
+  | "login.passwordRequirement.length"
+  | "login.passwordRequirement.uppercase"
+  | "login.passwordRequirement.lowercase"
+  | "login.passwordRequirement.number"
+  | "login.captcha"
+  | "login.secondPassword"
+  | "login.maintenance"
+  | "login.banned"
+  | "login.enterSecondPassword"
+  | "login.authFailed"
+  | "login.version"
+  | "login.stats.msgLatency"
+  | "login.stats.horizontalScale"
+  | "login.stats.persistent"
+  | "login.bannedTitle"
+  | "login.bannedDesc"
+  | "login.banReason"
+  | "login.maintenanceTitle"
+  | "login.returnToLogin"
+  | "login.loginFailed"
+  | "login.registerFailed"
+  | "login.verifyFailed"
+  | "login.forgotPassword"
+  | "login.resetPassword"
+  | "login.resetPasswordSuccess"
+  | "login.backToLogin"
+  | "login.agreeTerms"
+  | "login.termsOfService"
+  | "login.privacyPolicy"
+  | "login.mustAgreeTerms"
+  | "login.termsContent"
+  | "login.privacyContent"
+  | "login.sendCode"
+  | "login.verificationCode"
+  | "login.newPassword"
+  | "login.resetMethodEmail"
+  | "login.resetMethodPhone"
+  | "common.save"
+  | "common.cancel"
+  | "common.confirm"
+  | "common.delete"
+  | "common.edit"
+  | "common.close"
+  | "common.search"
+  | "common.loading"
+  | "common.noData"
+  | "common.unknown"
+  | "common.retry"
+  | "common.send"
+  | "common.saving"
+  | "common.saved"
+  | "common.submit"
+  | "nav.notifications"
+  | "nav.friends"
+  | "nav.settings"
+  | "nav.chat"
+  | "nav.contacts"
+  | "nav.discover"
+  | "friends.title"
+  | "friends.tab.friends"
+  | "friends.tab.requests"
+  | "friends.tab.add"
+  | "friends.empty"
+  | "friends.searchPlaceholder"
+  | "friends.pending"
+  | "friends.blocked"
+  | "friends.accept"
+  | "friends.decline"
+  | "friends.addFriend"
+  | "friends.sendRequest"
+  | "friends.requestSent"
+  | "friends.alreadyFriends"
+  | "friends.sendFailed"
+  | "friends.searchUserPlaceholder"
+  | "friends.searchNoResult"
+  | "friends.alreadyAdded"
+  | "friends.add"
+  | "friends.addHint"
+  | "friends.message"
+  | "friends.editNote"
+  | "friends.saveNote"
+  | "friends.removeFriend"
+  | "friends.blockUser"
+  | "friends.unblockUser"
+  | "friends.clearHistory"
+  | "friends.note"
+  | "friends.notePlaceholder"
+  | "friends.noRequests"
+  | "friends.waitingAccept"
+  | "friends.noMatch"
+  | "friends.searching"
+  | "user.online"
+  | "user.offline"
+  | "user.away"
+  | "user.busy"
+  | "user.lastSeen"
+  | "user.gender.unspecified"
+  | "user.gender.male"
+  | "user.gender.female"
+  | "user.gender.other"
+  | "user.bio.placeholder"
+  | "user.notSet"
+  | "chat.loading"
+  | "chat.loadFailed"
+  | "chat.noConversation"
+  | "chat.loadMore"
+  | "chat.earliest"
+  | "chat.searchMessage"
+  | "chat.searchMessages"
+  | "chat.forwardTo"
+  | "chat.forward"
+  | "chat.forwardIndividual"
+  | "chat.forwardCombined"
+  | "chat.selected"
+  | "chat.messages"
+  | "chat.searchPlaceholder"
+  | "chat.noMatchConv"
+  | "chat.pinned"
+  | "chat.pinnedMessages"
+  | "chat.jumpToMessage"
+  | "chat.typing"
+  | "chat.typingMultiple"
+  | "chat.inviteVoice"
+  | "chat.inviteVideo"
+  | "chat.inputPlaceholder"
+  | "chat.draft"
+  | "chat.unnamed"
+  | "chat.dm"
+  | "chat.members"
+  | "chat.memberCount"
+  | "chat.hidePanel"
+  | "chat.showPanel"
+  | "chat.manageChannel"
+  | "chat.recalled"
+  | "chat.recalledMessage"
+  | "chat.sendFailed"
+  | "chat.retry"
+  | "chat.unsent"
+  | "composer.inputPlaceholder"
+  | "composer.inviteToVoice"
+  | "composer.inviteToVideo"
+  | "composer.sendingVoiceInvite"
+  | "composer.sendingVideoInvite"
+  | "composer.addOption"
+  | "composer.anonymousPoll"
+  | "composer.blockedByBan"
+  | "composer.createPoll"
+  | "composer.dragToUpload"
+  | "composer.emoji"
+  | "composer.everyone"
+  | "composer.friendCardSent"
+  | "composer.loadMoreStickers"
+  | "composer.markdownSend"
+  | "composer.more"
+  | "composer.noMatch"
+  | "composer.normalSend"
+  | "composer.notFriendAnymore"
+  | "composer.pollAnonymousDesc"
+  | "composer.pollMaxErr"
+  | "composer.pollMaxOptions"
+  | "composer.pollMinErr"
+  | "composer.pollMinOptions"
+  | "composer.pollOnlyChannel"
+  | "composer.pollOnlyChannelErr"
+  | "composer.pollQuestion"
+  | "composer.pollQuestionErr"
+  | "composer.pollQuestionPlaceholder"
+  | "composer.pollOptions"
+  | "composer.publishPoll"
+  | "composer.recommendFriend"
+  | "composer.scheduleInFuture"
+  | "composer.scheduleSend"
+  | "composer.scheduledAt"
+  | "composer.searchChannel"
+  | "composer.searchUser"
+  | "composer.shareChannel"
+  | "composer.sticker"
+  | "composer.stickerLoadFailed"
+  | "composer.stickerLoading"
+  | "composer.videoCall"
+  | "composer.voiceCall"
+  | "composer.recording"
+  | "composer.voiceRecord"
+  | "profile.aijian"
+  | "profile.avatarBackground"
+  | "profile.avatarColor"
+  | "profile.bio"
+  | "profile.bioPlaceholder"
+  | "profile.captcha"
+  | "profile.captchaVerify"
+  | "profile.captchaVerifyDesc"
+  | "profile.changePassword"
+  | "profile.cloudflare"
+  | "profile.closeSecondPassword"
+  | "profile.closeSecondPasswordConfirm"
+  | "profile.confirmCloseSecondPassword"
+  | "profile.confirmDelete"
+  | "profile.confirmNewPassword"
+  | "profile.confirmPasswordPlaceholder"
+  | "profile.currentPassword"
+  | "profile.dangerZone"
+  | "profile.deleteAccount"
+  | "profile.deleteAccountDesc"
+  | "profile.deleteAccountWarning"
+  | "profile.deleteConfirmPassword"
+  | "profile.deletePasswordPlaceholder"
+  | "profile.deleteWarningItems"
+  | "profile.deleting"
+  | "profile.edit"
+  | "profile.friendApproval"
+  | "profile.friendApprovalDesc"
+  | "profile.gender"
+  | "profile.hintPlaceholder"
+  | "profile.language"
+  | "profile.languageDesc"
+  | "profile.logout"
+  | "profile.modifySecondPassword"
+  | "profile.newPassword"
+  | "profile.newPasswordPlaceholder"
+  | "profile.nickname"
+  | "profile.nicknamePlaceholder"
+  | "profile.notifications"
+  | "profile.organization"
+  | "profile.organizationLoading"
+  | "profile.organizationUnknown"
+  | "profile.password"
+  | "profile.passwordDesc"
+  | "profile.passwordMatch"
+  | "profile.passwordMismatch"
+  | "profile.passwordPlaceholder"
+  | "profile.passwordPlaceholderShort"
+  | "profile.privacy"
+  | "profile.removeAvatar"
+  | "profile.save"
+  | "profile.saved"
+  | "profile.saving"
+  | "profile.secondPassword"
+  | "profile.secondPasswordDesc"
+  | "profile.secondPasswordDisabled"
+  | "profile.secondPasswordEnabled"
+  | "profile.secondPasswordHint"
+  | "profile.secondPasswordNew"
+  | "profile.secondPasswordNewHint"
+  | "profile.secondPasswordPlaceholder"
+  | "profile.setSecondPassword"
+  | "profile.sound"
+  | "profile.soundDesc"
+  | "profile.status"
+  | "profile.title"
+  | "profile.aboutUs"
+  | "profile.aboutUsContent"
+  | "profile.uploadAvatar"
+  | "profile.uploading"
+  | "settings"
+  | "accountSecurity"
+  | "media.all"
+  | "media.image"
+  | "media.file"
+  | "media.video"
+  | "media.location"
+  | "media.poll"
+  | "media.text"
+  | "media.ai"
+  | "media.markdown"
+  | "media.backToResults"
+  | "media.download"
+  | "media.zoomIn"
+  | "media.zoomOut"
+  | "media.zoomReset"
+  | "media.emptyHint"
+  | "media.emptyMessage"
+  | "media.jumpToMessage"
+  | "media.loadMore"
+  | "media.locationInfo"
+  | "media.preview"
+  | "media.returnResults"
+  | "media.searchHint"
+  | "media.searchResults"
+  | "member.owner"
+  | "member.admin"
+  | "member.member"
+  | "member.add"
+  | "member.adding"
+  | "member.detail"
+  | "member.detailInfo"
+  | "member.friendList"
+  | "member.lastActive"
+  | "member.noFriendToAdd"
+  | "member.you"
+  | "channel.create"
+  | "channel.nameRequired"
+  | "channel.manage"
+  | "channel.discover"
+  | "channel.addFriendHint"
+  | "channel.adminCanEdit"
+  | "channel.allowInvite"
+  | "channel.allowInviteDesc"
+  | "channel.alreadyJoined"
+  | "channel.announcement"
+  | "channel.announcementPlaceholder"
+  | "channel.bannedMembers"
+  | "channel.banChannel"
+  | "channel.cancelAdmin"
+  | "channel.createdAt"
+  | "channel.dangerZone"
+  | "channel.description"
+  | "channel.descriptionPlaceholder"
+  | "channel.disband"
+  | "channel.disbandConfirm"
+  | "channel.disbandDesc"
+  | "channel.disbandSuccess"
+  | "channel.info"
+  | "channel.join"
+  | "channel.joinChannel"
+  | "channel.joined"
+  | "channel.lastActive"
+  | "channel.leave"
+  | "channel.leaveConfirm"
+  | "channel.leaveDesc"
+  | "channel.leaveSuccess"
+  | "channel.makePublic"
+  | "channel.makePublicDesc"
+  | "channel.memberCount"
+  | "channel.mute"
+  | "channel.muteAll"
+  | "channel.muteAllDesc"
+  | "channel.noAnnouncement"
+  | "channel.noFriendToAdd"
+  | "channel.ownerCannotLeave"
+  | "channel.private"
+  | "channel.public"
+  | "channel.publicChannel"
+  | "channel.removeMember"
+  | "channel.report"
+  | "channel.saveFailed"
+  | "channel.saveInfo"
+  | "channel.setAdmin"
+  | "channel.transferOwner"
+  | "channel.unban"
+  | "channel.unmute"
+  | "channel.you"
+  | "notification.title"
+  | "notification.empty"
+  | "notification.refresh"
+  | "sticker.empty"
+  | "sticker.noEmoji"
+  | "sticker.noMatch"
+  | "sticker.searchPlaceholder"
+  | "captcha.title"
+  | "captcha.desc"
+  | "captcha.loading"
+  | "call.video"
+  | "call.audio"
+  | "call.ended"
+  | "call.duration"
+  | "call.initiatedBy"
+  | "call.connecting"
+  | "call.incomingCall"
+  | "call.inviteYou"
+  | "call.jitter"
+  | "call.latency"
+  | "call.manage"
+  | "call.mute"
+  | "call.mySelf"
+  | "call.packetLoss"
+  | "call.removeMember"
+  | "call.ringing"
+  | "call.screen"
+  | "call.someone"
+  | "call.unmute"
+  | "status.online"
+  | "status.away"
+  | "status.busy"
+  | "status.offline"
+  | "message.card.friend"
+  | "message.card.channel"
+  | "message.card.location"
+  | "message.card.poll"
+  | "message.card.forwarded"
+  | "message.card.image"
+  | "message.card.images"
+  | "message.card.file"
+  | "message.card.files"
+  | "message.card.system"
+  | "message.card.sticker"
+  | "message.emoji"
+  | "message.recalled"
+  | "message.anonymous"
+  | "message.anonymousVote"
+  | "message.clickToView"
+  | "message.copy"
+  | "message.edited"
+  | "message.fromChannel"
+  | "message.fromUser"
+  | "message.invalidLocation"
+  | "message.loadFailed"
+  | "message.notJoined"
+  | "message.notJoinedDesc"
+  | "message.notJoinedHint"
+  | "message.openChannel"
+  | "message.pin"
+  | "message.pollDataError"
+  | "message.readCount"
+  | "message.recall"
+  | "message.reply"
+  | "message.report"
+  | "message.retrySend"
+  | "message.seenBy"
+  | "message.seenStatus"
+  | "message.sending"
+  | "message.totalVotes"
+  | "message.unpin"
+  | "message.unread"
+  | "message.unreadCount"
+  | "message.voted"
+  | "message.votes"
+  | "messageSearch.all"
+  | "messageSearch.file"
+  | "messageSearch.hint"
+  | "messageSearch.image"
+  | "messageSearch.location"
+  | "messageSearch.text"
+  | "messageSearch.video"
+  | "messageSearch.viewInChat"
+  | "messageSearch.voice"
+  | "error.unauthorized"
+  | "error.notFound"
+  | "error.forbidden"
+  | "error.serverError"
+  | "error.rateLimited"
+  | "error.maintenance"
+  | "error.uploadFailed"
+  | "error.fileTooLarge"
+  | "error.unsupportedFileType"
+  | "error.captchaFailed"
+  | "error.captchaRequired"
+  | "error.networkError"
+  | "error.downloadFailed"
+  | "error.refreshPage"
+  | "error.somethingWentWrong"
+  | "error.microphoneDenied"
+  | "time.justNow"
+  | "time.minutesAgo"
+  | "time.hoursAgo"
+  | "time.yesterday"
+  | "time.today"
+  | "time.daysAgo"
+  | "contextMenu.copy"
+  | "contextMenu.delete"
+  | "contextMenu.forward"
+  | "contextMenu.pin"
+  | "contextMenu.recall"
+  | "contextMenu.reply"
+  | "contextMenu.report"
+  | "contextMenu.unpin"
+  | "location.failed"
+  | "location.locating"
+  | "location.mapPreview"
+  | "location.myLocation"
+  | "location.noPermission"
+  | "location.noPreview"
+  | "location.notSupported"
+  | "location.openInAmap"
+  | "location.permissionHint"
+  | "location.searchFailed"
+  | "location.searchHint"
+  | "location.selectTitle"
+  | "location.selected"
+  | "location.timeout"
+  | "location.useMyLocation"
+  | "report.captcha"
+  | "report.reason"
+  | "report.reasonPlaceholder"
+  | "report.screenshot"
+  | "report.screenshotFailed"
+  | "report.submit"
+  | "report.submitted"
+  | "report.submitting"
+  | "report.title"
+  | "report.type"
+  | "report.uploadScreenshot"
+  | "report.uploadingScreenshot"
+  | "userCard.acceptRequest"
+  | "userCard.acceptSuccess"
+  | "userCard.block"
+  | "userCard.blockSuccess"
+  | "userCard.gender"
+  | "userCard.lastActive"
+  | "userCard.removeFriend"
+  | "userCard.removeSuccess"
+  | "userCard.report"
+  | "userCard.unblock"
+  | "userCard.unblockSuccess"
+  | "admin.addTime"
+  | "admin.dashboard"
+  | "admin.title"
+  | "admin.subtitle"
+  | "admin.totalUsers"
+  | "admin.activeUsers"
+  | "admin.channels"
+  | "admin.messages"
+  | "admin.markdownSupported"
+  | "admin.newToday"
+  | "admin.newThisWeek"
+  | "admin.messagesToday"
+   | "admin.messagesThisWeek"
+   | "admin.messageAudit"
+  | "admin.noNotifications"
+  | "admin.sendNotification"
+  | "admin.securityStatus"
+  | "admin.connectionStatus"
+  | "admin.runEfficiency"
+  | "admin.syncPerformance"
+  | "admin.stable"
+  | "admin.normal"
+  | "admin.excellent"
+  | "admin.highSpeed"
+  | "admin.role.superAdmin"
+  | "admin.role.admin"
+  | "admin.role.moderator"
+  | "admin.role.user"
+  | "admin.notification.created"
+  | "admin.notification.deleted"
+  | "admin.notification.published"
+  | "admin.notification.private"
+  | "admin.notification.privateDesc"
+  | "admin.notification.privateEmpty"
+  | "admin.notification.privateTitle"
+  | "admin.notification.public"
+  | "admin.notification.sendTime"
+  | "admin.notification.targetUser"
+  | "admin.audit"
+  | "admin.banFailed"
+  | "admin.banReason"
+  | "admin.banReasonPlaceholder"
+  | "admin.banSuccess"
+  | "admin.banUser"
+  | "admin.channelManagement"
+  | "admin.confirmBan"
+  | "admin.confirmDeleteUser"
+  | "admin.content"
+  | "admin.deleteFailed"
+  | "admin.deleteSuccess"
+  | "admin.deleteUser"
+  | "admin.nextPage"
+  | "admin.noReports"
+   | "admin.operations"
+  | "admin.page"
+  | "admin.publishNotification"
+  | "admin.previousPage"
+  | "admin.reportAll"
+  | "admin.reportDetail"
+  | "admin.reportPending"
+  | "admin.reportProcessed"
+  | "admin.reportProcessing"
+  | "admin.reportReason"
+  | "admin.reportRejected"
+  | "admin.reportResult"
+  | "admin.reportResultPlaceholder"
+  | "admin.reportReviewed"
+  | "admin.reportScreenshot"
+  | "admin.reportTarget"
+  | "admin.reportTime"
+  | "admin.reports"
+  | "admin.reporter"
+  | "admin.sensitive.addSuccess"
+  | "admin.sensitive.addTime"
+  | "admin.sensitive.batchAdd"
+  | "admin.sensitive.batchAddHint"
+  | "admin.sensitive.block"
+  | "admin.sensitive.deleteSelected"
+  | "admin.sensitive.deleteSuccess"
+  | "admin.sensitive.management"
+  | "admin.sensitive.mask"
+  | "admin.sensitive.noWords"
+  | "admin.sensitive.policy"
+  | "admin.sensitive.searchPlaceholder"
+  | "admin.sensitive.word"
+  | "admin.setRoleFailed"
+  | "admin.setRoleSuccess"
+  | "admin.sticker.addSticker"
+  | "admin.sticker.create"
+  | "admin.sticker.createSuccess"
+  | "admin.sticker.deleteSticker"
+  | "admin.sticker.deleteSuccess"
+  | "admin.sticker.editName"
+  | "admin.sticker.management"
+  | "admin.sticker.noPacks"
+  | "admin.sticker.packName"
+  | "admin.sticker.packNamePlaceholder"
+  | "admin.sticker.saveName"
+  | "admin.sticker.saving"
+  | "admin.sticker.uploadFailed"
+  | "admin.sticker.uploadSuccess"
+  | "admin.sticker.uploading"
+  | "admin.totalReports"
+  | "admin.unbanSuccess"
+  | "admin.userManagement"
+  | "admin.users"
+  | "admin.oss.add"
+  | "admin.oss.addTime"
+  | "admin.oss.bucket"
+  | "admin.oss.bucketPlaceholder"
+  | "admin.oss.cancel"
+  | "admin.oss.endpoint"
+  | "admin.oss.endpointPlaceholder"
+  | "admin.oss.envPlaceholder"
+  | "admin.oss.isDefault"
+  | "admin.oss.name"
+  | "admin.oss.namePlaceholder"
+  | "admin.oss.nameRequired"
+  | "admin.oss.provider"
+  | "admin.oss.region"
+  | "admin.oss.regionPlaceholder"
+  | "admin.oss.setDefault"
+  | "admin.oss.user"
+  | "admin.rateLimit.count"
+  | "admin.rateLimit.desc"
+  | "admin.rateLimit.hint"
+  | "admin.rateLimit.login"
+  | "admin.rateLimit.maxPerIp"
+  | "admin.rateLimit.message"
+  | "admin.rateLimit.perMinute"
+  | "admin.rateLimit.registration"
+  | "admin.rateLimit.saveFailed"
+  | "admin.rateLimit.title"
+  | "admin.rateLimit.window"
+  | "adminSettings.addStun"
+  | "adminSettings.addTurn"
+  | "adminSettings.ai"
+  | "adminSettings.aiApiDesc"
+  | "adminSettings.aiApiKey"
+  | "adminSettings.aiApiKeyPlaceholder"
+  | "adminSettings.aiApiUrl"
+  | "adminSettings.aiEnable"
+  | "adminSettings.aiModel"
+  | "adminSettings.aiSystemPrompt"
+  | "adminSettings.aiName"
+  | "adminSettings.aiBio"
+  | "adminSettings.aiAvatarUrl"
+  | "adminSettings.allowRegister"
+  | "adminSettings.basic"
+  | "adminSettings.captcha"
+  | "adminSettings.captchaProvider"
+  | "adminSettings.cdn"
+  | "adminSettings.cdnGoogleFonts"
+  | "adminSettings.cdnGoogleFontsExample"
+  | "adminSettings.cdnGoogleFontsPlaceholder"
+  | "adminSettings.currentSize"
+  | "adminSettings.enableCaptcha"
+  | "adminSettings.enableMaintenance"
+  | "adminSettings.ice"
+  | "adminSettings.loadFailed"
+  | "adminSettings.maintenance"
+  | "adminSettings.maintenanceMessage"
+  | "adminSettings.maintenanceMessagePlaceholder"
+  | "adminSettings.maxFileSize"
+  | "adminSettings.maxMessageLen"
+  | "adminSettings.message"
+  | "adminSettings.notEnabled"
+  | "adminSettings.passwordOptional"
+  | "adminSettings.registration"
+  | "adminSettings.requireInviteCode"
+  | "adminSettings.saveFailed"
+  | "adminSettings.serverRequired"
+  | "adminSettings.siteDesc"
+  | "adminSettings.siteName"
+  | "adminSettings.stun"
+  | "adminSettings.stunDesc"
+  | "adminSettings.stunTurn"
+  | "adminSettings.testConnection"
+  | "adminSettings.testFailed"
+  | "adminSettings.testing"
+  | "adminSettings.turn"
+  | "adminSettings.turnDesc"
+  | "adminSettings.usernameRequired"
+  | "adminSettings.vconsole"
+  | "adminSettings.vconsoleDesc"
+  | "server.accountDeleted"
+  | "server.accountBanned"
+  | "server.loginRequired"
+  | "server.invalidRequest"
+  | "server.notFound"
+  | "server.rateLimited"
+  | "server.maintenance"
+  | "server.captchaRequired"
+  | "server.captchaFailed"
+  | "server.registerClosed"
+  | "server.inviteCodeError"
+  | "server.usernameTaken"
+  | "server.registrationIncomplete"
+  | "server.passwordTooShort"
+  | "server.passwordRequirements"
+  | "server.loginRateLimited"
+  | "server.regRateLimited"
+  | "server.ipLimit"
+  | "server.wrongCredentials"
+  | "server.userNotFound"
+  | "server.channelNotFound"
+  | "server.messageNotFound"
+  | "server.conversationNotFound"
+  | "server.cannotSendDM"
+  | "server.cannotFriendSelf"
+  | "server.alreadyFriends"
+  | "server.cannotSendFriendRequest"
+  | "server.friendRequestNotFound"
+  | "server.targetUserNotFound"
+  | "server.memberNotFound"
+  | "server.needAdminPermission"
+  | "server.cannotActionSelf"
+  | "server.cannotActionOwner"
+  | "server.onlyOwnerCanActionAdmin"
+  | "server.onlyOwnerSetRole"
+  | "server.channelNameRequired"
+  | "server.messageTooLong"
+  | "server.rateLimitedMsg"
+  | "server.presencePingRateLimited"
+  | "server.captchaRequiredMsg"
+  | "server.blockedByYou"
+  | "server.blockedByThem"
+  | "server.nonFriendLimitReached"
+  | "server.youAreMuted"
+  | "server.channelMuteAll"
+  | "server.onlyFriendCard"
+  | "server.sensitiveBlocked"
+  | "server.notInConv"
+  | "server.cannotForward"
+  | "server.channelBanned"
+  | "server.messageRecalled"
+  | "server.cannotRecall"
+  | "server.recallTimeout"
+  | "server.pollNotFound"
+  | "server.invalidPollOption"
+  | "server.noPermissionCall"
+  | "server.authTimeout"
+  | "server.messageTooLarge"
+  | "server.invalidMessageFormat"
+  | "server.authRequired"
+  | "server.authFailed"
+  | "server.uploadNoFile"
+  | "server.fileTooLarge"
+  | "server.unsupportedFileType"
+  | "server.enterUsernamePassword"
+  | "server.enterPassword"
+  | "server.enterCurrentNewPassword"
+  | "server.enterSecondPassword"
+  | "server.enterHint"
+  | "server.secondPasswordTooShort"
+  | "server.secondPasswordSameAsLogin"
+  | "server.hintContainsPassword"
+  | "server.cannotCreateDMSelf"
+  | "server.onlyInviteFriends"
+  | "server.membersCannotInvite"
+  | "server.cannotLeaveOwner"
+  | "server.onlyOwnerDisband"
+  | "server.forwardNoMessages"
+  | "server.reportMissingFields"
+  | "server.failedToGetStats"
+  | "server.failedToGetRole"
+  | "server.failedToGetUsers"
+  | "server.failedToGrantRole"
+  | "server.failedToRevokeRole"
+  | "server.failedToBan"
+  | "server.failedToUnban"
+  | "server.failedToCheckBan"
+  | "server.failedToDeleteUser"
+  | "server.failedToGetChannels"
+  | "server.failedToDeleteChannel"
+  | "server.failedToDeleteMessage"
+  | "server.failedToGetSettings"
+  | "server.failedToUpdateSettings"
+  | "server.failedToGetCaptchaConfig"
+  | "server.failedToUpdateCaptchaConfig"
+  | "server.failedToGetAiConfig"
+  | "server.failedToUpdateAiConfig"
+  | "server.failedToGetAuditLogs"
+  | "server.failedToGetNotifications"
+  | "server.failedToCreateNotification"
+  | "server.failedToUpdateNotification"
+  | "server.failedToDeleteNotification"
+  | "server.failedToPublishNotification"
+  | "server.failedToBanChannel"
+  | "server.failedToUnbanChannel"
+  | "server.failedToCheckChannelBan"
+  | "server.failedToGetReports"
+  | "server.failedToHandleReport"
+  | "server.failedToGetIceConfig"
+  | "server.failedToUpdateIceConfig"
+  | "server.failedToAddMember"
+  | "server.failedToTransferOwner"
+  | "server.failedToCreateStickerPack"
+  | "server.failedToDeleteStickerPack"
+  | "server.failedToAddSticker"
+  | "server.failedToDeleteSticker"
+  | "server.failedToUpdateStickerName"
+  | "server.adminInitFailed"
+  | "server.adminInitKeyError"
+  | "server.adminAlreadyExists"
+  | "server.titleContentRequired"
+  | "server.contentRequired"
+  | "server.orgNameRequired"
+  | "server.sensitiveWordsRequired"
+  | "server.idListRequired"
+  | "server.missingRequiredParams"
+  | "server.stickerPackNameRequired"
+  | "server.reportResultRequired"
+  | "server.aiConnectSuccess"
+  | "server.aiConnectFailed"
+  | "server.aiConnectTimeout"
+  | "server.cannotBlockSuperAdmin"
+  | "server.cannotDeleteSuperAdmin"
+  | "server.onlySuperAdminGrantSuperAdmin"
+  | "server.onlySuperAdminRevokeSuperAdmin"
+  | "server.unknownChannel"
+  | "server.unknownConversation"
+  | "server.noPermission"
+  | "server.auditUpdateSettings"
+  | "server.auditUpdateCaptchaConfig"
+  | "server.auditUpdateAiConfig"
+  | "server.auditUpdateIceConfig"
+  | "server.auditSetOrg"
+  | "server.auditBatchAddSensitive"
+  | "server.auditBatchDeleteSensitive"
+  | "server.auditAddMember"
+  | "server.auditTransferOwner"
+  | "server.initialSuperAdmin"
+  | "server.reportStatusActioned"
+  | "server.reportStatusRejected"
+  | "server.reportStatusReviewed"
+  | "server.reportNotificationTitle"
+  | "server.reportNotificationContent"
+  | "server.failedToUpdateStickerPackName"
+  | "server.stickerNameRequired"
+  | "admin.ai.apiKeyPlaceholder"
+  | "admin.auditLog"
+  | "admin.banned"
+  | "admin.banReasonOptional"
+  | "admin.banStatus"
+  | "admin.channel"
+  | "admin.confirmDeleteChannel"
+  | "admin.confirmDeleteNotification"
+  | "admin.confirmDeleteOrg"
+  | "admin.conversation"
+  | "admin.createNotification"
+  | "admin.createOrg"
+  | "admin.deleteChannel"
+  | "admin.deleteNotification"
+  | "admin.editNotification"
+  | "admin.noOrganization"
+  | "admin.noOrgs"
+  | "admin.notificationContentPlaceholder"
+  | "admin.notificationPlaceholder"
+  | "admin.notificationSent"
+  | "admin.notifyUser"
+  | "admin.notificationTitle"
+  | "admin.organization"
+  | "admin.orgCreated"
+  | "admin.orgDeleted"
+  | "admin.orgDescOptional"
+  | "admin.orgManagement"
+  | "admin.orgUpdated"
+  | "admin.oss.addBinding"
+  | "admin.oss.bindings"
+  | "admin.oss.confirmDelete"
+  | "admin.oss.created"
+  | "admin.oss.fillRequired"
+  | "admin.oss.setDefaultSuccess"
+  | "admin.ossStorage"
+  | "admin.oss.urlPlaceholder"
+  | "admin.oss.userIdPlaceholder"
+  | "admin.position"
+  | "admin.positionPlaceholder"
+  | "admin.publishToAll"
+  | "admin.rateLimit.captchaHint"
+  | "admin.rateLimiting"
+  | "admin.rateLimit.maxAccountsPerIp"
+  | "admin.rateLimit.maxLogins"
+  | "admin.rateLimit.maxMessages"
+  | "admin.rateLimit.maxRegistrations"
+  | "admin.rateLimit.overLimit"
+  | "admin.rateLimit.seconds"
+  | "admin.rateLimit.times"
+  | "admin.rateLimit.windowDesc"
+  | "admin.rateLimit.presencePing"
+  | "admin.rateLimit.presencePingMax"
+  | "admin.rateLimit.presencePingWindow"
+  | "admin.rateLimit.presencePingDesc"
+  | "admin.report.pending"
+  | "admin.report.processed"
+  | "admin.report.rejected"
+  | "admin.report.reporter"
+  | "admin.report.messageId"
+  | "admin.report.messageTime"
+  | "admin.report.reviewed"
+  | "admin.role"
+  | "admin.roleSet"
+  | "admin.saveOrgInfo"
+  | "admin.searchChannelPlaceholder"
+  | "admin.searchMessagePlaceholder"
+  | "admin.sendFailed"
+  | "admin.sensitiveWords"
+  | "adminSettings.captchaBackend"
+  | "adminSettings.captchaFrontend"
+  | "admin.stickerPacks"
+  | "admin.topLevelOrg"
+  | "admin.totalChannels"
+  | "admin.totalCount"
+  | "admin.type"
+  | "admin.userId"
+  | "admin.userIdFilter"
+  | "admin.viewDetail"
+  | "app.checkServer"
+  | "app.connecting"
+  | "app.connectionFailed"
+  | "app.connectionTimeout"
+  | "app.disconnected"
+  | "app.reconnecting"
+  | "appshell.jumpToPlaceholder"
+  | "call.incomingInvite"
+  | "call.network"
+  | "call.title"
+  | "channel.addMember"
+  | "channel.allowMemberInvite"
+  | "channel.avatar"
+  | "channel.banFailed"
+  | "channel.banned"
+  | "channel.bannedChannel"
+  | "channel.bannedDM"
+  | "channel.banReason"
+  | "channel.canAddMembers"
+  | "channel.changeAvatar"
+  | "channel.icon"
+  | "channel.inviteAllowed"
+  | "channel.inviteForbidden"
+  | "channel.inviteMember"
+  | "channel.memberAdded"
+  | "channel.memberInvitePermission"
+  | "channel.name"
+  | "channel.namePlaceholder"
+  | "channel.noMatch"
+  | "channel.noMemberData"
+  | "channel.noReason"
+  | "channel.onlyOwnerAdmin"
+  | "channel.owner"
+  | "channel.privateDesc"
+  | "channel.setAsOwner"
+  | "channel.transferConfirm"
+  | "channel.transferFailed"
+  | "channel.transferOwnership"
+  | "channel.transferSuccess"
+  | "channel.unbanFailed"
+  | "channel.unbanned"
+  | "chat.deleteConversation"
+  | "chat.noDms"
+  | "chat.searchResults"
+  | "chat.unpin"
+  | "chat.workspace"
+  | "common.createdAt"
+  | "common.deleted"
+  | "common.detail"
+  | "common.loadFailed"
+  | "common.option"
+  | "common.optional"
+  | "common.saveSuccess"
+  | "common.selected"
+  | "common.submitting"
+  | "common.time"
+  | "composer.banned"
+  | "composer.friendCheckFailed"
+  | "composer.scheduleSet"
+  | "composer.scheduleTime"
+  | "friends.accepted"
+  | "friends.asFriend"
+  | "friends.noneToInvite"
+  | "friends.pendingRequest"
+  | "friends.removed"
+  | "friends.requestHint"
+  | "friends.unblocked"
+  | "login.passwordStrength"
+  | "login.usernameInvalid"
+  | "media.takePhoto"
+  | "media.audio"
+  | "member.memberList"
+  | "message.card.video"
+  | "message.emojiReact"
+  | "message.fromChannelName"
+  | "message.fromConversationName"
+  | "message.mention"
+  | "message.notInChannel"
+  | "message.pollError"
+  | "message.read"
+  | "message.totalVoters"
+  | "message.you"
+  | "patternLock.points"
+  | "report.reasonRequired"
+  | "server.banSuccess"
+  | "theme.dark"
+  | "theme.light"
+  | "user.gender"
+  | "user.status"
+  | "admin.dataVisualization"
+  | "admin.noData"
+  | "admin.allOperations"
+  | "admin.grantAdmin"
+  | "admin.revokeAdmin"
+  | "admin.deleteMessage"
+  | "admin.updateSettings"
+  | "admin.operator"
+  | "admin.forwarded"
+  | "admin.unbanUser"
+  | "admin.sensitivePolicy"
+  | "admin.sensitive.added"
+  | "admin.sensitive.batchPlaceholder"
+  | "admin.sensitive.confirmDelete"
+  | "admin.sensitive.deleted"
+  | "admin.sensitive.inputRequired"
+  | "admin.sensitive.wordCount"
+  | "admin.sticker.addEmoji"
+  | "admin.sticker.namePlaceholder"
+  | "admin.sticker.nameRequired"
+  | "admin.sticker.noPacksHint"
+  | "call.cancelled"
+  | "call.calling"
+  | "call.connectionError"
+  | "call.dialing"
+  | "call.mediaError"
+  | "call.noResponse"
+  | "call.notAvailable"
+  | "call.notSupported"
+  | "call.publishUpstream"
+  | "call.rejected"
+  | "call.screenShareFailed"
+  | "call.screenShareNotSupported"
+  | "call.waitingAnswer"
+  | "common.cancelCall"
+  | "error.callLoadFailed"
+  | "error.requestFailed"
+  | "friends.requestReceivedName"
+  | "message.card.empty"
+  | "sticker.loadFailed"
+  | "admin.ai.apiDesc"
+  | "admin.ai.apiKey"
+  | "admin.ai.apiUrl"
+  | "admin.ai.assistant"
+  | "admin.ai.enable"
+  | "admin.ai.model"
+  | "admin.ai.systemPrompt"
+  | "admin.ai.name"
+  | "admin.ai.bio"
+  | "admin.ai.avatarUrl"
+  | "admin.ai.testConnection"
+  | "admin.ai.testFailed"
+  | "admin.imagePreview"
+  | "admin.oss.aliyun"
+  | "admin.oss.huawei"
+  | "admin.oss.qiniu"
+  | "admin.oss.tencent"
+  | "admin.poll"
+  | "admin.system"
+  | "admin.systemSettings"
+  | "member.noMembers"
+  | "admin.imageUrl"
+  | "adminSettings.allowRegisterDesc"
+  | "adminSettings.inviteCode"
+  | "adminSettings.inviteCodePlaceholder"
+  | "adminSettings.emailRegistration"
+  | "adminSettings.phoneRegistration"
+  | "adminSettings.sms"
+  | "adminSettings.smsProvider"
+  | "adminSettings.smsProviderNone"
+  | "adminSettings.smsProviderTencent"
+  | "adminSettings.smsProviderAliyun"
+  | "adminSettings.smsSdkAppId"
+  | "adminSettings.smsSdkAppIdDesc"
+  | "adminSettings.smsAccessKeyId"
+  | "adminSettings.smsAccessKeyIdDesc"
+  | "adminSettings.smsAccessKeySecret"
+  | "adminSettings.smsAccessKeySecretDesc"
+  | "adminSettings.smsSignName"
+  | "adminSettings.smsSignNameDesc"
+  | "adminSettings.smsTemplateCode"
+  | "adminSettings.smsTemplateCodeDesc"
+  | "adminSettings.smsRegion"
+  | "adminSettings.smsRegionDesc"
+  | "adminSettings.smsEndpoint"
+  | "adminSettings.smsEndpointDesc"
+  | "adminSettings.smsTest"
+  | "adminSettings.smsTestPlaceholder"
+  | "adminSettings.smsTestSuccess"
+  | "adminSettings.smsTestFailed"
+  | "adminSettings.smtp"
+  | "adminSettings.smtpDesc"
+  | "adminSettings.email"
+  | "adminSettings.smtpHost"
+  | "adminSettings.smtpPort"
+  | "adminSettings.smtpSecure"
+  | "adminSettings.smtpSsl"
+  | "adminSettings.smtpStartTls"
+  | "adminSettings.smtpUser"
+  | "adminSettings.smtpUserDesc"
+  | "adminSettings.smtpPassword"
+  | "adminSettings.smtpPasswordDesc"
+  | "adminSettings.smtpFromName"
+  | "adminSettings.smtpFromEmail"
+  | "adminSettings.emailConfigured"
+  | "adminSettings.emailNotConfigured"
+  | "adminSettings.emailTest"
+  | "adminSettings.emailTestPlaceholder"
+  | "adminSettings.emailTestSuccess"
+  | "adminSettings.emailTestFailed"
+  | "login.email"
+  | "login.phone"
+  | "login.emailPlaceholder"
+  | "login.phonePlaceholder"
+  | "login.code"
+  | "login.codePlaceholder"
+  | "login.sendCode"
+  | "login.resendCode"
+  | "login.codeResent"
+  | "login.codeSent"
+  | "login.methodUsername"
+  | "login.methodEmail"
+  | "login.methodPhone"
+  | "server.emailCodeError"
+  | "server.phoneCodeError"
+  | "server.emailRegistered"
+  | "server.phoneRegistered"
+  | "server.smsNotConfigured"
+  | "server.smsSendFailed"
+  | "server.emailNotConfigured"
+  | "server.emailSendFailed"
+  | "server.codeSendFailed"
+  | "server.codeRateLimited"
+  | "server.codeInvalid"
+  | "server.accountNotFound"
+  | "server.invalidPhone"
+  | "server.invalidEmail"
+  | "server.emailChannelClosed"
+  | "server.phoneChannelClosed"
+  | "server.ssoDisabled"
+  | "fileDetails.title"
+  | "fileDetails.size"
+  | "fileDetails.dimensions"
+  | "fileDetails.duration"
+  | "fileDetails.download"
+  | "adminSettings.nsfw"
+  | "adminSettings.nsfwEnable"
+  | "adminSettings.nsfwEnableDesc"
+  | "adminSettings.nsfwApiUrl"
+  | "adminSettings.nsfwApiUrlDesc"
+  | "adminSettings.nsfwThreshold"
+  | "adminSettings.nsfwThresholdDesc"
+  | "adminSettings.nsfwBuiltinDesc"
+  | "adminSettings.sso"
+  | "adminSettings.ssoEnable"
+  | "adminSettings.ssoEnableDesc"
+  | "adminSettings.ssoCompanyName"
+  | "adminSettings.ssoCompanyNameDesc"
+  | "adminSettings.ssoCompanyNamePlaceholder"
+  | "adminSettings.ssoCompanyFormalName"
+  | "adminSettings.ssoCompanyFormalNameDesc"
+  | "adminSettings.ssoCompanyFormalNamePlaceholder"
+  | "adminSettings.ssoIcon"
+  | "adminSettings.ssoIconDesc"
+  | "adminSettings.ssoIconImageOnly"
+  | "adminSettings.ssoIconUpload"
+  | "login.ssoButton"
+  | "nsfw.rejected"
+  | "adminSettings.usernameRegistration"
+  | "adminSettings.manageWhitelist"
+  | "adminSettings.emailWhitelist"
+  | "adminSettings.phoneWhitelist"
+  | "adminSettings.whitelistHint"
+  | "adminSettings.whitelistNotePlaceholder"
+  | "adminSettings.whitelistAdd"
+  | "adminSettings.whitelistEmpty"
+  | "adminSettings.ssoOauth"
+  | "adminSettings.ssoOauthHint"
+  | "adminSettings.ssoAuthorizationEndpoint"
+  | "adminSettings.ssoTokenEndpoint"
+  | "adminSettings.ssoUserInfoEndpoint"
+  | "adminSettings.ssoClientId"
+  | "adminSettings.ssoClientSecret"
+  | "adminSettings.ssoScopes"
+  | "adminSettings.ssoRedirectUri"
+  | "adminSettings.ssoRedirectUriDesc"
+  | "adminSettings.ssoConfigIncomplete"
+  | "profile.contact"
+  | "profile.contactDesc"
+  | "profile.contactChannelsClosed"
+  | "profile.notBound"
+  | "profile.bind"
+  | "profile.unbind"
+  | "profile.changeContact"
+  | "profile.bindEmail"
+  | "profile.bindPhone"
+  | "profile.changeEmail"
+  | "profile.changePhone"
+  | "profile.confirmUnbindEmail"
+  | "profile.confirmUnbindPhone"
+  | "profile.contactSaveFailed"
+  | "login.newEmail"
+  | "login.newPhone"
+  | "server.passwordIncorrect"
+  | "server.emailAlreadyUsed"
+  | "server.phoneAlreadyUsed"
+  | "server.emailNotWhitelisted"
+  | "server.phoneNotWhitelisted"
+  | "server.usernameChannelClosed"
+  | "server.unauthorized"
+  | "chat.more"
+  | "chat.e2eeEnable"
+  | "chat.e2eeDisable"
+  | "chat.areYouThere"
+  | "chat.areYouTherePrompt"
+  | "chat.imHere"
+  | "chat.presencePongReceived"
+  | "e2ee.dialogTitle"
+  | "e2ee.intro"
+  | "e2ee.warningsTitle"
+  | "e2ee.warningBothOnline"
+  | "e2ee.peerOffline"
+  | "e2ee.warningNoServerHistory"
+  | "e2ee.warningFilesAutoDelete"
+  | "e2ee.warningOffline10min"
+  | "e2ee.enable"
+  | "e2ee.sessionStarted"
+  | "e2ee.sessionStartedByPeer"
+  | "e2ee.sessionEnded"
+  | "e2ee.sessionEndedTimeout"
+  | "e2ee.fileCleaned"
+  | "channel.unbanChannel"
+  | "common.totalCount"
+  | "lang.de"
+  | "lang.en"
+  | "lang.es"
+  | "lang.fr"
+  | "lang.ja"
+  | "lang.ko"
+  | "lang.zh-CN"
+  | "message.translate"
+  | "translation.apiKey"
+  | "translation.bing"
+  | "translation.bingReverse"
+  | "translation.deepl"
+  | "translation.google"
+  | "translation.machineTranslated"
+  | "translation.provider"
+  | "translation.selectLang"
+  | "translation.settings"
+  | "translation.testFailed"
+
+export type Translations = Record<TranslationKey, string>;
+
+const zhCN: Translations = {
+  "app.name": "Navo IM",
+  "app.tagline": "让团队的<br />每一次对话<br />都更接近灵感。",
+  "app.description": "下一代 IM 聊天软件",
+  "login.title": "创建账号",
+  "login.subtitle": "欢迎回来",
+  "login.username": "用户名",
+  "login.password": "密码",
+  "login.confirmPassword": "确认密码",
+  "login.displayName": "显示名称",
+  "login.inviteCode": "邀请码",
+  "login.login": "进入工作空间",
+  "login.register": "注册并登录",
+  "login.loggingIn": "正在进入…",
+  "login.registering": "注册中…",
+  "login.noAccount": "还没有账号？",
+  "login.hasAccount": "已有账号？",
+  "login.directLogin": "直接登录",
+  "login.quickRegister": "立即注册",
+  "login.welcomeBack": "欢迎回来",
+  "login.startChat": "注册后即可开始对话。",
+  "login.passwordStrength.weak": "弱",
+  "login.passwordStrength.medium": "中",
+  "login.passwordStrength.strong": "强",
+  "login.passwordRequirement.length": "至少8位",
+  "login.passwordRequirement.uppercase": "大写字母",
+  "login.passwordRequirement.lowercase": "小写字母",
+  "login.passwordRequirement.number": "数字",
+  "login.captcha": "人机验证",
+  "login.secondPassword": "二次密码验证",
+  "login.maintenance": "系统维护中",
+  "login.banned": "账号已被封禁",
+  "login.enterSecondPassword": "请输入二次密码",
+  "login.authFailed": "验证失败",
+  "login.version": "v0.1 · 内测构建 ·",
+  "login.stats.msgLatency": "消息延迟",
+  "login.stats.horizontalScale": "横向扩展",
+  "login.stats.persistent": "持久化",
+  "login.bannedTitle": "账号已被封禁",
+  "login.bannedDesc": "您的账号已被管理员封禁，无法继续使用。",
+  "login.banReason": "封禁理由",
+  "login.maintenanceTitle": "系统正在维护中，请稍后再试",
+  "login.returnToLogin": "返回登录",
+  "login.loginFailed": "登录失败",
+  "login.registerFailed": "注册失败",
+  "login.verifyFailed": "验证失败",
+  "login.forgotPassword": "忘记密码？",
+  "login.resetPassword": "重置密码",
+  "login.resetPasswordSuccess": "密码已重置，请使用新密码登录",
+  "login.backToLogin": "返回登录",
+  "login.agreeTerms": "我已阅读并同意",
+  "login.termsOfService": "用户协议",
+  "login.privacyPolicy": "隐私政策",
+  "login.mustAgreeTerms": "请先同意用户协议和隐私政策",
+  "login.termsContent": "欢迎使用 Navo IM。\n\n1. 您应遵守法律法规，不得利用本服务从事违法活动。\n2. 您应对账号安全负责，妥善保管密码。\n3. 我们保留在必要时暂停或终止服务的权利。\n4. 消息内容受端到端加密保护时，仅通信双方可解密查看。\n\n完整条款以平台最新公示为准。",
+  "login.privacyContent": "Navo IM 隐私政策摘要：\n\n1. 我们收集账号、设备与日志信息以提供服务与安全审计。\n2. 端到端加密会话中的消息正文不会以明文形式持久化在服务器。\n3. 我们不会向第三方出售您的个人数据。\n4. 您可申请导出或删除账号数据（法律要求保留的除外）。\n\n完整政策以平台最新公示为准。",
+  "login.verificationCode": "验证码",
+  "login.newPassword": "新密码",
+  "login.resetMethodEmail": "邮箱找回",
+  "login.resetMethodPhone": "手机号找回",
+  "common.save": "保存",
+  "common.cancel": "取消",
+  "common.confirm": "确定",
+  "common.delete": "删除",
+  "common.edit": "编辑",
+  "common.close": "关闭",
+  "common.search": "搜索",
+  "common.loading": "加载中…",
+  "common.noData": "暂无数据",
+  "common.unknown": "未知",
+  "common.retry": "重试",
+  "common.send": "发送",
+  "common.saving": "保存中…",
+  "common.saved": "已保存",
+  "common.submit": "提交",
+  "nav.notifications": "通知",
+  "nav.friends": "好友",
+  "nav.settings": "设置",
+  "nav.chat": "聊天",
+  "nav.contacts": "联系人",
+  "nav.discover": "发现",
+  "friends.title": "好友",
+  "friends.tab.friends": "好友",
+  "friends.tab.requests": "申请",
+  "friends.tab.add": "添加",
+  "friends.empty": "还没有好友",
+  "friends.searchPlaceholder": "搜索好友…",
+  "friends.pending": "待通过",
+  "friends.blocked": "已拉黑",
+  "friends.accept": "接受",
+  "friends.decline": "拒绝",
+  "friends.addFriend": "添加好友",
+  "friends.sendRequest": "发送申请",
+  "friends.requestSent": "好友申请已发送",
+  "friends.alreadyFriends": "你们已经成为好友",
+  "friends.sendFailed": "发送失败",
+  "friends.searchUserPlaceholder": "搜索用户名…",
+  "friends.searchNoResult": "没有找到匹配的用户",
+  "friends.alreadyAdded": "已添加",
+  "friends.add": "添加",
+  "friends.addHint": "输入用户名搜索并添加好友",
+  "friends.message": "发消息",
+  "friends.editNote": "编辑备注",
+  "friends.saveNote": "保存",
+  "friends.removeFriend": "删除好友",
+  "friends.blockUser": "拉黑（仅限制对话）",
+  "friends.unblockUser": "解除拉黑",
+  "friends.clearHistory": "清空聊天记录",
+  "friends.note": "备注：",
+  "friends.notePlaceholder": "输入备注…",
+  "friends.noRequests": "没有新的好友申请",
+  "friends.waitingAccept": "等待对方通过 ·",
+  "friends.noMatch": "无匹配好友",
+  "friends.searching": "搜索中…",
+  "user.online": "在线",
+  "user.offline": "离线",
+  "user.away": "离开",
+  "user.busy": "忙碌",
+  "user.lastSeen": "上次活跃",
+  "user.gender.unspecified": "保密",
+  "user.gender.male": "男",
+  "user.gender.female": "女",
+  "user.gender.other": "其他",
+  "user.bio.placeholder": "介绍一下你自己…",
+  "user.notSet": "未设置",
+  "chat.loading": "加载更早的消息…",
+  "chat.loadFailed": "加载更早消息失败",
+  "chat.noConversation": "从左侧选择一个群组开始对话",
+  "chat.loadMore": "加载更早的消息…",
+  "chat.earliest": "已经是最早的消息",
+  "chat.searchMessage": "搜索消息",
+  "chat.searchMessages": "搜索消息",
+  "chat.forwardTo": "转发到",
+  "chat.forward": "转发",
+  "chat.forwardIndividual": "逐条转发",
+  "chat.forwardCombined": "合并转发",
+  "chat.selected": "已选",
+  "chat.messages": "条消息",
+  "chat.searchPlaceholder": "搜索会话…",
+  "chat.noMatchConv": "没有匹配的会话",
+  "chat.pinned": "置顶",
+  "chat.pinnedMessages": "条置顶消息",
+  "chat.jumpToMessage": "跳转到该消息",
+  "chat.typing": "正在输入",
+  "chat.typingMultiple": "等人正在输入",
+  "chat.inviteVoice": "邀请加入语音频道",
+  "chat.inviteVideo": "邀请加入视频频道",
+  "chat.inputPlaceholder": "输入消息…",
+  "chat.draft": "草稿",
+  "chat.unnamed": "未命名群组",
+  "chat.dm": "私聊",
+  "chat.members": "位成员",
+  "chat.memberCount": "位成员",
+  "chat.hidePanel": "隐藏成员面板",
+  "chat.showPanel": "显示成员面板",
+  "chat.manageChannel": "群组管理",
+  "chat.recalled": "撤回了一条消息",
+  "chat.recalledMessage": "该消息已被撤回",
+  "chat.sendFailed": "发送超时",
+  "chat.retry": "重试",
+  "chat.unsent": "未发送",
+  "composer.inputPlaceholder": "输入消息…",
+  "composer.inviteToVoice": "邀请加入语音频道",
+  "composer.inviteToVideo": "邀请加入视频频道",
+  "composer.sendingVoiceInvite": "发送语音通话邀请",
+  "composer.sendingVideoInvite": "发送视频通话邀请",
+  "profile.title": "个人设置",
+  "profile.aboutUs": "关于我们",
+  "profile.aboutUsContent": "Navo IM 是一款注重隐私与实时体验的即时通讯产品。支持端到端加密、频道与 AI 助手等功能。由 Navo 团队开发与维护。",
+  "profile.nickname": "昵称",
+  "profile.nicknamePlaceholder": "你的名字",
+  "profile.bio": "个人介绍",
+  "profile.bioPlaceholder": "介绍一下你自己…",
+  "profile.gender": "性别",
+  "profile.avatarColor": "头像底色",
+  "profile.uploadAvatar": "上传头像",
+  "profile.uploading": "头像上传中…",
+  "profile.removeAvatar": "移除上传头像，使用渐变色",
+  "profile.status": "在线状态",
+  "profile.privacy": "隐私",
+  "profile.friendApproval": "添加我需要好友验证",
+  "profile.friendApprovalDesc": "关闭后，任何人都可以直接把你加为好友",
+  "profile.notifications": "通知",
+  "profile.sound": "新消息提示音",
+  "profile.soundDesc": "收到新消息时播放轻提示音；点击切换并试听",
+  "profile.password": "登录密码",
+  "profile.passwordDesc": "修改后下次登录请使用新密码",
+  "profile.changePassword": "修改密码",
+  "profile.currentPassword": "当前密码",
+  "profile.newPassword": "新密码",
+  "profile.confirmNewPassword": "确认新密码",
+  "profile.passwordPlaceholder": "至少 6 位",
+  "profile.newPasswordPlaceholder": "至少 6 位",
+  "profile.confirmPasswordPlaceholder": "再次输入新密码",
+  "profile.secondPassword": "二次密码",
+  "profile.secondPasswordDesc": "二次密码用于敏感操作（如修改设置、注销账号）的额外验证",
+  "profile.secondPasswordEnabled": "已开启",
+  "profile.secondPasswordDisabled": "未开启",
+  "profile.secondPasswordHint": "提示：",
+  "profile.secondPasswordNew": "新二次密码",
+  "profile.secondPasswordNewHint": "新提示",
+  "profile.setSecondPassword": "设置",
+  "profile.modifySecondPassword": "修改",
+  "profile.closeSecondPassword": "关闭二次密码",
+  "profile.confirmCloseSecondPassword": "确认关闭",
+  "profile.closeSecondPasswordConfirm": "确定关闭二次密码？关闭后敏感操作将不再需要二次验证。",
+  "profile.secondPasswordPlaceholder": "至少 4 位",
+  "profile.hintPlaceholder": "用于帮助你回忆密码",
+  "profile.dangerZone": "账号注销",
+  "profile.deleteAccount": "注销账号",
+  "profile.deleteAccountDesc": "此操作不可恢复",
+  "profile.deleteAccountWarning": "账号注销后将会:",
+  "profile.deleteWarningItems": "删除您的所有数据（包括好友、群聊）\n您创建的群聊将自动解散\n个人信息将变为注销状态\n群聊中的消息头像改为默认，昵称变为\"账号已注销\"\n用户名将释放，可以重新注册\n个人主页无法打开",
+  "profile.deleteConfirmPassword": "确认密码",
+  "profile.deletePasswordPlaceholder": "输入你的登录密码",
+  "profile.confirmDelete": "确认注销",
+  "profile.deleting": "注销中…",
+  "profile.logout": "退出登录",
+  "profile.save": "保存修改",
+  "profile.saving": "保存中…",
+  "profile.saved": "已保存",
+  "profile.language": "语言",
+  "profile.languageDesc": "选择界面显示语言",
+  "settings": "个人设置",
+  "accountSecurity": "账号安全",
+  "media.all": "全部",
+  "media.image": "图片",
+  "media.file": "文件",
+  "media.video": "视频",
+  "media.location": "位置",
+  "media.poll": "投票",
+  "media.text": "文本",
+  "media.ai": "AI",
+  "media.markdown": "MD",
+  "member.owner": "群主",
+  "member.admin": "管理员",
+  "member.member": "成员",
+  "channel.create": "创建群组",
+  "channel.nameRequired": "请填写群组名称",
+  "channel.manage": "群组管理",
+  "channel.discover": "发现群组",
+  "notification.title": "通知",
+  "notification.empty": "暂无通知",
+  "notification.refresh": "刷新",
+  "sticker.empty": "暂无表情包",
+  "captcha.title": "人机验证",
+  "captcha.desc": "发送频率过高，请完成人机验证后继续发送",
+  "captcha.loading": "加载验证码…",
+  "call.video": "视频通话",
+  "call.audio": "语音通话",
+  "call.ended": "通话结束",
+  "call.duration": "时长",
+  "call.initiatedBy": "发起",
+  "status.online": "在线",
+  "status.away": "离开",
+  "status.busy": "忙碌",
+  "status.offline": "离线",
+  "message.card.friend": "[好友卡片]",
+  "message.card.channel": "[群组卡片]",
+  "message.card.location": "[位置]",
+  "message.card.poll": "[投票]",
+  "message.card.forwarded": "[合并转发]",
+  "message.card.image": "[图片]",
+  "message.card.images": "[图片 ×{count}]",
+  "message.card.file": "[文件]",
+  "message.card.files": "[文件 ×{count}]",
+  "message.card.system": "[系统消息]",
+  "message.card.sticker": "[表情]",
+  "message.emoji": "[表情]",
+  "message.recalled": "该消息已被撤回",
+  "error.unauthorized": "未授权，请先登录",
+  "error.notFound": "未找到",
+  "error.forbidden": "无权访问",
+  "error.serverError": "服务器内部错误",
+  "error.rateLimited": "请求过于频繁，请稍后再试",
+  "error.maintenance": "系统维护中，请稍后再试",
+  "error.uploadFailed": "上传失败",
+  "error.fileTooLarge": "文件大小超过限制 ({size} MB)",
+  "error.unsupportedFileType": "不支持的文件类型: {type}",
+  "error.captchaFailed": "人机验证失败",
+  "error.captchaRequired": "请完成人机验证",
+  "error.networkError": "网络错误",
+  "error.downloadFailed": "下载失败 ({status})",
+  "time.justNow": "刚刚",
+  "time.minutesAgo": "{n} 分钟前",
+  "time.hoursAgo": "{n} 小时前",
+  "time.yesterday": "昨天 {time}",
+  "time.today": "今天",
+  "time.daysAgo": "{n} 天前",
+  "admin.dashboard": "管理面板",
+  "admin.title": "数字化科技运营中心",
+  "admin.subtitle": "用户增长、频道活跃、消息数据实时可视化监控",
+  "admin.totalUsers": "总用户数",
+  "admin.activeUsers": "活跃用户",
+  "admin.channels": "频道数量",
+  "admin.messages": "消息总量",
+  "admin.newToday": "今日新增",
+  "admin.newThisWeek": "本周新增",
+  "admin.messagesToday": "今日消息",
+  "admin.messagesThisWeek": "本周消息",
+  "admin.securityStatus": "安全状态",
+  "admin.connectionStatus": "连接状态",
+  "admin.runEfficiency": "运行效率",
+  "admin.syncPerformance": "同步性能",
+  "admin.stable": "稳定",
+  "admin.normal": "正常",
+  "admin.excellent": "优秀",
+  "admin.highSpeed": "高速",
+  "admin.role.superAdmin": "超级管理员",
+  "admin.role.admin": "管理员",
+  "admin.role.moderator": "版主",
+  "admin.role.user": "普通用户",
+  "admin.notification.created": "已创建通知",
+  "admin.notification.deleted": "已删除通知",
+  "admin.notification.published": "已发布通知",
+  "server.accountDeleted": "账号已注销",
+  "server.accountBanned": "账号已被封禁{reason}",
+  "server.loginRequired": "未授权，请先登录",
+  "server.invalidRequest": "无效的请求",
+  "server.notFound": "未找到",
+  "server.rateLimited": "请求过于频繁，请稍后再试",
+  "server.maintenance": "系统维护中，请稍后再试",
+  "server.captchaRequired": "请完成人机验证",
+  "server.captchaFailed": "人机验证失败，请重试",
+  "server.registerClosed": "注册已关闭",
+  "server.inviteCodeError": "邀请码错误",
+  "server.usernameTaken": "该用户名已被占用",
+  "server.registrationIncomplete": "请填写完整的注册信息",
+  "server.passwordTooShort": "密码至少 8 位",
+  "server.passwordRequirements": "密码需包含大写字母、小写字母和数字",
+  "server.loginRateLimited": "登录请求过于频繁，请稍后再试",
+  "server.regRateLimited": "注册请求过于频繁，请稍后再试",
+  "server.ipLimit": "该IP已注册 {count} 个账号，已达上限",
+  "server.wrongCredentials": "用户名或密码不正确",
+  "server.userNotFound": "用户不存在",
+  "server.channelNotFound": "频道不存在",
+  "server.messageNotFound": "消息不存在",
+  "server.conversationNotFound": "会话不存在",
+  "server.cannotSendDM": "无权在该会话发送消息",
+  "server.cannotFriendSelf": "不能添加自己为好友",
+  "server.alreadyFriends": "你们已经是好友了",
+  "server.cannotSendFriendRequest": "无法发送好友申请",
+  "server.friendRequestNotFound": "请求不存在",
+  "server.targetUserNotFound": "目标用户不存在",
+  "server.memberNotFound": "成员不存在",
+  "server.needAdminPermission": "需要管理员权限",
+  "server.cannotActionSelf": "不能对自己执行该操作",
+  "server.cannotActionOwner": "不能对群主执行该操作",
+  "server.onlyOwnerCanActionAdmin": "只有群主可以操作其他管理员",
+  "server.onlyOwnerSetRole": "只有群主可以设置管理员",
+  "server.channelNameRequired": "群组名称不能为空",
+  "server.messageTooLong": "消息过长，最多 {max} 字",
+  "server.rateLimitedMsg": "您发送信息的频率过高",
+  "server.presencePingRateLimited": "请 {seconds} 秒后再试",
+  "server.captchaRequiredMsg": "发送频率过高，请完成人机验证",
+  "server.blockedByYou": "消息未发送 - 你已拉黑对方",
+  "server.blockedByThem": "消息未发送 - 对方已拉黑你",
+  "server.nonFriendLimitReached": "已达到非好友消息上限(3条)，请添加对方为好友后继续发送消息",
+  "server.youAreMuted": "你已被禁言",
+  "server.channelMuteAll": "该群组已开启全员禁言",
+  "server.onlyFriendCard": "只能向好友发送好友卡片",
+  "server.sensitiveBlocked": "消息包含敏感词，已被拦截",
+  "server.notInConv": "你不在该会话中",
+  "server.cannotForward": "你不在该会话中，无法转发消息",
+  "server.channelBanned": "此群聊已被管理员封禁",
+  "server.messageRecalled": "该消息已被撤回",
+  "server.cannotRecall": "只能撤回自己的消息",
+  "server.recallTimeout": "消息发送超过 5 分钟，无法撤回",
+  "server.pollNotFound": "投票消息不存在",
+  "server.invalidPollOption": "无效的选项",
+  "server.noPermissionCall": "没有权限管理该通话",
+  "server.authTimeout": "认证超时",
+  "server.messageTooLarge": "消息过大",
+  "server.invalidMessageFormat": "无效的消息格式",
+  "server.authRequired": "请先进行认证",
+  "server.authFailed": "认证失败",
+  "server.uploadNoFile": "未收到文件",
+  "server.fileTooLarge": "文件大小超过限制 ({size} MB)",
+  "server.unsupportedFileType": "不支持的文件类型: {type}",
+  "server.enterUsernamePassword": "请输入用户名和密码",
+  "server.enterPassword": "请输入密码",
+  "server.enterCurrentNewPassword": "请输入当前密码和新密码",
+  "server.enterSecondPassword": "请输入二次密码",
+  "server.enterHint": "请输入提醒内容",
+  "server.secondPasswordTooShort": "二次密码至少 4 位",
+  "server.secondPasswordSameAsLogin": "二次密码不能与登录密码相同",
+  "server.hintContainsPassword": "提醒内容不能包含密码",
+  "server.cannotCreateDMSelf": "不能与自己创建私聊",
+  "server.onlyInviteFriends": "只能邀请好友加入群组",
+  "server.membersCannotInvite": "无权添加成员（群主已禁止普通成员邀请）",
+  "server.cannotLeaveOwner": "群主不能退出群组，只能解散",
+  "server.onlyOwnerDisband": "只有群主可以解散群组",
+  "server.forwardNoMessages": "没有可转发的消息",
+  "server.reportMissingFields": "缺少必填字段",
+  "server.failedToGetStats": "获取统计数据失败",
+  "server.failedToGetRole": "获取管理员角色失败",
+  "server.failedToGetUsers": "获取用户列表失败",
+  "server.failedToGrantRole": "授予管理员角色失败",
+  "server.failedToRevokeRole": "撤销管理员角色失败",
+  "server.failedToBan": "封禁用户失败",
+  "server.failedToUnban": "解封用户失败",
+  "server.failedToCheckBan": "检查封禁状态失败",
+  "server.failedToDeleteUser": "删除用户失败",
+  "server.failedToGetChannels": "获取频道列表失败",
+  "server.failedToDeleteChannel": "删除频道失败",
+  "server.failedToDeleteMessage": "删除消息失败",
+  "server.failedToGetSettings": "获取系统设置失败",
+  "server.failedToUpdateSettings": "更新系统设置失败",
+  "server.failedToGetCaptchaConfig": "获取验证码配置失败",
+  "server.failedToUpdateCaptchaConfig": "更新验证码配置失败",
+  "server.failedToGetAiConfig": "获取AI配置失败",
+  "server.failedToUpdateAiConfig": "更新AI配置失败",
+  "server.failedToGetAuditLogs": "获取审计日志失败",
+  "server.failedToGetNotifications": "获取通知列表失败",
+  "server.failedToCreateNotification": "创建通知失败",
+  "server.failedToUpdateNotification": "更新通知失败",
+  "server.failedToDeleteNotification": "删除通知失败",
+  "server.failedToPublishNotification": "发布通知失败",
+  "server.failedToBanChannel": "封禁频道失败",
+  "server.failedToUnbanChannel": "解封频道失败",
+  "server.failedToCheckChannelBan": "检查频道封禁状态失败",
+  "server.failedToGetReports": "获取举报列表失败",
+  "server.failedToHandleReport": "处理举报失败",
+  "server.failedToGetIceConfig": "获取ICE配置失败",
+  "server.failedToUpdateIceConfig": "更新ICE配置失败",
+  "server.failedToAddMember": "添加成员失败",
+  "server.failedToTransferOwner": "转让群主失败",
+  "server.failedToCreateStickerPack": "创建表情包失败",
+  "server.failedToDeleteStickerPack": "删除表情包失败",
+  "server.failedToAddSticker": "添加表情失败",
+  "server.failedToDeleteSticker": "删除表情失败",
+  "server.failedToUpdateStickerName": "修改表情名称失败",
+  "server.adminInitFailed": "初始化管理员失败",
+  "server.adminInitKeyError": "初始化密钥错误",
+  "server.adminAlreadyExists": "管理员已存在",
+  "server.titleContentRequired": "标题和内容不能为空",
+  "server.contentRequired": "通知内容不能为空",
+  "server.orgNameRequired": "组织名称不能为空",
+  "server.sensitiveWordsRequired": "敏感词列表不能为空",
+  "server.idListRequired": "ID列表不能为空",
+  "server.missingRequiredParams": "缺少必要参数",
+  "server.stickerPackNameRequired": "请输入表情包名称",
+  "server.reportResultRequired": "缺少处理结果",
+  "server.aiConnectSuccess": "连接成功",
+  "server.aiConnectFailed": "连接失败",
+  "server.aiConnectTimeout": "连接超时",
+  "server.cannotBlockSuperAdmin": "无法封禁超级管理员",
+  "server.cannotDeleteSuperAdmin": "无法删除超级管理员",
+  "server.onlySuperAdminGrantSuperAdmin": "只有超级管理员可以授予超级管理员角色",
+  "server.onlySuperAdminRevokeSuperAdmin": "只有超级管理员可以撤销超级管理员角色",
+  "server.unknownChannel": "未知频道",
+  "server.unknownConversation": "未知会话",
+  "server.noPermission": "无权访问该会话",
+  "server.auditUpdateSettings": "更新系统设置",
+  "server.auditUpdateCaptchaConfig": "更新验证码配置",
+  "server.auditUpdateAiConfig": "更新AI配置",
+  "server.auditUpdateIceConfig": "更新ICE配置",
+  "server.auditSetOrg": "设置组织",
+  "server.auditBatchAddSensitive": "批量添加敏感词",
+  "server.auditBatchDeleteSensitive": "批量删除敏感词",
+  "server.auditAddMember": "添加成员",
+  "server.auditTransferOwner": "转让群主",
+  "server.initialSuperAdmin": "初始化超级管理员",
+  "server.reportStatusActioned": "已处理",
+  "server.reportStatusRejected": "已驳回",
+  "server.reportStatusReviewed": "已复审",
+  "server.reportNotificationTitle": "举报处理通知",
+  "server.reportNotificationContent": "您的举报已被处理。状态: {status}, 结果: {result}",
+  "server.failedToUpdateStickerPackName": "修改表情包名称失败",
+  "server.stickerNameRequired": "请输入表情名称",
+  "profile.avatarBackground": "头像背景",
+  "profile.captcha": "人机验证",
+  "profile.captchaVerify": "验证",
+  "profile.cloudflare": "Cloudflare",
+  "profile.aijian": "爱简天御",
+  "profile.passwordMatch": "密码匹配",
+  "profile.passwordMismatch": "密码不匹配",
+  "profile.organization": "组织",
+  "profile.organizationLoading": "组织加载中…",
+  "profile.organizationUnknown": "未知组织",
+  "profile.passwordPlaceholderShort": "至少 6 位",
+  "profile.captchaVerifyDesc": "请完成人机验证",
+  "profile.edit": "编辑资料",
+  "admin.users": "用户",
+  "admin.userManagement": "用户管理",
+  "admin.channelManagement": "频道管理",
+  "admin.reports": "举报",
+  "admin.audit": "审计",
+  "admin.content": "内容",
+  "admin.operations": "运营",
+  "admin.banUser": "封禁用户",
+  "admin.banReason": "封禁理由",
+  "admin.confirmBan": "确认封禁",
+  "admin.banReasonPlaceholder": "请输入封禁理由",
+  "admin.confirmDeleteUser": "确认删除该用户？",
+  "admin.deleteUser": "删除用户",
+  "admin.setRoleSuccess": "角色设置成功",
+  "admin.setRoleFailed": "角色设置失败",
+  "admin.unbanSuccess": "解封成功",
+  "admin.deleteSuccess": "删除成功",
+  "admin.deleteFailed": "删除失败",
+  "admin.banSuccess": "封禁成功",
+  "admin.banFailed": "封禁失败",
+  "admin.totalReports": "举报总数",
+  "admin.noReports": "暂无举报",
+  "admin.page": "第 {page} 页",
+  "admin.previousPage": "上一页",
+  "admin.nextPage": "下一页",
+  "admin.reportDetail": "举报详情",
+  "admin.reportTime": "举报时间",
+  "admin.reporter": "举报人",
+  "admin.reportTarget": "被举报对象",
+  "admin.reportReason": "举报原因",
+  "admin.reportScreenshot": "举报截图",
+  "admin.reportResult": "处理结果",
+  "admin.reportResultPlaceholder": "请输入处理结果",
+  "admin.reportProcessed": "已处理",
+  "admin.reportRejected": "已驳回",
+  "admin.reportProcessing": "处理中",
+  "admin.reportAll": "全部",
+  "admin.reportPending": "待处理",
+  "admin.reportReviewed": "已复审",
+  "admin.notification.privateTitle": "私信通知",
+  "admin.notification.privateDesc": "向指定用户发送私信通知",
+  "admin.notification.privateEmpty": "暂无私信通知",
+  "admin.notification.targetUser": "目标用户",
+  "admin.notification.sendTime": "发送时间",
+  "admin.notification.public": "公开",
+  "admin.notification.private": "私信",
+  "admin.sensitive.management": "敏感词管理",
+  "admin.sensitive.policy": "处理策略",
+  "admin.sensitive.block": "拦截",
+  "admin.sensitive.mask": "屏蔽",
+  "admin.sensitive.batchAdd": "批量添加",
+  "admin.sensitive.batchAddHint": "每行一个敏感词",
+  "admin.sensitive.searchPlaceholder": "搜索敏感词…",
+  "admin.sensitive.deleteSelected": "删除选中",
+  "admin.sensitive.word": "敏感词",
+  "admin.sensitive.addTime": "添加时间",
+  "admin.sensitive.noWords": "暂无敏感词",
+  "admin.sensitive.addSuccess": "添加成功",
+  "admin.sensitive.deleteSuccess": "删除成功",
+  "admin.sticker.management": "表情包管理",
+  "admin.sticker.create": "创建表情包",
+  "admin.sticker.createSuccess": "创建表情包成功",
+  "admin.sticker.deleteSuccess": "删除表情包成功",
+  "admin.sticker.uploadSuccess": "上传成功",
+  "admin.sticker.addSticker": "添加表情",
+  "admin.sticker.uploading": "上传中…",
+  "admin.sticker.saving": "保存中…",
+  "admin.sticker.noPacks": "暂无表情包",
+  "admin.sticker.editName": "编辑名称",
+  "admin.sticker.saveName": "保存名称",
+  "admin.sticker.deleteSticker": "删除表情",
+  "admin.sticker.packName": "表情包名称",
+  "admin.sticker.packNamePlaceholder": "请输入表情包名称",
+  "admin.sticker.uploadFailed": "上传失败",
+  "admin.oss.name": "配置名称",
+  "admin.oss.provider": "提供商",
+  "admin.oss.region": "区域",
+  "admin.oss.endpoint": "端点",
+  "admin.oss.bucket": "存储桶",
+  "admin.oss.bucketPlaceholder": "请输入存储桶名称",
+  "admin.oss.user": "用户",
+  "admin.oss.isDefault": "默认",
+  "admin.oss.addTime": "添加时间",
+  "admin.oss.setDefault": "设为默认",
+  "admin.oss.cancel": "取消",
+  "admin.oss.add": "添加配置",
+  "admin.oss.envPlaceholder": "请输入环境变量名",
+  "admin.oss.regionPlaceholder": "请输入区域",
+  "admin.oss.endpointPlaceholder": "请输入端点地址",
+  "admin.oss.namePlaceholder": "请输入配置名称",
+  "admin.oss.nameRequired": "请输入配置名称",
+  "admin.rateLimit.title": "频率限制",
+  "admin.rateLimit.desc": "配置接口请求频率限制",
+  "admin.rateLimit.message": "消息频率限制",
+  "admin.rateLimit.login": "登录频率限制",
+  "admin.rateLimit.registration": "注册频率限制",
+  "admin.rateLimit.perMinute": "次/分钟",
+  "admin.rateLimit.window": "时间窗口（秒）",
+  "admin.rateLimit.maxPerIp": "每IP最大次数",
+  "admin.rateLimit.count": "次数",
+  "admin.rateLimit.hint": "设置每个IP在时间窗口内的最大请求次数",
+  "admin.rateLimit.saveFailed": "保存频率限制配置失败",
+  "adminSettings.basic": "基本设置",
+  "adminSettings.registration": "注册设置",
+  "adminSettings.message": "消息设置",
+  "adminSettings.captcha": "验证码设置",
+  "adminSettings.ai": "AI 设置",
+  "adminSettings.cdn": "CDN 设置",
+  "adminSettings.maintenance": "维护设置",
+  "adminSettings.ice": "ICE 设置",
+  "adminSettings.siteName": "站点名称",
+  "adminSettings.siteDesc": "站点描述",
+  "adminSettings.allowRegister": "允许注册",
+  "adminSettings.requireInviteCode": "需要邀请码",
+  "adminSettings.enableMaintenance": "启用维护模式",
+  "adminSettings.maintenanceMessage": "维护提示信息",
+  "adminSettings.maintenanceMessagePlaceholder": "请输入维护提示信息",
+  "adminSettings.maxFileSize": "最大文件大小",
+  "adminSettings.currentSize": "当前限制",
+  "adminSettings.maxMessageLen": "最大消息长度",
+  "adminSettings.enableCaptcha": "启用验证码",
+  "adminSettings.captchaProvider": "验证码提供商",
+  "adminSettings.notEnabled": "未启用",
+  "adminSettings.aiEnable": "启用 AI",
+  "adminSettings.aiApiUrl": "API 地址",
+  "adminSettings.aiApiKey": "API 密钥",
+  "adminSettings.aiModel": "模型",
+  "adminSettings.aiSystemPrompt": "自定义提示词",
+  "adminSettings.aiName": "AI 名称",
+  "adminSettings.aiBio": "AI 介绍",
+  "adminSettings.aiAvatarUrl": "AI 头像 URL",
+  "adminSettings.aiApiKeyPlaceholder": "请输入 API 密钥",
+  "adminSettings.aiApiDesc": "配置 AI 服务的连接参数",
+  "adminSettings.testConnection": "测试连接",
+  "adminSettings.testing": "测试中…",
+  "adminSettings.testFailed": "连接测试失败",
+  "adminSettings.cdnGoogleFonts": "Google 字体镜像",
+  "adminSettings.cdnGoogleFontsPlaceholder": "请输入 Google 字体镜像地址",
+  "adminSettings.cdnGoogleFontsExample": "例如：https://fonts.example.com",
+  "adminSettings.vconsole": "VConsole",
+  "adminSettings.vconsoleDesc": "启用 VConsole 调试工具",
+  "adminSettings.stunTurn": "STUN/TURN 配置",
+  "adminSettings.stun": "STUN 服务器",
+  "adminSettings.turn": "TURN 服务器",
+  "adminSettings.addStun": "添加 STUN",
+  "adminSettings.addTurn": "添加 TURN",
+  "adminSettings.usernameRequired": "用户名（可选）",
+  "adminSettings.passwordOptional": "密码（可选）",
+  "adminSettings.serverRequired": "请输入服务器地址",
+  "adminSettings.stunDesc": "STUN 用于获取公网地址",
+  "adminSettings.turnDesc": "TURN 用于中继传输",
+  "adminSettings.loadFailed": "加载设置失败",
+  "adminSettings.saveFailed": "保存设置失败",
+  "channel.info": "频道信息",
+  "channel.public": "公开",
+  "channel.private": "私有",
+  "channel.description": "频道描述",
+  "channel.descriptionPlaceholder": "请输入频道描述",
+  "channel.announcement": "频道公告",
+  "channel.announcementPlaceholder": "请输入频道公告",
+  "channel.noAnnouncement": "暂无公告",
+  "channel.muteAll": "全员禁言",
+  "channel.muteAllDesc": "开启后只有管理员可以发言",
+  "channel.allowInvite": "允许邀请",
+  "channel.allowInviteDesc": "允许成员邀请新成员",
+  "channel.makePublic": "设为公开",
+  "channel.makePublicDesc": "公开频道可在发现页被搜索到",
+  "channel.saveInfo": "保存信息",
+  "channel.adminCanEdit": "管理员可编辑",
+  "channel.dangerZone": "危险操作",
+  "channel.disband": "解散频道",
+  "channel.leave": "退出频道",
+  "channel.ownerCannotLeave": "群主不能退出频道",
+  "channel.report": "举报频道",
+  "channel.disbandConfirm": "确认解散频道？",
+  "channel.disbandDesc": "解散后所有消息将被删除，无法恢复",
+  "channel.leaveConfirm": "确认退出频道？",
+  "channel.leaveDesc": "退出后需要重新被邀请才能加入",
+  "channel.bannedMembers": "被禁言的成员",
+  "channel.banChannel": "封禁群聊",
+  "channel.addFriendHint": "从好友列表选择",
+  "channel.noFriendToAdd": "没有可添加的好友",
+  "channel.cancelAdmin": "取消管理员",
+  "channel.setAdmin": "设为管理员",
+  "channel.transferOwner": "转让群主",
+  "channel.unmute": "解除禁言",
+  "channel.mute": "禁言",
+  "channel.removeMember": "移除成员",
+  "channel.unban": "解封",
+  "channel.you": "你",
+  "channel.lastActive": "最后活跃",
+  "channel.createdAt": "创建时间",
+  "channel.saveFailed": "保存失败",
+  "channel.leaveSuccess": "已退出频道",
+  "channel.disbandSuccess": "频道已解散",
+  "channel.joined": "已加入",
+  "channel.join": "加入",
+  "channel.publicChannel": "公开频道",
+  "channel.memberCount": "{count} 位成员",
+  "channel.alreadyJoined": "已加入",
+  "channel.joinChannel": "加入频道",
+  "composer.scheduledAt": "定时发送",
+  "composer.scheduleInFuture": "请选择未来的时间",
+  "composer.pollOnlyChannel": "仅限频道投票",
+  "composer.pollMinOptions": "至少需要 2 个选项",
+  "composer.pollMaxOptions": "最多 10 个选项",
+  "composer.pollQuestion": "投票问题",
+  "composer.pollQuestionPlaceholder": "请输入投票问题",
+  "composer.pollOptions": "投票选项",
+  "composer.addOption": "添加选项",
+  "composer.anonymousPoll": "匿名投票",
+  "composer.pollAnonymousDesc": "投票结果不显示投票人",
+  "composer.publishPoll": "发布投票",
+  "composer.voiceCall": "语音通话",
+  "composer.videoCall": "视频通话",
+  "composer.emoji": "表情",
+  "composer.sticker": "表情包",
+  "composer.recommendFriend": "推荐好友",
+  "composer.shareChannel": "分享频道",
+  "composer.scheduleSend": "定时发送",
+  "composer.markdownSend": "Markdown 发送",
+  "composer.normalSend": "普通发送",
+  "composer.dragToUpload": "拖拽文件到此处上传",
+  "composer.blockedByBan": "你已被封禁",
+  "composer.everyone": "所有人",
+  "composer.more": "更多",
+  "composer.stickerLoading": "表情包加载中…",
+  "composer.stickerLoadFailed": "表情包加载失败",
+  "composer.loadMoreStickers": "加载更多表情包",
+  "composer.searchUser": "搜索用户",
+  "composer.searchChannel": "搜索频道",
+  "composer.noMatch": "无匹配结果",
+  "composer.createPoll": "创建投票",
+  "composer.pollOnlyChannelErr": "投票仅限频道中发布",
+  "composer.pollMinErr": "至少需要 2 个选项",
+  "composer.pollMaxErr": "最多 10 个选项",
+  "composer.pollQuestionErr": "请输入投票问题",
+  "composer.friendCardSent": "好友卡片已发送",
+  "composer.notFriendAnymore": "对方已不是你的好友",
+  "composer.recording": "正在录音…",
+  "composer.voiceRecord": "语音消息",
+  "call.ringing": "响铃中…",
+  "call.connecting": "连接中…",
+  "call.inviteYou": "邀请你加入通话",
+  "call.latency": "延迟",
+  "call.jitter": "抖动",
+  "call.packetLoss": "丢包率",
+  "call.manage": "管理通话",
+  "call.mute": "静音",
+  "call.unmute": "取消静音",
+  "call.removeMember": "移除成员",
+  "call.screen": "屏幕共享",
+  "call.mySelf": "我",
+  "call.incomingCall": "来电",
+  "call.someone": "有人",
+  "media.searchHint": "搜索媒体文件",
+  "media.searchResults": "搜索结果",
+  "media.preview": "预览",
+  "media.jumpToMessage": "跳转到消息",
+  "media.backToResults": "返回搜索结果",
+  "media.download": "下载",
+  "media.zoomIn": "放大",
+  "media.zoomOut": "缩小",
+  "media.zoomReset": "重置",
+  "media.emptyHint": "暂无媒体文件",
+  "media.loadMore": "加载更多",
+  "media.locationInfo": "位置信息",
+  "media.emptyMessage": "暂无消息",
+  "media.returnResults": "返回结果",
+  "message.reply": "回复",
+  "message.copy": "复制",
+  "message.recall": "撤回",
+  "message.report": "举报",
+  "message.pin": "置顶",
+  "message.unpin": "取消置顶",
+  "message.edited": "已编辑",
+  "message.sending": "发送中…",
+  "message.retrySend": "重试发送",
+  "message.seenBy": "已读",
+  "message.unread": "未读",
+  "message.anonymous": "匿名",
+  "message.votes": "票",
+  "message.voted": "已投票",
+  "message.totalVotes": "总票数",
+  "message.anonymousVote": "匿名投票",
+  "message.seenStatus": "已读状态",
+  "message.readCount": "{count} 人已读",
+  "message.unreadCount": "{count} 人未读",
+  "message.fromUser": "来自用户",
+  "message.fromChannel": "来自频道",
+  "message.notJoined": "未加入",
+  "message.notJoinedDesc": "你未加入该频道",
+  "message.notJoinedHint": "加入后即可查看消息",
+  "message.openChannel": "打开频道",
+  "message.clickToView": "点击查看",
+  "message.invalidLocation": "无效的位置信息",
+  "message.pollDataError": "投票数据异常",
+  "message.loadFailed": "消息加载失败",
+  "report.title": "举报",
+  "report.type": "举报类型",
+  "report.submitted": "举报已提交",
+  "report.reason": "举报原因",
+  "report.reasonPlaceholder": "请描述举报原因",
+  "report.screenshot": "截图证据",
+  "report.uploadScreenshot": "上传截图",
+  "report.uploadingScreenshot": "截图中…",
+  "report.captcha": "人机验证",
+  "report.submitting": "提交中…",
+  "report.submit": "提交举报",
+  "report.screenshotFailed": "截图上传失败",
+  "member.detail": "成员详情",
+  "member.friendList": "好友列表",
+  "member.noFriendToAdd": "没有可添加的好友",
+  "member.adding": "添加中…",
+  "member.you": "你",
+  "member.lastActive": "上次活跃",
+  "member.add": "添加",
+  "member.detailInfo": "详细信息",
+  "sticker.searchPlaceholder": "搜索表情…",
+  "sticker.noMatch": "无匹配表情",
+  "sticker.noEmoji": "无匹配表情",
+  "error.somethingWentWrong": "出了点问题",
+  "error.refreshPage": "刷新页面",
+  "error.microphoneDenied": "麦克风权限被拒绝",
+  "messageSearch.all": "全部",
+  "messageSearch.text": "文本",
+  "messageSearch.image": "图片",
+  "messageSearch.file": "文件",
+  "messageSearch.location": "位置",
+  "messageSearch.video": "视频",
+  "messageSearch.voice": "语音",
+  "messageSearch.hint": "搜索消息",
+  "messageSearch.viewInChat": "在聊天中查看",
+  "userCard.removeFriend": "删除好友",
+  "userCard.acceptRequest": "接受请求",
+  "userCard.unblock": "解封",
+  "userCard.block": "拉黑",
+  "userCard.report": "举报",
+  "userCard.gender": "性别",
+  "userCard.lastActive": "上次活跃",
+  "userCard.removeSuccess": "删除成功",
+  "userCard.acceptSuccess": "已接受",
+  "userCard.unblockSuccess": "解封成功",
+  "userCard.blockSuccess": "拉黑成功",
+  "location.selectTitle": "选择位置",
+  "location.myLocation": "我的位置",
+  "location.locating": "定位中…",
+  "location.useMyLocation": "使用我的位置",
+  "location.mapPreview": "地图预览",
+  "location.noPreview": "暂无预览",
+  "location.searchHint": "搜索位置",
+  "location.openInAmap": "在高德地图中打开",
+  "location.searchFailed": "搜索失败",
+  "location.noPermission": "无位置权限",
+  "location.timeout": "定位超时",
+  "location.failed": "定位失败",
+  "location.notSupported": "不支持定位",
+  "location.selected": "已选位置",
+  "location.permissionHint": "请在浏览器设置中允许位置权限",
+  "contextMenu.forward": "转发",
+  "contextMenu.reply": "回复",
+  "contextMenu.copy": "复制",
+  "contextMenu.recall": "撤回",
+  "contextMenu.report": "举报",
+  "contextMenu.pin": "置顶",
+  "contextMenu.unpin": "取消置顶",
+  "contextMenu.delete": "删除",
+  "admin.addTime": "添加时间",
+  "admin.auditLog": "审计日志",
+  "admin.banReasonOptional": "封禁原因（可选）",
+  "admin.banStatus": "封禁状态",
+  "admin.channel": "频道",
+  "admin.confirmDeleteChannel": "确定删除该频道？此操作不可恢复！",
+  "admin.confirmDeleteNotification": "确定删除该通知？此操作不可恢复。",
+  "admin.confirmDeleteOrg": "确定删除此组织？子组织将变为顶级，成员组织信息将被清除。",
+  "admin.conversation": "会话",
+  "admin.createNotification": "创建通知",
+  "admin.createOrg": "创建组织",
+  "admin.dataVisualization": "数据可视化矩阵",
+  "admin.deleteNotification": "删除通知",
+  "admin.editNotification": "编辑通知",
+  "admin.forwarded": "转发",
+  "admin.imagePreview": "图片预览",
+  "admin.imageUrl": "图片链接",
+  "admin.markdownSupported": "支持 Markdown",
+  "admin.messageAudit": "消息审计",
+  "admin.noNotifications": "暂无通知",
+  "admin.sendNotification": "发送通知",
+  "admin.noOrganization": "无组织",
+  "admin.noOrgs": "暂无组织",
+  "admin.notificationContentPlaceholder": "输入通知内容，支持 Markdown 格式...",
+  "admin.notificationTitle": "输入通知标题",
+  "admin.operator": "操作人",
+  "admin.orgCreated": "组织已创建",
+  "admin.orgDeleted": "组织已删除",
+  "admin.orgDescOptional": "描述（可选）",
+  "admin.orgManagement": "组织管理",
+  "admin.orgUpdated": "组织信息已更新",
+  "admin.oss.addBinding": "添加绑定",
+  "admin.oss.bindings": "OSS 绑定",
+  "admin.oss.confirmDelete": "确定删除此 OSS 绑定？",
+  "admin.oss.created": "已添加 OSS 绑定",
+  "admin.oss.fillRequired": "请填写所有必填项",
+  "admin.oss.setDefaultSuccess": "已设为默认",
+  "admin.oss.urlPlaceholder": "例如：https://oss-cn-hangzhou.aliyuncs.com",
+  "admin.oss.userIdPlaceholder": "OSS 归属的用户 ID",
+  "admin.poll": "投票",
+  "admin.position": "职位",
+  "admin.positionPlaceholder": "例如: 技术总监",
+  "admin.publishNotification": "发布通知",
+  "admin.publishToAll": "发布通知给所有联系人",
+  "admin.rateLimit.captchaHint": "超过此限制需完成人机验证",
+  "admin.rateLimit.maxAccountsPerIp": "单IP最大注册账号数",
+  "admin.rateLimit.maxLogins": "窗口内最大登录次数",
+  "admin.rateLimit.maxMessages": "每分钟最多消息数",
+  "admin.rateLimit.maxRegistrations": "窗口内最大注册次数",
+  "admin.rateLimit.overLimit": "超过返回 429",
+  "admin.rateLimit.seconds": "秒",
+  "admin.rateLimit.times": "次",
+  "admin.rateLimit.windowDesc": "统计时间窗口",
+  "admin.rateLimit.presencePing": "「你还在吗？」频率限制",
+  "admin.rateLimit.presencePingMax": "窗口内最多发送次数",
+  "admin.rateLimit.presencePingWindow": "时间窗口（秒）",
+  "admin.rateLimit.presencePingDesc": "私聊三点菜单「你还在吗？」每用户每会话的限制",
+  "admin.report.pending": "待处理",
+  "admin.report.processed": "已处理",
+  "admin.report.rejected": "已驳回",
+  "admin.report.reporter": "举报人",
+  "admin.report.messageId": "消息 ID",
+  "admin.report.messageTime": "消息时间",
+  "admin.report.reviewed": "已审核",
+  "admin.role": "身份",
+  "admin.roleSet": "已设置为 {role}",
+  "admin.saveOrgInfo": "保存组织信息",
+  "admin.searchChannelPlaceholder": "搜索频道...",
+  "admin.searchMessagePlaceholder": "搜索消息内容...",
+  "admin.sendFailed": "发送失败",
+  "admin.sensitive.added": "已添加 {count} 个敏感词",
+  "admin.sensitive.confirmDelete": "确定删除 {count} 个敏感词？",
+  "admin.sensitive.deleted": "已删除 {count} 个敏感词",
+  "admin.sensitive.wordCount": "共 {count} 个词",
+  "admin.sticker.addEmoji": "添加表情",
+  "admin.sticker.noPacksHint": "暂无表情包，请先创建一个",
+  "admin.system": "系统",
+  "admin.systemSettings": "系统设置",
+  "admin.topLevelOrg": "顶级组织",
+  "admin.totalChannels": "共 {count} 个频道",
+  "admin.totalCount": "共 {count} 条",
+  "admin.type": "类型",
+  "admin.userId": "用户ID",
+  "admin.userIdFilter": "用户ID筛选",
+  "adminSettings.captchaBackend": "后端 API 地址",
+  "adminSettings.captchaFrontend": "前端 Widget 地址",
+  "adminSettings.inviteCodePlaceholder": "设置邀请码",
+  "adminSettings.emailRegistration": "允许邮箱注册",
+  "adminSettings.phoneRegistration": "允许手机号注册",
+  "adminSettings.sms": "短信服务",
+  "adminSettings.smsProvider": "短信服务商",
+  "adminSettings.smsProviderNone": "未启用",
+  "adminSettings.smsProviderTencent": "腾讯云 SMS",
+  "adminSettings.smsProviderAliyun": "阿里云短信",
+  "adminSettings.smsSdkAppId": "应用 ID (SdkAppId)",
+  "adminSettings.smsSdkAppIdDesc": "腾讯云短信控制台创建应用后获取的 SdkAppId；阿里云可不填",
+  "adminSettings.smsAccessKeyId": "AccessKeyId / SecretId",
+  "adminSettings.smsAccessKeyIdDesc": "云厂商控制台访问密钥中的 ID",
+  "adminSettings.smsAccessKeySecret": "AccessKeySecret / SecretKey",
+  "adminSettings.smsAccessKeySecretDesc": "云厂商访问密钥的 Secret，请妥善保管",
+  "adminSettings.smsSignName": "短信签名",
+  "adminSettings.smsSignNameDesc": "已通过审核的短信签名内容",
+  "adminSettings.smsTemplateCode": "短信模板 ID",
+  "adminSettings.smsTemplateCodeDesc": "已通过审核的验证码短信模板 ID；模板需包含 1 个 {code} 变量",
+  "adminSettings.smsRegion": "地域",
+  "adminSettings.smsRegionDesc": "阿里云 regionId，如 cn-hangzhou；腾讯云可不填",
+  "adminSettings.smsEndpoint": "接入点（可选）",
+  "adminSettings.smsEndpointDesc": "默认就近地域；可指定如 sms.ap-guangzhou.tencentcloudapi.com",
+  "adminSettings.smsTest": "发送测试短信",
+  "adminSettings.smsTestPlaceholder": "输入测试手机号（含国家码，如 +8613800138000）",
+  "adminSettings.smsTestSuccess": "测试短信已发送",
+  "adminSettings.smsTestFailed": "测试短信发送失败",
+  "adminSettings.smtp": "邮件 SMTP",
+  "adminSettings.smtpDesc": "邮件发送通过系统设置中的 smtp_* 字段配置；切换到邮件模板标签页进行管理",
+  "adminSettings.email": "邮箱 SMTP",
+  "adminSettings.smtpHost": "SMTP 主机",
+  "adminSettings.smtpPort": "端口",
+  "adminSettings.smtpSecure": "加密方式",
+  "adminSettings.smtpSsl": "SSL（端口 465）",
+  "adminSettings.smtpStartTls": "STARTTLS（端口 25/587）",
+  "adminSettings.smtpUser": "用户名",
+  "adminSettings.smtpUserDesc": "通常与发件人邮箱一致；部分服务商会要求单独的 SMTP 用户名",
+  "adminSettings.smtpPassword": "密码 / 授权码",
+  "adminSettings.smtpPasswordDesc": "SMTP 登录密码或服务商颁发的授权码",
+  "adminSettings.smtpFromName": "发件人名称",
+  "adminSettings.smtpFromEmail": "发件人邮箱",
+  "adminSettings.emailConfigured": "SMTP 已配置",
+  "adminSettings.emailNotConfigured": "SMTP 未配置完成，邮箱注册将无法发送验证码",
+  "adminSettings.emailTest": "发送测试邮件",
+  "adminSettings.emailTestPlaceholder": "输入收件邮箱",
+  "adminSettings.emailTestSuccess": "测试邮件已发送，请查收",
+  "adminSettings.emailTestFailed": "测试邮件发送失败",
+  "login.email": "邮箱",
+  "login.phone": "手机号",
+  "login.emailPlaceholder": "请输入邮箱",
+  "login.phonePlaceholder": "请输入手机号（含国家码）",
+  "login.code": "验证码",
+  "login.codePlaceholder": "6 位验证码",
+  "login.sendCode": "获取验证码",
+  "login.resendCode": "{seconds}s 后重发",
+  "login.codeResent": "验证码已重新发送",
+  "login.codeSent": "验证码已发送，请查收",
+  "login.methodUsername": "用户名",
+  "login.methodEmail": "邮箱",
+  "login.methodPhone": "手机号",
+  "server.emailCodeError": "邮箱验证码错误或已过期",
+  "server.phoneCodeError": "手机验证码错误或已过期",
+  "server.emailRegistered": "该邮箱已被注册",
+  "server.phoneRegistered": "该手机号已被注册",
+  "server.smsNotConfigured": "短信服务未配置",
+  "server.smsSendFailed": "短信发送失败",
+  "server.emailNotConfigured": "邮件服务未配置",
+  "server.emailSendFailed": "邮件发送失败",
+  "server.codeSendFailed": "验证码发送失败",
+  "server.codeRateLimited": "请求过于频繁，请稍后再试",
+  "server.codeInvalid": "验证码无效或已过期",
+  "server.accountNotFound": "未找到与该邮箱或手机号绑定的账号",
+  "server.invalidPhone": "手机号格式不正确",
+  "server.invalidEmail": "邮箱格式不正确",
+  "server.emailChannelClosed": "邮箱注册未开启",
+  "server.phoneChannelClosed": "手机号注册未开启",
+  "server.ssoDisabled": "单点登录未开启",
+  "app.checkServer": "请检查服务器是否运行在预期端口，然后重试。",
+  "app.connecting": "正在连接服务器…",
+  "app.connectionFailed": "已等待 {elapsed}s，WebSocket 无法连接。",
+  "app.connectionTimeout": "连接超时 ({elapsed}s) — 请确认服务器已启动",
+  "app.disconnected": "连接已断开",
+  "app.reconnecting": "重新连接中，正在同步信息…",
+  "appshell.jumpToPlaceholder": "跳转到群组、私聊或联系人…",
+  "call.incomingInvite": "邀请你加入{name}通话",
+  "call.network": "网络",
+  "call.publishUpstream": "发布上行 PC",
+  "call.title": "通话",
+  "channel.addMember": "添加成员",
+  "channel.allowMemberInvite": "允许普通成员邀请好友",
+  "channel.avatar": "群组头像",
+  "channel.banFailed": "封禁频道失败",
+  "channel.banReason": "封禁理由",
+  "channel.banned": "频道已封禁",
+  "channel.bannedChannel": "该群聊已被管理员封禁",
+  "channel.bannedDM": "该私聊已被管理员封禁",
+  "channel.canAddMembers": "可以添加成员",
+  "channel.changeAvatar": "点击相机更换群组头像",
+  "channel.icon": "图标",
+  "channel.inviteAllowed": "已允许成员邀请好友",
+  "channel.inviteForbidden": "已禁止成员邀请好友",
+  "channel.inviteMember": "邀请成员",
+  "channel.memberAdded": "已添加成员",
+  "channel.memberInvitePermission": "成员邀请权限",
+  "channel.name": "名称",
+  "channel.namePlaceholder": "例如：项目讨论组",
+  "channel.noMatch": "没有匹配的群组",
+  "channel.noMemberData": "无成员数据（请在聊天中打开此频道后再查看）",
+  "channel.noReason": "未提供",
+  "channel.onlyOwnerAdmin": "关闭后只有群主和管理员",
+  "channel.owner": "所有者",
+  "channel.privateDesc": "仅受邀成员可见和加入",
+  "channel.setAsOwner": "设为所有者",
+  "channel.transferConfirm": "确定转让频道所有者？此操作不可撤销。",
+  "channel.transferFailed": "转让失败",
+  "channel.transferOwnership": "转让所有权",
+  "channel.transferSuccess": "已转让群主",
+  "channel.unbanChannel": "解封群聊",
+  "channel.unbanFailed": "解封频道失败",
+  "channel.unbanned": "频道已解封",
+  "fileDetails.title": "文件详情",
+  "fileDetails.size": "大小",
+  "fileDetails.dimensions": "尺寸",
+  "fileDetails.duration": "时长",
+  "fileDetails.download": "下载",
+  "adminSettings.nsfw": "图片审核 (NSFW)",
+  "adminSettings.nsfwEnable": "启用 NSFW 审核",
+  "adminSettings.nsfwEnableDesc": "开启后上传图片/视频时会进行 NSFW 检测",
+  "adminSettings.nsfwApiUrl": "审核服务地址",
+  "adminSettings.nsfwApiUrlDesc": "填写自建或第三方 NSFW 检测服务的完整 URL（POST multipart/form-data，字段 file），留空则关闭服务端检测",
+  "adminSettings.nsfwThreshold": "拒绝阈值",
+  "adminSettings.nsfwThresholdDesc": "Porn + Hentai 概率之和超过此值则拒绝上传（0-100%）",
+  "adminSettings.nsfwBuiltinDesc": "使用服务端内置 nsfwjs 模型检测，无需配置外部 API 地址",
+  "adminSettings.sso": "单点登录 (SSO)",
+  "adminSettings.ssoEnable": "启用 SSO 登录",
+  "adminSettings.ssoEnableDesc": "登录页将显示 SSO 按钮，点击即可直接登录（自动创建账号）",
+  "adminSettings.ssoCompanyName": "企业显示名",
+  "adminSettings.ssoCompanyNameDesc": "登录页按钮上显示的文字",
+  "adminSettings.ssoCompanyNamePlaceholder": "例如：示例公司",
+  "adminSettings.ssoCompanyFormalName": "企业英文短名",
+  "adminSettings.ssoCompanyFormalNameDesc": "仅允许英文字母、数字、_、-，首字符必须是字母；用于生成默认用户名",
+  "adminSettings.ssoCompanyFormalNamePlaceholder": "例如：acme",
+  "adminSettings.ssoIcon": "SSO 图标",
+  "adminSettings.ssoIconDesc": "推荐 64x64 PNG/SVG；显示在登录页 SSO 按钮上",
+  "adminSettings.ssoIconImageOnly": "仅支持图片格式",
+  "adminSettings.ssoIconUpload": "点击上传图标",
+  "login.ssoButton": "{company} 单点登录",
+  "nsfw.rejected": "图片未通过内容审核，无法上传",
+  "chat.deleteConversation": "删除对话",
+  "chat.noDms": "还没有私聊",
+  "chat.searchResults": "搜索结果",
+  "chat.unpin": "取消置顶",
+  "chat.workspace": "工作空间",
+  "common.createdAt": "创建时间",
+  "common.deleted": "已删除",
+  "common.detail": "详情",
+  "common.loadFailed": "加载失败",
+  "common.option": "选项",
+  "common.optional": "选填",
+  "common.saveSuccess": "保存成功",
+  "common.selected": "已选",
+  "common.submitting": "提交中…",
+  "common.time": "时间",
+  "common.totalCount": "共 {count} 条",
+  "composer.banned": "已封禁，无法发送消息",
+  "composer.friendCheckFailed": "校验好友关系失败",
+  "friends.accepted": "已接受好友申请",
+  "friends.asFriend": "为好友",
+  "friends.noneToInvite": "暂无可邀请的好友",
+  "friends.pendingRequest": "该好友有待处理的好友申请",
+  "friends.removed": "已删除好友",
+  "friends.requestHint": "当有人申请添加你时，会显示在这里。",
+  "friends.unblocked": "已解除拉黑",
+  "login.passwordStrength": "密码强度",
+  "login.usernameInvalid": "用户名需为 3-20 位字母、数字或下划线",
+  "media.audio": "语音",
+  "media.takePhoto": "拍照",
+  "member.memberList": "成员列表",
+  "member.noMembers": "暂无成员",
+  "message.card.empty": "[空消息]",
+  "message.card.video": "[视频]",
+  "message.emojiReact": "回应",
+  "message.fromChannelName": "来自群组：{name}",
+  "message.fromConversationName": "来自私聊：{name}",
+  "message.mention": "[有人@]",
+  "message.notInChannel": "你不在该群组中，无法打开",
+  "message.pollError": "[投票数据错误]",
+  "message.totalVoters": "已有 {count} 人投票",
+  "patternLock.points": "个点",
+  "report.reasonRequired": "请填写举报理由",
+  "server.banSuccess": "封禁成功",
+  "sticker.loadFailed": "表情包加载失败",
+  "theme.dark": "切换深色",
+  "theme.light": "切换浅色",
+  "user.gender": "性别",
+
+  "admin.allOperations": "全部操作",
+  "admin.deleteMessage": "删除消息",
+  "admin.grantAdmin": "授予管理员",
+  "admin.noData": "暂无数据",
+  "admin.revokeAdmin": "撤销管理员",
+  "admin.sensitive.batchPlaceholder": "每行一个敏感词",
+  "admin.sensitive.inputRequired": "请输入敏感词",
+  "admin.sensitivePolicy": "敏感词策略",
+  "admin.sticker.namePlaceholder": "输入名称",
+  "admin.sticker.nameRequired": "名称不能为空",
+  "admin.unbanUser": "解封用户",
+  "admin.updateSettings": "更新设置",
+  "call.cancelled": "已取消",
+  "call.calling": "正在呼叫 {name}",
+  "call.connectionError": "连接失败",
+  "call.dialing": "正在拨号…",
+  "call.mediaError": "媒体设备错误",
+  "call.noResponse": "无响应",
+  "call.notAvailable": "不可用",
+  "call.notSupported": "不支持",
+  "call.rejected": "已拒绝",
+  "call.screenShareFailed": "屏幕共享失败",
+  "call.screenShareNotSupported": "不支持屏幕共享",
+  "call.waitingAnswer": "等待对方接听…",
+  "common.cancelCall": "取消呼叫",
+  "error.callLoadFailed": "通话加载失败",
+  "error.requestFailed": "请求失败",
+  "friends.requestReceivedName": "收到好友请求",
+  "admin.oss.aliyun": "阿里云 OSS",
+  "admin.oss.tencent": "腾讯云 COS",
+  "admin.oss.qiniu": "七牛云 Kodo",
+  "admin.oss.huawei": "华为云 OBS",
+  "admin.ai.testConnection": "测试连接",
+  "admin.ai.testFailed": "测试失败",
+  "admin.ai.assistant": "AI 助手",
+  "admin.ai.enable": "启用 AI",
+  "admin.ai.apiUrl": "API 地址",
+  "admin.ai.apiDesc": "AI 服务地址，默认为 OpenAI API",
+  "admin.ai.model": "模型",
+  "admin.ai.apiKey": "API Key",
+  "admin.ai.systemPrompt": "自定义提示词",
+  "admin.ai.name": "AI 名称",
+  "admin.ai.bio": "AI 介绍",
+  "admin.ai.avatarUrl": "AI 头像 URL",
+
+  "admin.ai.apiKeyPlaceholder": "输入 API 密钥",
+  "admin.banned": "已封禁",
+  "admin.deleteChannel": "删除频道",
+  "admin.notificationPlaceholder": "输入通知内容",
+  "admin.notificationSent": "通知已发送",
+  "admin.notifyUser": "通知用户",
+  "admin.organization": "组织",
+  "admin.ossStorage": "OSS 存储",
+  "admin.rateLimiting": "频率限制",
+  "admin.sensitiveWords": "敏感词",
+  "admin.stickerPacks": "表情包",
+  "admin.viewDetail": "查看详情",
+  "adminSettings.allowRegisterDesc": "允许新用户注册",
+  "adminSettings.inviteCode": "邀请码",
+  "composer.scheduleSet": "定时发送已设置",
+  "composer.scheduleTime": "发送时间",
+  "message.read": "已读",
+  "message.you": "你",
+  "user.status": "在线状态",
+  "lang.de": "德语",
+  "lang.en": "英语",
+  "lang.es": "西班牙语",
+  "lang.fr": "法语",
+  "lang.ja": "日语",
+  "lang.ko": "韩语",
+  "lang.zh-CN": "简体中文",
+  "message.translate": "翻译",
+  "translation.apiKey": "API 密钥",
+  "translation.bing": "Bing 翻译",
+  "translation.bingReverse": "Bing 翻译(逆向)",
+  "translation.deepl": "DeepL 翻译",
+  "translation.google": "Google 翻译",
+  "translation.machineTranslated": "机翻结果",
+  "translation.provider": "翻译服务商",
+  "translation.selectLang": "选择目标语言",
+  "translation.settings": "翻译设置",
+  "translation.testFailed": "测试翻译失败",
+  "adminSettings.usernameRegistration": "允许用户名注册（无需绑定邮箱/手机号）",
+  "adminSettings.manageWhitelist": "管理白名单…",
+  "adminSettings.emailWhitelist": "邮箱白名单",
+  "adminSettings.phoneWhitelist": "手机号白名单",
+  "adminSettings.whitelistHint": "支持精确匹配与通配符（*），如 user@example.com 或 *@example.com；手机号如 +86138*",
+  "adminSettings.whitelistNotePlaceholder": "备注（可选）",
+  "adminSettings.whitelistAdd": "添加",
+  "adminSettings.whitelistEmpty": "暂无条目",
+  "adminSettings.ssoOauth": "OAuth 2.0 / OIDC 配置",
+  "adminSettings.ssoOauthHint": "符合 OAuth 2.0 授权码流程的任意 IdP（Okta、Auth0、Keycloak、企业微信、Google 等）。PKCE 默认启用",
+  "adminSettings.ssoAuthorizationEndpoint": "授权端点（Authorization Endpoint）",
+  "adminSettings.ssoTokenEndpoint": "令牌端点（Token Endpoint）",
+  "adminSettings.ssoUserInfoEndpoint": "用户信息端点（UserInfo Endpoint）",
+  "adminSettings.ssoClientId": "客户端 ID（Client ID）",
+  "adminSettings.ssoClientSecret": "客户端密钥（Client Secret）",
+  "adminSettings.ssoScopes": "授权范围（Scopes）",
+  "adminSettings.ssoRedirectUri": "回调地址（Redirect URI）",
+  "adminSettings.ssoRedirectUriDesc": "请在 IdP 后台将此地址配置为允许的回调地址",
+  "adminSettings.ssoConfigIncomplete": "OAuth 端点或 Client ID 未配置完整，SSO 登录将无法工作",
+  "profile.contact": "联系方式",
+  "profile.contactDesc": "绑定邮箱或手机号用于账号找回与安全验证",
+  "profile.contactChannelsClosed": "管理员尚未开启邮箱/手机号渠道",
+  "profile.notBound": "未绑定",
+  "profile.bind": "绑定",
+  "profile.unbind": "解绑",
+  "profile.changeContact": "更换",
+  "profile.bindEmail": "绑定邮箱",
+  "profile.bindPhone": "绑定手机号",
+  "profile.changeEmail": "更换邮箱",
+  "profile.changePhone": "更换手机号",
+  "profile.confirmUnbindEmail": "确认解绑邮箱？解绑后无法用该邮箱登录/找回账号",
+  "profile.confirmUnbindPhone": "确认解绑手机号？解绑后无法用该手机号登录/找回账号",
+  "profile.contactSaveFailed": "保存失败",
+  "login.newEmail": "新邮箱",
+  "login.newPhone": "新手机号",
+  "server.passwordIncorrect": "密码不正确",
+  "server.emailAlreadyUsed": "该邮箱已被其他账号绑定",
+  "server.phoneAlreadyUsed": "该手机号已被其他账号绑定",
+  "server.emailNotWhitelisted": "该邮箱不在白名单中",
+  "server.phoneNotWhitelisted": "该手机号不在白名单中",
+  "server.usernameChannelClosed": "用户名注册已关闭",
+  "server.unauthorized": "未登录或登录已过期",
+  "chat.more": "更多",
+  "chat.e2eeEnable": "开启 E2EE 加密",
+  "chat.e2eeDisable": "关闭 E2EE 加密",
+  "chat.areYouThere": "你还在吗？",
+  "chat.areYouTherePrompt": "{name} 问你：你还在吗？",
+  "chat.imHere": "我在",
+  "chat.presencePongReceived": "{name} 回应了：我在",
+  "e2ee.dialogTitle": "启用端到端加密",
+  "e2ee.intro": "你即将与 {peer} 开启端到端加密对话。",
+  "e2ee.warningsTitle": "请注意",
+  "e2ee.warningBothOnline": "仅在双方都在线时可用",
+  "e2ee.peerOffline": "对方不在线，无法开启 E2EE 加密",
+  "e2ee.warningNoServerHistory": "服务器在 E2EE 模式下不保存聊天记录，消息仅在本地可见",
+  "e2ee.warningFilesAutoDelete": "E2EE 模式下的文件/图片/视频会在退出后自动删除",
+  "e2ee.warningOffline10min": "任一方离线 10 分钟后，E2EE 会自动结束并清理所有文件",
+  "e2ee.enable": "开启",
+  "e2ee.sessionStarted": "E2EE 加密对话已开启",
+  "e2ee.sessionStartedByPeer": "对方开启了 E2EE 加密对话",
+  "e2ee.sessionEnded": "E2EE 加密对话已结束",
+  "e2ee.sessionEndedTimeout": "由于超过 10 分钟未活动，E2EE 加密对话已自动结束",
+  "e2ee.fileCleaned": "该文件因 E2EE 已退出已被自动清理，无法查看",
+};
+
+const en: Translations = {
+  "app.name": "Navo IM",
+  "app.tagline": "Every conversation<br />brings your team<br />closer to inspiration.",
+  "app.description": "Next-gen IM Chat Software",
+  "login.title": "Create Account",
+  "login.subtitle": "Welcome Back",
+  "login.username": "Username",
+  "login.password": "Password",
+  "login.confirmPassword": "Confirm Password",
+  "login.displayName": "Display Name",
+  "login.inviteCode": "Invite Code",
+  "login.login": "Enter Workspace",
+  "login.register": "Register & Login",
+  "login.loggingIn": "Signing in…",
+  "login.registering": "Registering…",
+  "login.noAccount": "Don't have an account?",
+  "login.hasAccount": "Already have an account?",
+  "login.directLogin": "Login directly",
+  "login.quickRegister": "Register now",
+  "login.welcomeBack": "Welcome Back",
+  "login.startChat": "Register to start chatting.",
+  "login.passwordStrength.weak": "Weak",
+  "login.passwordStrength.medium": "Medium",
+  "login.passwordStrength.strong": "Strong",
+  "login.passwordRequirement.length": "Min 8 chars",
+  "login.passwordRequirement.uppercase": "Uppercase",
+  "login.passwordRequirement.lowercase": "Lowercase",
+  "login.passwordRequirement.number": "Number",
+  "login.captcha": "Captcha",
+  "login.secondPassword": "Second Password",
+  "login.maintenance": "Under Maintenance",
+  "login.banned": "Account Banned",
+  "login.enterSecondPassword": "Enter second password",
+  "login.authFailed": "Verification Failed",
+  "login.version": "v0.1 · Beta ·",
+  "login.stats.msgLatency": "Message Latency",
+  "login.stats.horizontalScale": "Horizontal Scale",
+  "login.stats.persistent": "Persistent",
+  "login.bannedTitle": "Account Banned",
+  "login.bannedDesc": "Your account has been banned by an administrator.",
+  "login.banReason": "Ban Reason",
+  "login.maintenanceTitle": "System is under maintenance, please try again later",
+  "login.returnToLogin": "Back to Login",
+  "login.loginFailed": "Login Failed",
+  "login.registerFailed": "Registration Failed",
+  "login.verifyFailed": "Verification Failed",
+  "login.forgotPassword": "Forgot password?",
+  "login.resetPassword": "Reset Password",
+  "login.resetPasswordSuccess": "Password reset. Please sign in with your new password.",
+  "login.backToLogin": "Back to Sign In",
+  "login.agreeTerms": "I have read and agree to the",
+  "login.termsOfService": "Terms of Service",
+  "login.privacyPolicy": "Privacy Policy",
+  "login.mustAgreeTerms": "Please accept the Terms of Service and Privacy Policy",
+  "login.termsContent": "Welcome to Navo IM.\n\n1. You must comply with applicable laws and not use the service for illegal activities.\n2. You are responsible for keeping your account credentials secure.\n3. We may suspend or terminate service when necessary.\n4. When end-to-end encryption is active, only participants can read message content.\n\nThe full terms are subject to the latest published version on the platform.",
+  "login.privacyContent": "Navo IM Privacy Policy (summary):\n\n1. We collect account, device, and log data to provide and secure the service.\n2. E2EE session message bodies are not stored in plaintext on the server.\n3. We do not sell your personal data to third parties.\n4. You may request export or deletion of your account data, subject to legal retention requirements.\n\nThe full policy is subject to the latest published version on the platform.",
+  "login.verificationCode": "Verification Code",
+  "login.newPassword": "New Password",
+  "login.resetMethodEmail": "Recover via Email",
+  "login.resetMethodPhone": "Recover via Phone",
+  "common.save": "Save",
+  "common.cancel": "Cancel",
+  "common.confirm": "Confirm",
+  "common.delete": "Delete",
+  "common.edit": "Edit",
+  "common.close": "Close",
+  "common.search": "Search",
+  "common.loading": "Loading…",
+  "common.noData": "No Data",
+  "common.unknown": "Unknown",
+  "common.retry": "Retry",
+  "common.send": "Send",
+  "common.saving": "Saving…",
+  "common.saved": "Saved",
+  "common.submit": "Submit",
+  "nav.notifications": "Notifications",
+  "nav.friends": "Friends",
+  "nav.settings": "Settings",
+  "nav.chat": "Chat",
+  "nav.contacts": "Contacts",
+  "nav.discover": "Discover",
+  "friends.title": "Friends",
+  "friends.tab.friends": "Friends",
+  "friends.tab.requests": "Requests",
+  "friends.tab.add": "Add",
+  "friends.empty": "No friends yet",
+  "friends.searchPlaceholder": "Search friends…",
+  "friends.pending": "Pending",
+  "friends.blocked": "Blocked",
+  "friends.accept": "Accept",
+  "friends.decline": "Decline",
+  "friends.addFriend": "Add Friend",
+  "friends.sendRequest": "Send Request",
+  "friends.requestSent": "Friend request sent",
+  "friends.alreadyFriends": "You are now friends",
+  "friends.sendFailed": "Send failed",
+  "friends.searchUserPlaceholder": "Search username…",
+  "friends.searchNoResult": "No matching users found",
+  "friends.alreadyAdded": "Added",
+  "friends.add": "Add",
+  "friends.addHint": "Search by username to add friends",
+  "friends.message": "Send Message",
+  "friends.editNote": "Edit Note",
+  "friends.saveNote": "Save",
+  "friends.removeFriend": "Remove Friend",
+  "friends.blockUser": "Block",
+  "friends.unblockUser": "Unblock",
+  "friends.clearHistory": "Clear History",
+  "friends.note": "Note:",
+  "friends.notePlaceholder": "Enter note…",
+  "friends.noRequests": "No new friend requests",
+  "friends.waitingAccept": "Waiting for acceptance ·",
+  "friends.noMatch": "No matching friends",
+  "friends.searching": "Searching…",
+  "user.online": "Online",
+  "user.offline": "Offline",
+  "user.away": "Away",
+  "user.busy": "Busy",
+  "user.lastSeen": "Last seen",
+  "user.gender.unspecified": "Unspecified",
+  "user.gender.male": "Male",
+  "user.gender.female": "Female",
+  "user.gender.other": "Other",
+  "user.bio.placeholder": "Tell us about yourself…",
+  "user.notSet": "Not set",
+  "chat.loading": "Loading older messages…",
+  "chat.loadFailed": "Failed to load older messages",
+  "chat.noConversation": "Select a conversation to start chatting",
+  "chat.loadMore": "Loading older messages…",
+  "chat.earliest": "No more messages",
+  "chat.searchMessage": "Search messages",
+  "chat.searchMessages": "Search messages",
+  "chat.forwardTo": "Forward to",
+  "chat.forward": "Forward",
+  "chat.forwardIndividual": "Forward individually",
+  "chat.forwardCombined": "Forward combined",
+  "chat.selected": "Selected",
+  "chat.messages": "messages",
+  "chat.searchPlaceholder": "Search conversations…",
+  "chat.noMatchConv": "No matching conversations",
+  "chat.pinned": "Pinned",
+  "chat.pinnedMessages": "pinned messages",
+  "chat.jumpToMessage": "Jump to message",
+  "chat.typing": "typing",
+  "chat.typingMultiple": "others typing",
+  "chat.inviteVoice": "Invite to voice channel",
+  "chat.inviteVideo": "Invite to video channel",
+  "chat.inputPlaceholder": "Type a message…",
+  "chat.draft": "Draft",
+  "chat.unnamed": "Unnamed Group",
+  "chat.dm": "Direct Message",
+  "chat.members": "members",
+  "chat.memberCount": "members",
+  "chat.hidePanel": "Hide member panel",
+  "chat.showPanel": "Show member panel",
+  "chat.manageChannel": "Manage Channel",
+  "chat.recalled": "recalled a message",
+  "chat.recalledMessage": "This message has been recalled",
+  "chat.sendFailed": "Send timeout",
+  "chat.retry": "Retry",
+  "chat.unsent": "Unsent",
+  "composer.inputPlaceholder": "Type a message…",
+  "composer.inviteToVoice": "Invite to voice channel",
+  "composer.inviteToVideo": "Invite to video channel",
+  "composer.sendingVoiceInvite": "Send voice call invitation",
+  "composer.sendingVideoInvite": "Send video call invitation",
+  "profile.title": "Profile Settings",
+  "profile.aboutUs": "About Us",
+  "profile.aboutUsContent": "Navo IM is an instant messaging product focused on privacy and real-time experience. It supports end-to-end encryption, channels, and an AI assistant. Developed and maintained by the Navo team.",
+  "profile.nickname": "Nickname",
+  "profile.nicknamePlaceholder": "Your name",
+  "profile.bio": "Bio",
+  "profile.bioPlaceholder": "Tell us about yourself…",
+  "profile.gender": "Gender",
+  "profile.avatarColor": "Avatar Color",
+  "profile.uploadAvatar": "Upload Avatar",
+  "profile.uploading": "Uploading avatar…",
+  "profile.removeAvatar": "Remove uploaded avatar, use gradient",
+  "profile.status": "Status",
+  "profile.privacy": "Privacy",
+  "profile.friendApproval": "Require friend approval",
+  "profile.friendApprovalDesc": "When off, anyone can add you as a friend",
+  "profile.notifications": "Notifications",
+  "profile.sound": "New message sound",
+  "profile.soundDesc": "Play a sound on new messages; click to toggle and preview",
+  "profile.password": "Password",
+  "profile.passwordDesc": "Changes will take effect on next login",
+  "profile.changePassword": "Change Password",
+  "profile.currentPassword": "Current Password",
+  "profile.newPassword": "New Password",
+  "profile.confirmNewPassword": "Confirm New Password",
+  "profile.passwordPlaceholder": "At least 6 chars",
+  "profile.newPasswordPlaceholder": "At least 6 chars",
+  "profile.confirmPasswordPlaceholder": "Re-enter new password",
+  "profile.secondPassword": "Second Password",
+  "profile.secondPasswordDesc": "Extra verification for sensitive operations",
+  "profile.secondPasswordEnabled": "Enabled",
+  "profile.secondPasswordDisabled": "Disabled",
+  "profile.secondPasswordHint": "Hint:",
+  "profile.secondPasswordNew": "New Second Password",
+  "profile.secondPasswordNewHint": "New Hint",
+  "profile.setSecondPassword": "Set",
+  "profile.modifySecondPassword": "Modify",
+  "profile.closeSecondPassword": "Disable",
+  "profile.confirmCloseSecondPassword": "Confirm Disable",
+  "profile.closeSecondPasswordConfirm": "Disable second password? Sensitive operations will no longer need it.",
+  "profile.secondPasswordPlaceholder": "At least 4 chars",
+  "profile.hintPlaceholder": "Helps you remember the password",
+  "profile.dangerZone": "Account Deletion",
+  "profile.deleteAccount": "Delete Account",
+  "profile.deleteAccountDesc": "This action cannot be undone",
+  "profile.deleteAccountWarning": "After deletion:",
+  "profile.deleteWarningItems": "All your data (friends, chats) will be deleted\nYour channels will be disbanded\nProfile will be marked as deleted\nMessages will show as \"Account Deleted\"\nUsername will be released\nProfile page will be inaccessible",
+  "profile.deleteConfirmPassword": "Confirm Password",
+  "profile.deletePasswordPlaceholder": "Enter your password",
+  "profile.confirmDelete": "Confirm Delete",
+  "profile.deleting": "Deleting…",
+  "profile.logout": "Log out",
+  "profile.save": "Save Changes",
+  "profile.saving": "Saving…",
+  "profile.saved": "Saved",
+  "profile.language": "Language",
+  "profile.languageDesc": "Select interface language",
+  "settings": "Settings",
+  "accountSecurity": "Account Security",
+  "media.all": "All",
+  "media.image": "Image",
+  "media.file": "File",
+  "media.video": "Video",
+  "media.location": "Location",
+  "media.poll": "Poll",
+  "media.text": "Text",
+  "media.ai": "AI",
+  "media.markdown": "MD",
+  "member.owner": "Owner",
+  "member.admin": "Admin",
+  "member.member": "Member",
+  "channel.create": "Create Channel",
+  "channel.nameRequired": "Please enter a channel name",
+  "channel.manage": "Manage Channel",
+  "channel.discover": "Discover Channels",
+  "notification.title": "Notifications",
+  "notification.empty": "No notifications",
+  "notification.refresh": "Refresh",
+  "sticker.empty": "No sticker packs",
+  "captcha.title": "Captcha",
+  "captcha.desc": "Rate limit reached, please complete the captcha",
+  "captcha.loading": "Loading captcha…",
+  "call.video": "Video Call",
+  "call.audio": "Voice Call",
+  "call.ended": "Call Ended",
+  "call.duration": "Duration",
+  "call.initiatedBy": "Initiated by",
+  "status.online": "Online",
+  "status.away": "Away",
+  "status.busy": "Busy",
+  "status.offline": "Offline",
+  "message.card.friend": "[Friend Card]",
+  "message.card.channel": "[Channel Card]",
+  "message.card.location": "[Location]",
+  "message.card.poll": "[Poll]",
+  "message.card.forwarded": "[Forwarded]",
+  "message.card.image": "[Image]",
+  "message.card.images": "[Images ×{count}]",
+  "message.card.file": "[File]",
+  "message.card.files": "[Files ×{count}]",
+  "message.card.system": "[System]",
+  "message.card.sticker": "[Sticker]",
+  "message.emoji": "[emoji]",
+  "message.recalled": "This message has been recalled",
+  "error.unauthorized": "Unauthorized, please login",
+  "error.notFound": "Not Found",
+  "error.forbidden": "Forbidden",
+  "error.serverError": "Internal Server Error",
+  "error.rateLimited": "Too many requests, please try again later",
+  "error.maintenance": "System is under maintenance, please try again later",
+  "error.uploadFailed": "Upload failed",
+  "error.fileTooLarge": "File exceeds size limit ({size} MB)",
+  "error.unsupportedFileType": "Unsupported file type: {type}",
+  "error.captchaFailed": "Captcha verification failed",
+  "error.captchaRequired": "Please complete the captcha",
+  "error.networkError": "Network error",
+  "error.downloadFailed": "Download failed ({status})",
+  "time.justNow": "now",
+  "time.minutesAgo": "{n} min ago",
+  "time.hoursAgo": "{n} hr ago",
+  "time.yesterday": "Yesterday {time}",
+  "time.today": "Today",
+  "time.daysAgo": "{n} days ago",
+  "admin.dashboard": "Dashboard",
+  "admin.title": "Digital Operations Center",
+  "admin.subtitle": "Real-time monitoring of user growth, channel activity, and messages",
+  "admin.totalUsers": "Total Users",
+  "admin.activeUsers": "Active Users",
+  "admin.channels": "Channels",
+  "admin.messages": "Total Messages",
+  "admin.newToday": "New Today",
+  "admin.newThisWeek": "New This Week",
+  "admin.messagesToday": "Messages Today",
+  "admin.messagesThisWeek": "Messages This Week",
+  "admin.securityStatus": "Security Status",
+  "admin.connectionStatus": "Connection Status",
+  "admin.runEfficiency": "Run Efficiency",
+  "admin.syncPerformance": "Sync Performance",
+  "admin.stable": "Stable",
+  "admin.normal": "Normal",
+  "admin.excellent": "Excellent",
+  "admin.highSpeed": "High Speed",
+  "admin.role.superAdmin": "Super Admin",
+  "admin.role.admin": "Admin",
+  "admin.role.moderator": "Moderator",
+  "admin.role.user": "User",
+  "admin.notification.created": "Created notification",
+  "admin.notification.deleted": "Deleted notification",
+  "admin.notification.published": "Published notification",
+  "server.accountDeleted": "Account Deleted",
+  "server.accountBanned": "Account has been banned{reason}",
+  "server.loginRequired": "Unauthorized, please login",
+  "server.invalidRequest": "Invalid request",
+  "server.notFound": "Not found",
+  "server.rateLimited": "Too many requests, please try again later",
+  "server.maintenance": "System is under maintenance, please try again later",
+  "server.captchaRequired": "Please complete the captcha",
+  "server.captchaFailed": "Captcha verification failed, please retry",
+  "server.registerClosed": "Registration is closed",
+  "server.inviteCodeError": "Invalid invite code",
+  "server.usernameTaken": "Username is already taken",
+  "server.registrationIncomplete": "Please fill in all registration fields",
+  "server.passwordTooShort": "Password must be at least 8 characters",
+  "server.passwordRequirements": "Password must contain uppercase, lowercase, and number",
+  "server.loginRateLimited": "Login request too frequent, please try again later",
+  "server.regRateLimited": "Registration request too frequent, please try again later",
+  "server.ipLimit": "This IP has registered {count} accounts, limit reached",
+  "server.wrongCredentials": "Invalid username or password",
+  "server.userNotFound": "User not found",
+  "server.channelNotFound": "Channel not found",
+  "server.messageNotFound": "Message not found",
+  "server.conversationNotFound": "Conversation not found",
+  "server.cannotSendDM": "No permission to send messages in this conversation",
+  "server.cannotFriendSelf": "Cannot add yourself as a friend",
+  "server.alreadyFriends": "You are already friends",
+  "server.cannotSendFriendRequest": "Cannot send friend request",
+  "server.friendRequestNotFound": "Request not found",
+  "server.targetUserNotFound": "Target user not found",
+  "server.memberNotFound": "Member not found",
+  "server.needAdminPermission": "Admin permission required",
+  "server.cannotActionSelf": "Cannot perform this action on yourself",
+  "server.cannotActionOwner": "Cannot perform this action on the owner",
+  "server.onlyOwnerCanActionAdmin": "Only the owner can manage other admins",
+  "server.onlyOwnerSetRole": "Only the owner can assign roles",
+  "server.channelNameRequired": "Channel name is required",
+  "server.messageTooLong": "Message too long, max {max} characters",
+  "server.rateLimitedMsg": "You are sending messages too fast",
+  "server.presencePingRateLimited": "Please try again in {seconds}s",
+  "server.captchaRequiredMsg": "Rate limit reached, please complete the captcha",
+  "server.blockedByYou": "Message not sent - You have blocked this user",
+  "server.blockedByThem": "Message not sent - This user has blocked you",
+  "server.nonFriendLimitReached": "Non-friend message limit reached (3), please add as friend first",
+  "server.youAreMuted": "You have been muted",
+  "server.channelMuteAll": "This channel is in mute-all mode",
+  "server.onlyFriendCard": "Can only send friend cards to friends",
+  "server.sensitiveBlocked": "Message contains blocked content",
+  "server.notInConv": "You are not in this conversation",
+  "server.cannotForward": "You cannot forward messages from a conversation you're not in",
+  "server.channelBanned": "This channel has been banned by an admin",
+  "server.messageRecalled": "This message has been recalled",
+  "server.cannotRecall": "You can only recall your own messages",
+  "server.recallTimeout": "Message sent more than 5 minutes ago, cannot recall",
+  "server.pollNotFound": "Poll message not found",
+  "server.invalidPollOption": "Invalid option",
+  "server.noPermissionCall": "No permission to manage this call",
+  "server.authTimeout": "Authentication timeout",
+  "server.messageTooLarge": "Message too large",
+  "server.invalidMessageFormat": "Invalid message format",
+  "server.authRequired": "Please authenticate first",
+  "server.authFailed": "Authentication failed",
+  "server.uploadNoFile": "No file received",
+  "server.fileTooLarge": "File exceeds size limit ({size} MB)",
+  "server.unsupportedFileType": "Unsupported file type: {type}",
+  "server.enterUsernamePassword": "Please enter username and password",
+  "server.enterPassword": "Please enter password",
+  "server.enterCurrentNewPassword": "Please enter current password and new password",
+  "server.enterSecondPassword": "Please enter second password",
+  "server.enterHint": "Please enter a hint",
+  "server.secondPasswordTooShort": "Second password must be at least 4 characters",
+  "server.secondPasswordSameAsLogin": "Second password cannot be the same as login password",
+  "server.hintContainsPassword": "Hint cannot contain the password",
+  "server.cannotCreateDMSelf": "Cannot create a conversation with yourself",
+  "server.onlyInviteFriends": "You can only invite friends to a channel",
+  "server.membersCannotInvite": "Members are not allowed to invite",
+  "server.cannotLeaveOwner": "Owner cannot leave, only disband",
+  "server.onlyOwnerDisband": "Only the owner can disband the channel",
+  "server.forwardNoMessages": "No messages to forward",
+  "server.reportMissingFields": "Missing required fields",
+  "server.failedToGetStats": "Failed to get statistics",
+  "server.failedToGetRole": "Failed to get admin role",
+  "server.failedToGetUsers": "Failed to get users",
+  "server.failedToGrantRole": "Failed to grant role",
+  "server.failedToRevokeRole": "Failed to revoke role",
+  "server.failedToBan": "Failed to ban user",
+  "server.failedToUnban": "Failed to unban user",
+  "server.failedToCheckBan": "Failed to check ban status",
+  "server.failedToDeleteUser": "Failed to delete user",
+  "server.failedToGetChannels": "Failed to get channels",
+  "server.failedToDeleteChannel": "Failed to delete channel",
+  "server.failedToDeleteMessage": "Failed to delete message",
+  "server.failedToGetSettings": "Failed to get settings",
+  "server.failedToUpdateSettings": "Failed to update settings",
+  "server.failedToGetCaptchaConfig": "Failed to get captcha config",
+  "server.failedToUpdateCaptchaConfig": "Failed to update captcha config",
+  "server.failedToGetAiConfig": "Failed to get AI config",
+  "server.failedToUpdateAiConfig": "Failed to update AI config",
+  "server.failedToGetAuditLogs": "Failed to get audit logs",
+  "server.failedToGetNotifications": "Failed to get notifications",
+  "server.failedToCreateNotification": "Failed to create notification",
+  "server.failedToUpdateNotification": "Failed to update notification",
+  "server.failedToDeleteNotification": "Failed to delete notification",
+  "server.failedToPublishNotification": "Failed to publish notification",
+  "server.failedToBanChannel": "Failed to ban channel",
+  "server.failedToUnbanChannel": "Failed to unban channel",
+  "server.failedToCheckChannelBan": "Failed to check channel ban status",
+  "server.failedToGetReports": "Failed to get reports",
+  "server.failedToHandleReport": "Failed to handle report",
+  "server.failedToGetIceConfig": "Failed to get ICE config",
+  "server.failedToUpdateIceConfig": "Failed to update ICE config",
+  "server.failedToAddMember": "Failed to add member",
+  "server.failedToTransferOwner": "Failed to transfer ownership",
+  "server.failedToCreateStickerPack": "Failed to create sticker pack",
+  "server.failedToDeleteStickerPack": "Failed to delete sticker pack",
+  "server.failedToAddSticker": "Failed to add sticker",
+  "server.failedToDeleteSticker": "Failed to delete sticker",
+  "server.failedToUpdateStickerName": "Failed to update sticker name",
+  "server.adminInitFailed": "Failed to initialize admin",
+  "server.adminInitKeyError": "Invalid initialization key",
+  "server.adminAlreadyExists": "Admin already exists",
+  "server.titleContentRequired": "Title and content are required",
+  "server.contentRequired": "Content is required",
+  "server.orgNameRequired": "Organization name is required",
+  "server.sensitiveWordsRequired": "Sensitive words list is required",
+  "server.idListRequired": "ID list is required",
+  "server.missingRequiredParams": "Missing required parameters",
+  "server.stickerPackNameRequired": "Please enter a sticker pack name",
+  "server.reportResultRequired": "Report result is required",
+  "server.aiConnectSuccess": "Connection successful",
+  "server.aiConnectFailed": "Connection failed",
+  "server.aiConnectTimeout": "Connection timeout",
+  "server.cannotBlockSuperAdmin": "Cannot ban super admin",
+  "server.cannotDeleteSuperAdmin": "Cannot delete super admin",
+  "server.onlySuperAdminGrantSuperAdmin": "Only super admin can grant super admin role",
+  "server.onlySuperAdminRevokeSuperAdmin": "Only super admin can revoke super admin role",
+  "server.unknownChannel": "Unknown channel",
+  "server.unknownConversation": "Unknown conversation",
+  "server.noPermission": "No permission to access this conversation",
+  "server.auditUpdateSettings": "Update system settings",
+  "server.auditUpdateCaptchaConfig": "Update captcha config",
+  "server.auditUpdateAiConfig": "Update AI config",
+  "server.auditUpdateIceConfig": "Update ICE config",
+  "server.auditSetOrg": "Set organization",
+  "server.auditBatchAddSensitive": "Batch add sensitive words",
+  "server.auditBatchDeleteSensitive": "Batch delete sensitive words",
+  "server.auditAddMember": "Add member",
+  "server.auditTransferOwner": "Transfer ownership",
+  "server.initialSuperAdmin": "Initialize super admin",
+  "server.reportStatusActioned": "Actioned",
+  "server.reportStatusRejected": "Rejected",
+  "server.reportStatusReviewed": "Reviewed",
+  "server.reportNotificationTitle": "Report Notification",
+  "server.reportNotificationContent": "Your report has been processed. Status: {status}, Result: {result}",
+  "server.failedToUpdateStickerPackName": "Failed to update sticker pack name",
+  "server.stickerNameRequired": "Please enter a sticker name",
+  "profile.avatarBackground": "Avatar Background",
+  "profile.captcha": "Captcha",
+  "profile.captchaVerify": "Verify",
+  "profile.cloudflare": "Cloudflare",
+  "profile.aijian": "Aijiantianyu",
+  "profile.passwordMatch": "Passwords match",
+  "profile.passwordMismatch": "Passwords do not match",
+  "profile.organization": "Organization",
+  "profile.organizationLoading": "Loading organization…",
+  "profile.organizationUnknown": "Unknown Organization",
+  "profile.passwordPlaceholderShort": "Min 6 chars",
+  "profile.captchaVerifyDesc": "Please complete the captcha",
+  "profile.edit": "Edit Profile",
+  "admin.users": "Users",
+  "admin.userManagement": "User Management",
+  "admin.channelManagement": "Channel Management",
+  "admin.reports": "Reports",
+  "admin.audit": "Audit",
+  "admin.content": "Content",
+  "admin.operations": "Operations",
+  "admin.banUser": "Ban User",
+  "admin.banReason": "Ban Reason",
+  "admin.confirmBan": "Confirm Ban",
+  "admin.banReasonPlaceholder": "Enter ban reason",
+  "admin.confirmDeleteUser": "Confirm delete this user?",
+  "admin.deleteUser": "Delete User",
+  "admin.setRoleSuccess": "Role updated successfully",
+  "admin.setRoleFailed": "Failed to update role",
+  "admin.unbanSuccess": "Unbanned successfully",
+  "admin.deleteSuccess": "Deleted successfully",
+  "admin.deleteFailed": "Failed to delete",
+  "admin.banSuccess": "Banned successfully",
+  "admin.banFailed": "Failed to ban",
+  "admin.totalReports": "Total Reports",
+  "admin.noReports": "No reports",
+  "admin.page": "Page {page}",
+  "admin.previousPage": "Previous Page",
+  "admin.nextPage": "Next Page",
+  "admin.reportDetail": "Report Detail",
+  "admin.reportTime": "Report Time",
+  "admin.reporter": "Reporter",
+  "admin.reportTarget": "Report Target",
+  "admin.reportReason": "Report Reason",
+  "admin.reportScreenshot": "Report Screenshot",
+  "admin.reportResult": "Result",
+  "admin.reportResultPlaceholder": "Enter the result",
+  "admin.reportProcessed": "Processed",
+  "admin.reportRejected": "Rejected",
+  "admin.reportProcessing": "Processing",
+  "admin.reportAll": "All",
+  "admin.reportPending": "Pending",
+  "admin.reportReviewed": "Reviewed",
+  "admin.notification.privateTitle": "Private Notification",
+  "admin.notification.privateDesc": "Send a private notification to a specific user",
+  "admin.notification.privateEmpty": "No private notifications",
+  "admin.notification.targetUser": "Target User",
+  "admin.notification.sendTime": "Send Time",
+  "admin.notification.public": "Public",
+  "admin.notification.private": "Private",
+  "admin.sensitive.management": "Sensitive Words",
+  "admin.sensitive.policy": "Policy",
+  "admin.sensitive.block": "Block",
+  "admin.sensitive.mask": "Mask",
+  "admin.sensitive.batchAdd": "Batch Add",
+  "admin.sensitive.batchAddHint": "One word per line",
+  "admin.sensitive.searchPlaceholder": "Search sensitive words…",
+  "admin.sensitive.deleteSelected": "Delete Selected",
+  "admin.sensitive.word": "Word",
+  "admin.sensitive.addTime": "Added Time",
+  "admin.sensitive.noWords": "No sensitive words",
+  "admin.sensitive.addSuccess": "Added successfully",
+  "admin.sensitive.deleteSuccess": "Deleted successfully",
+  "admin.sticker.management": "Sticker Pack Management",
+  "admin.sticker.create": "Create Sticker Pack",
+  "admin.sticker.createSuccess": "Sticker pack created",
+  "admin.sticker.deleteSuccess": "Sticker pack deleted",
+  "admin.sticker.uploadSuccess": "Uploaded successfully",
+  "admin.sticker.addSticker": "Add Sticker",
+  "admin.sticker.uploading": "Uploading…",
+  "admin.sticker.saving": "Saving…",
+  "admin.sticker.noPacks": "No sticker packs",
+  "admin.sticker.editName": "Edit Name",
+  "admin.sticker.saveName": "Save Name",
+  "admin.sticker.deleteSticker": "Delete Sticker",
+  "admin.sticker.packName": "Pack Name",
+  "admin.sticker.packNamePlaceholder": "Enter sticker pack name",
+  "admin.sticker.uploadFailed": "Upload failed",
+  "admin.oss.name": "Config Name",
+  "admin.oss.provider": "Provider",
+  "admin.oss.region": "Region",
+  "admin.oss.endpoint": "Endpoint",
+  "admin.oss.bucket": "Bucket",
+  "admin.oss.bucketPlaceholder": "Enter bucket name",
+  "admin.oss.user": "User",
+  "admin.oss.isDefault": "Default",
+  "admin.oss.addTime": "Added Time",
+  "admin.oss.setDefault": "Set as Default",
+  "admin.oss.cancel": "Cancel",
+  "admin.oss.add": "Add Config",
+  "admin.oss.envPlaceholder": "Enter environment variable name",
+  "admin.oss.regionPlaceholder": "Enter region",
+  "admin.oss.endpointPlaceholder": "Enter endpoint URL",
+  "admin.oss.namePlaceholder": "Enter config name",
+  "admin.oss.nameRequired": "Config name is required",
+  "admin.rateLimit.title": "Rate Limit",
+  "admin.rateLimit.desc": "Configure API rate limiting",
+  "admin.rateLimit.message": "Message Rate Limit",
+  "admin.rateLimit.login": "Login Rate Limit",
+  "admin.rateLimit.registration": "Registration Rate Limit",
+  "admin.rateLimit.perMinute": "req/min",
+  "admin.rateLimit.window": "Window (seconds)",
+  "admin.rateLimit.maxPerIp": "Max per IP",
+  "admin.rateLimit.count": "Count",
+  "admin.rateLimit.hint": "Set the maximum requests per IP within the time window",
+  "admin.rateLimit.saveFailed": "Failed to save rate limit config",
+  "adminSettings.basic": "Basic Settings",
+  "adminSettings.registration": "Registration Settings",
+  "adminSettings.message": "Message Settings",
+  "adminSettings.captcha": "Captcha Settings",
+  "adminSettings.ai": "AI Settings",
+  "adminSettings.cdn": "CDN Settings",
+  "adminSettings.maintenance": "Maintenance Settings",
+  "adminSettings.ice": "ICE Settings",
+  "adminSettings.siteName": "Site Name",
+  "adminSettings.siteDesc": "Site Description",
+  "adminSettings.allowRegister": "Allow Registration",
+  "adminSettings.requireInviteCode": "Require Invite Code",
+  "adminSettings.enableMaintenance": "Enable Maintenance Mode",
+  "adminSettings.maintenanceMessage": "Maintenance Message",
+  "adminSettings.maintenanceMessagePlaceholder": "Enter maintenance message",
+  "adminSettings.maxFileSize": "Max File Size",
+  "adminSettings.currentSize": "Current Limit",
+  "adminSettings.maxMessageLen": "Max Message Length",
+  "adminSettings.enableCaptcha": "Enable Captcha",
+  "adminSettings.captchaProvider": "Captcha Provider",
+  "adminSettings.notEnabled": "Not Enabled",
+  "adminSettings.aiEnable": "Enable AI",
+  "adminSettings.aiApiUrl": "API URL",
+  "adminSettings.aiApiKey": "API Key",
+  "adminSettings.aiModel": "Model",
+  "adminSettings.aiSystemPrompt": "System Prompt",
+  "adminSettings.aiName": "AI Name",
+  "adminSettings.aiBio": "AI Bio",
+  "adminSettings.aiAvatarUrl": "AI Avatar URL",
+  "adminSettings.aiApiKeyPlaceholder": "Enter API key",
+  "adminSettings.aiApiDesc": "Configure AI service connection parameters",
+  "adminSettings.testConnection": "Test Connection",
+  "adminSettings.testing": "Testing…",
+  "adminSettings.testFailed": "Connection test failed",
+  "adminSettings.cdnGoogleFonts": "Google Fonts Mirror",
+  "adminSettings.cdnGoogleFontsPlaceholder": "Enter Google Fonts mirror URL",
+  "adminSettings.cdnGoogleFontsExample": "e.g. https://fonts.example.com",
+  "adminSettings.vconsole": "VConsole",
+  "adminSettings.vconsoleDesc": "Enable VConsole debug tool",
+  "adminSettings.stunTurn": "STUN/TURN Configuration",
+  "adminSettings.stun": "STUN Server",
+  "adminSettings.turn": "TURN Server",
+  "adminSettings.addStun": "Add STUN",
+  "adminSettings.addTurn": "Add TURN",
+  "adminSettings.usernameRequired": "Username (optional)",
+  "adminSettings.passwordOptional": "Password (optional)",
+  "adminSettings.serverRequired": "Server address is required",
+  "adminSettings.stunDesc": "STUN is used to obtain public IP address",
+  "adminSettings.turnDesc": "TURN is used for relay transport",
+  "adminSettings.loadFailed": "Failed to load settings",
+  "adminSettings.saveFailed": "Failed to save settings",
+  "channel.info": "Channel Info",
+  "channel.public": "Public",
+  "channel.private": "Private",
+  "channel.description": "Description",
+  "channel.descriptionPlaceholder": "Enter channel description",
+  "channel.announcement": "Announcement",
+  "channel.announcementPlaceholder": "Enter channel announcement",
+  "channel.noAnnouncement": "No announcement",
+  "channel.muteAll": "Mute All",
+  "channel.muteAllDesc": "When enabled, only admins can send messages",
+  "channel.allowInvite": "Allow Invite",
+  "channel.allowInviteDesc": "Allow members to invite new members",
+  "channel.makePublic": "Make Public",
+  "channel.makePublicDesc": "Public channels can be found in the discover page",
+  "channel.saveInfo": "Save Info",
+  "channel.adminCanEdit": "Admins can edit",
+  "channel.dangerZone": "Danger Zone",
+  "channel.disband": "Disband Channel",
+  "channel.leave": "Leave Channel",
+  "channel.ownerCannotLeave": "Owner cannot leave the channel",
+  "channel.report": "Report Channel",
+  "channel.disbandConfirm": "Confirm disband channel?",
+  "channel.disbandDesc": "All messages will be deleted and cannot be recovered",
+  "channel.leaveConfirm": "Confirm leave channel?",
+  "channel.leaveDesc": "You will need a new invitation to rejoin",
+  "channel.bannedMembers": "Banned Members",
+  "channel.banChannel": "Ban Channel",
+  "channel.addFriendHint": "Select from friends list",
+  "channel.noFriendToAdd": "No friends to add",
+  "channel.cancelAdmin": "Remove Admin",
+  "channel.setAdmin": "Set as Admin",
+  "channel.transferOwner": "Transfer Ownership",
+  "channel.unmute": "Unmute",
+  "channel.mute": "Mute",
+  "channel.removeMember": "Remove Member",
+  "channel.unban": "Unban",
+  "channel.you": "You",
+  "channel.lastActive": "Last Active",
+  "channel.createdAt": "Created At",
+  "channel.saveFailed": "Failed to save",
+  "channel.leaveSuccess": "Left the channel",
+  "channel.disbandSuccess": "Channel disbanded",
+  "channel.joined": "Joined",
+  "channel.join": "Join",
+  "channel.publicChannel": "Public Channel",
+  "channel.memberCount": "{count} members",
+  "channel.alreadyJoined": "Already Joined",
+  "channel.joinChannel": "Join Channel",
+  "composer.scheduledAt": "Schedule Send",
+  "composer.scheduleInFuture": "Please select a future time",
+  "composer.pollOnlyChannel": "Channel only polls",
+  "composer.pollMinOptions": "Minimum 2 options required",
+  "composer.pollMaxOptions": "Maximum 10 options",
+  "composer.pollQuestion": "Poll Question",
+  "composer.pollQuestionPlaceholder": "Enter poll question",
+  "composer.pollOptions": "Poll Options",
+  "composer.addOption": "Add Option",
+  "composer.anonymousPoll": "Anonymous Poll",
+  "composer.pollAnonymousDesc": "Votes will not show who voted",
+  "composer.publishPoll": "Publish Poll",
+  "composer.voiceCall": "Voice Call",
+  "composer.videoCall": "Video Call",
+  "composer.emoji": "Emoji",
+  "composer.sticker": "Sticker",
+  "composer.recommendFriend": "Recommend Friend",
+  "composer.shareChannel": "Share Channel",
+  "composer.scheduleSend": "Schedule Send",
+  "composer.markdownSend": "Send as Markdown",
+  "composer.normalSend": "Send as Text",
+  "composer.dragToUpload": "Drag files here to upload",
+  "composer.blockedByBan": "You have been banned",
+  "composer.everyone": "Everyone",
+  "composer.more": "More",
+  "composer.stickerLoading": "Loading stickers…",
+  "composer.stickerLoadFailed": "Failed to load stickers",
+  "composer.loadMoreStickers": "Load more stickers",
+  "composer.searchUser": "Search User",
+  "composer.searchChannel": "Search Channel",
+  "composer.noMatch": "No results",
+  "composer.createPoll": "Create Poll",
+  "composer.pollOnlyChannelErr": "Polls can only be created in channels",
+  "composer.pollMinErr": "At least 2 options are required",
+  "composer.pollMaxErr": "Maximum 10 options allowed",
+  "composer.pollQuestionErr": "Please enter a poll question",
+  "composer.friendCardSent": "Friend card sent",
+  "composer.notFriendAnymore": "This user is no longer your friend",
+  "composer.recording": "Recording…",
+  "composer.voiceRecord": "Voice Message",
+  "call.ringing": "Ringing…",
+  "call.connecting": "Connecting…",
+  "call.inviteYou": "Inviting you to a call",
+  "call.latency": "Latency",
+  "call.jitter": "Jitter",
+  "call.packetLoss": "Packet Loss",
+  "call.manage": "Manage Call",
+  "call.mute": "Mute",
+  "call.unmute": "Unmute",
+  "call.removeMember": "Remove Member",
+  "call.screen": "Screen Share",
+  "call.mySelf": "Me",
+  "call.incomingCall": "Incoming Call",
+  "call.someone": "Someone",
+  "media.searchHint": "Search media files",
+  "media.searchResults": "Search Results",
+  "media.preview": "Preview",
+  "media.jumpToMessage": "Jump to message",
+  "media.backToResults": "Back to results",
+  "media.download": "Download",
+  "media.zoomIn": "Zoom In",
+  "media.zoomOut": "Zoom Out",
+  "media.zoomReset": "Reset",
+  "media.emptyHint": "No media files",
+  "media.loadMore": "Load More",
+  "media.locationInfo": "Location Info",
+  "media.emptyMessage": "No messages",
+  "media.returnResults": "Return to results",
+  "message.reply": "Reply",
+  "message.copy": "Copy",
+  "message.recall": "Recall",
+  "message.report": "Report",
+  "message.pin": "Pin",
+  "message.unpin": "Unpin",
+  "message.edited": "Edited",
+  "message.sending": "Sending…",
+  "message.retrySend": "Retry Send",
+  "message.seenBy": "Seen by",
+  "message.unread": "Unread",
+  "message.anonymous": "Anonymous",
+  "message.votes": "votes",
+  "message.voted": "Voted",
+  "message.totalVotes": "Total Votes",
+  "message.anonymousVote": "Anonymous Vote",
+  "message.seenStatus": "Read Status",
+  "message.readCount": "{count} read",
+  "message.unreadCount": "{count} unread",
+  "message.fromUser": "From user",
+  "message.fromChannel": "From channel",
+  "message.notJoined": "Not Joined",
+  "message.notJoinedDesc": "You have not joined this channel",
+  "message.notJoinedHint": "Join to view messages",
+  "message.openChannel": "Open Channel",
+  "message.clickToView": "Click to view",
+  "message.invalidLocation": "Invalid location data",
+  "message.pollDataError": "Poll data error",
+  "message.loadFailed": "Failed to load message",
+  "report.title": "Report",
+  "report.type": "Report Type",
+  "report.submitted": "Report submitted",
+  "report.reason": "Reason",
+  "report.reasonPlaceholder": "Please describe the reason",
+  "report.screenshot": "Screenshot",
+  "report.uploadScreenshot": "Upload Screenshot",
+  "report.uploadingScreenshot": "Uploading screenshot…",
+  "report.captcha": "Captcha",
+  "report.submitting": "Submitting…",
+  "report.submit": "Submit Report",
+  "report.screenshotFailed": "Screenshot upload failed",
+  "member.detail": "Member Detail",
+  "member.friendList": "Friend List",
+  "member.noFriendToAdd": "No friends to add",
+  "member.adding": "Adding…",
+  "member.you": "You",
+  "member.lastActive": "Last Active",
+  "member.add": "Add",
+  "member.detailInfo": "Detail Info",
+  "sticker.searchPlaceholder": "Search stickers…",
+  "sticker.noMatch": "No matching stickers",
+  "sticker.noEmoji": "No matching emoji",
+  "error.somethingWentWrong": "Something went wrong",
+  "error.refreshPage": "Refresh Page",
+  "error.microphoneDenied": "Microphone access denied",
+  "messageSearch.all": "All",
+  "messageSearch.text": "Text",
+  "messageSearch.image": "Image",
+  "messageSearch.file": "File",
+  "messageSearch.location": "Location",
+  "messageSearch.video": "Video",
+  "messageSearch.voice": "Voice",
+  "messageSearch.hint": "Search messages",
+  "messageSearch.viewInChat": "View in Chat",
+  "userCard.removeFriend": "Remove Friend",
+  "userCard.acceptRequest": "Accept Request",
+  "userCard.unblock": "Unblock",
+  "userCard.block": "Block",
+  "userCard.report": "Report",
+  "userCard.gender": "Gender",
+  "userCard.lastActive": "Last Active",
+  "userCard.removeSuccess": "Removed successfully",
+  "userCard.acceptSuccess": "Accepted",
+  "userCard.unblockSuccess": "Unblocked successfully",
+  "userCard.blockSuccess": "Blocked successfully",
+  "location.selectTitle": "Select Location",
+  "location.myLocation": "My Location",
+  "location.locating": "Locating…",
+  "location.useMyLocation": "Use My Location",
+  "location.mapPreview": "Map Preview",
+  "location.noPreview": "No Preview Available",
+  "location.searchHint": "Search location",
+  "location.openInAmap": "Open in Amap",
+  "location.searchFailed": "Search failed",
+  "location.noPermission": "Location permission denied",
+  "location.timeout": "Location request timed out",
+  "location.failed": "Location failed",
+  "location.notSupported": "Location not supported",
+  "location.selected": "Selected Location",
+  "location.permissionHint": "Please allow location access in your browser settings",
+  "contextMenu.forward": "Forward",
+  "contextMenu.reply": "Reply",
+  "contextMenu.copy": "Copy",
+  "contextMenu.recall": "Recall",
+  "contextMenu.report": "Report",
+  "contextMenu.pin": "Pin",
+  "contextMenu.unpin": "Unpin",
+  "contextMenu.delete": "Delete",
+  "admin.addTime": "Added at",
+  "admin.auditLog": "Audit log",
+  "admin.banReasonOptional": "Ban reason (optional)",
+  "admin.banStatus": "Ban status",
+  "admin.channel": "Channel",
+  "admin.confirmDeleteChannel": "Delete this channel? This cannot be undone!",
+  "admin.confirmDeleteNotification": "Delete this notification? This cannot be undone.",
+  "admin.confirmDeleteOrg": "Delete this org? Sub-orgs become top-level, member org info will be cleared.",
+  "admin.conversation": "Conversation",
+  "admin.createNotification": "Create notification",
+  "admin.createOrg": "Create org",
+  "admin.dataVisualization": "Data visualization matrix",
+  "admin.deleteNotification": "Delete notification",
+  "admin.editNotification": "Edit notification",
+  "admin.forwarded": "Forwarded",
+  "admin.imagePreview": "Image preview",
+  "admin.imageUrl": "Image URL",
+  "admin.markdownSupported": "Supports Markdown",
+  "admin.messageAudit": "Message audit",
+  "admin.noNotifications": "No notifications",
+  "admin.sendNotification": "Send Notification",
+  "admin.noOrganization": "No organization",
+  "admin.noOrgs": "No organizations",
+  "admin.notificationContentPlaceholder": "Enter notification content, supports Markdown...",
+  "admin.notificationTitle": "Enter notification title",
+  "admin.operator": "Operator",
+  "admin.orgCreated": "Org created",
+  "admin.orgDeleted": "Org deleted",
+  "admin.orgDescOptional": "Description (optional)",
+  "admin.orgManagement": "Organization management",
+  "admin.orgUpdated": "Org info updated",
+  "admin.oss.addBinding": "Add binding",
+  "admin.oss.bindings": "OSS Bindings",
+  "admin.oss.confirmDelete": "Delete this OSS binding?",
+  "admin.oss.created": "OSS binding added",
+  "admin.oss.fillRequired": "Please fill in all required fields",
+  "admin.oss.setDefaultSuccess": "Set as default",
+  "admin.oss.urlPlaceholder": "e.g. https://oss-cn-hangzhou.aliyuncs.com",
+  "admin.oss.userIdPlaceholder": "OSS owner user ID",
+  "admin.poll": "Poll",
+  "admin.position": "Position",
+  "admin.positionPlaceholder": "e.g. CTO",
+  "admin.publishNotification": "Publish notification",
+  "admin.publishToAll": "Publish to all contacts",
+  "admin.rateLimit.captchaHint": "Requires captcha when exceeded",
+  "admin.rateLimit.maxAccountsPerIp": "Max accounts per IP",
+  "admin.rateLimit.maxLogins": "Max logins in window",
+  "admin.rateLimit.maxMessages": "Max messages per minute",
+  "admin.rateLimit.maxRegistrations": "Max registrations in window",
+  "admin.rateLimit.overLimit": "Returns 429 when exceeded",
+  "admin.rateLimit.seconds": "seconds",
+  "admin.rateLimit.times": "times",
+  "admin.rateLimit.windowDesc": "Statistics time window",
+  "admin.rateLimit.presencePing": "\"Are you still there?\" rate limit",
+  "admin.rateLimit.presencePingMax": "Max sends per window",
+  "admin.rateLimit.presencePingWindow": "Window (seconds)",
+  "admin.rateLimit.presencePingDesc": "Per-user per-conversation limit for the DM menu ping",
+  "admin.report.pending": "Pending",
+  "admin.report.processed": "Processed",
+  "admin.report.rejected": "Rejected",
+  "admin.report.reporter": "Reporter",
+  "admin.report.messageId": "Message ID",
+  "admin.report.messageTime": "Message Time",
+  "admin.report.reviewed": "Reviewed",
+  "admin.role": "Role",
+  "admin.roleSet": "Set to {role}",
+  "admin.saveOrgInfo": "Save org info",
+  "admin.searchChannelPlaceholder": "Search channels...",
+  "admin.searchMessagePlaceholder": "Search message content...",
+  "admin.sendFailed": "Send failed",
+  "admin.sensitive.added": "Added {count} sensitive words",
+  "admin.sensitive.confirmDelete": "Delete {count} sensitive words?",
+  "admin.sensitive.deleted": "Deleted {count} sensitive words",
+  "admin.sensitive.wordCount": "{count} words",
+  "admin.sticker.addEmoji": "Add emoji",
+  "admin.sticker.noPacksHint": "No sticker packs, create one first",
+  "admin.system": "System",
+  "admin.systemSettings": "System Settings",
+  "admin.topLevelOrg": "Top-level org",
+  "admin.totalChannels": "{count} channels",
+  "admin.totalCount": "{count} total",
+  "admin.type": "Type",
+  "admin.userId": "User ID",
+  "admin.userIdFilter": "Filter by user ID",
+  "adminSettings.captchaBackend": "Backend API URL",
+  "adminSettings.captchaFrontend": "Frontend Widget URL",
+  "adminSettings.inviteCodePlaceholder": "Set invite code",
+  "adminSettings.emailRegistration": "Allow email registration",
+  "adminSettings.phoneRegistration": "Allow phone registration",
+  "adminSettings.sms": "SMS Service",
+  "adminSettings.smsProvider": "SMS Provider",
+  "adminSettings.smsProviderNone": "Disabled",
+  "adminSettings.smsProviderTencent": "Tencent Cloud SMS",
+  "adminSettings.smsProviderAliyun": "Alibaba Cloud SMS",
+  "adminSettings.smsSdkAppId": "Application ID (SdkAppId)",
+  "adminSettings.smsSdkAppIdDesc": "SdkAppId from Tencent Cloud SMS console; not required for Aliyun",
+  "adminSettings.smsAccessKeyId": "AccessKeyId / SecretId",
+  "adminSettings.smsAccessKeyIdDesc": "Access key ID from your cloud provider console",
+  "adminSettings.smsAccessKeySecret": "AccessKeySecret / SecretKey",
+  "adminSettings.smsAccessKeySecretDesc": "Secret part of your access key. Keep it safe.",
+  "adminSettings.smsSignName": "SMS Signature",
+  "adminSettings.smsSignNameDesc": "Approved SMS signature name",
+  "adminSettings.smsTemplateCode": "Template ID",
+  "adminSettings.smsTemplateCodeDesc": "Approved verification code template ID. Template must include one {code} variable.",
+  "adminSettings.smsRegion": "Region",
+  "adminSettings.smsRegionDesc": "Aliyun regionId, e.g. cn-hangzhou. Not required for Tencent.",
+  "adminSettings.smsEndpoint": "Endpoint (optional)",
+  "adminSettings.smsEndpointDesc": "Default uses nearest region. Example: sms.ap-guangzhou.tencentcloudapi.com",
+  "adminSettings.smsTest": "Send Test SMS",
+  "adminSettings.smsTestPlaceholder": "Test phone number (with country code, e.g. +8613800138000)",
+  "adminSettings.smsTestSuccess": "Test SMS sent",
+  "adminSettings.smsTestFailed": "Test SMS failed",
+  "adminSettings.smtp": "Email SMTP",
+  "adminSettings.smtpDesc": "Email sending is configured via smtp_* fields in system settings. Use the Email Templates tab to manage templates.",
+  "adminSettings.email": "Email SMTP",
+  "adminSettings.smtpHost": "SMTP Host",
+  "adminSettings.smtpPort": "Port",
+  "adminSettings.smtpSecure": "Encryption",
+  "adminSettings.smtpSsl": "SSL (port 465)",
+  "adminSettings.smtpStartTls": "STARTTLS (port 25/587)",
+  "adminSettings.smtpUser": "Username",
+  "adminSettings.smtpUserDesc": "Usually the same as the From email. Some providers require a separate SMTP user.",
+  "adminSettings.smtpPassword": "Password / Auth Code",
+  "adminSettings.smtpPasswordDesc": "SMTP password or provider-issued authorization code",
+  "adminSettings.smtpFromName": "From Name",
+  "adminSettings.smtpFromEmail": "From Email",
+  "adminSettings.emailConfigured": "SMTP configured",
+  "adminSettings.emailNotConfigured": "SMTP not fully configured. Email registration will not work.",
+  "adminSettings.emailTest": "Send Test Email",
+  "adminSettings.emailTestPlaceholder": "Recipient email",
+  "adminSettings.emailTestSuccess": "Test email sent, please check your inbox",
+  "adminSettings.emailTestFailed": "Test email failed",
+  "login.email": "Email",
+  "login.phone": "Phone",
+  "login.emailPlaceholder": "Enter your email",
+  "login.phonePlaceholder": "Enter phone (with country code)",
+  "login.code": "Verification Code",
+  "login.codePlaceholder": "6-digit code",
+  "login.sendCode": "Send Code",
+  "login.resendCode": "Resend in {seconds}s",
+  "login.codeResent": "Code resent",
+  "login.codeSent": "Code sent, please check your inbox",
+  "login.methodUsername": "Username",
+  "login.methodEmail": "Email",
+  "login.methodPhone": "Phone",
+  "server.emailCodeError": "Email code is invalid or expired",
+  "server.phoneCodeError": "SMS code is invalid or expired",
+  "server.emailRegistered": "This email is already registered",
+  "server.phoneRegistered": "This phone is already registered",
+  "server.smsNotConfigured": "SMS service is not configured",
+  "server.smsSendFailed": "Failed to send SMS",
+  "server.emailNotConfigured": "Email service is not configured",
+  "server.emailSendFailed": "Failed to send email",
+  "server.codeSendFailed": "Failed to send verification code",
+  "server.codeRateLimited": "Too many requests, please try again later",
+  "server.codeInvalid": "Verification code invalid or expired",
+  "server.accountNotFound": "No account found for this email or phone number",
+  "server.invalidPhone": "Invalid phone number",
+  "server.invalidEmail": "Invalid email address",
+  "server.emailChannelClosed": "Email registration is disabled",
+  "server.phoneChannelClosed": "Phone registration is disabled",
+  "server.ssoDisabled": "SSO is disabled",
+  "app.checkServer": "Please check the server is running on the expected port, then retry.",
+  "app.connecting": "Connecting to server…",
+  "app.connectionFailed": "Waited {elapsed}s, WebSocket cannot connect.",
+  "app.connectionTimeout": "Connection timeout ({elapsed}s) — please ensure server is running",
+  "app.disconnected": "Disconnected",
+  "app.reconnecting": "Reconnecting, syncing…",
+  "appshell.jumpToPlaceholder": "Jump to group, DM or contact…",
+  "call.incomingInvite": "Inviting you to a {name} call",
+  "call.network": "Network",
+  "call.publishUpstream": "Publish upstream PC",
+  "call.title": "Call",
+  "channel.addMember": "Add member",
+  "channel.allowMemberInvite": "Allow members to invite friends",
+  "channel.avatar": "Group avatar",
+  "channel.banFailed": "Failed to ban channel",
+  "channel.banReason": "Ban reason",
+  "channel.banned": "Channel banned",
+  "channel.bannedChannel": "This group chat has been banned by admin",
+  "channel.bannedDM": "This DM has been banned by admin",
+  "channel.canAddMembers": "can add members",
+  "channel.changeAvatar": "Click camera to change group avatar",
+  "channel.icon": "Icon",
+  "channel.inviteAllowed": "Members can now invite friends",
+  "channel.inviteForbidden": "Members can no longer invite friends",
+  "channel.inviteMember": "Invite member",
+  "channel.memberAdded": "Member added",
+  "channel.memberInvitePermission": "Member invite permission",
+  "channel.name": "Name",
+  "channel.namePlaceholder": "e.g. Project Discussion",
+  "channel.noMatch": "No matching groups",
+  "channel.noMemberData": "No member data (open this channel in chat first)",
+  "channel.noReason": "Not provided",
+  "channel.onlyOwnerAdmin": "After closing, only owner and admin",
+  "channel.owner": "Owner",
+  "channel.privateDesc": "Only invited members can see and join",
+  "channel.setAsOwner": "Set as owner",
+  "channel.transferConfirm": "Transfer channel ownership? This cannot be undone.",
+  "channel.transferFailed": "Transfer failed",
+  "channel.transferOwnership": "Transfer ownership",
+  "channel.transferSuccess": "Ownership transferred",
+  "channel.unbanChannel": "Unban channel",
+  "channel.unbanFailed": "Failed to unban channel",
+  "channel.unbanned": "Channel unbanned",
+  "fileDetails.title": "File Details",
+  "fileDetails.size": "Size",
+  "fileDetails.dimensions": "Dimensions",
+  "fileDetails.duration": "Duration",
+  "fileDetails.download": "Download",
+  "adminSettings.nsfw": "Image Moderation (NSFW)",
+  "adminSettings.nsfwEnable": "Enable NSFW Moderation",
+  "adminSettings.nsfwEnableDesc": "When enabled, uploads of images and videos are checked for NSFW content",
+  "adminSettings.nsfwApiUrl": "Moderation Service URL",
+  "adminSettings.nsfwApiUrlDesc": "Full URL of a self-hosted or third-party NSFW detection service (POST multipart/form-data, field: file). Leave empty to disable server-side detection.",
+  "adminSettings.nsfwThreshold": "Rejection Threshold",
+  "adminSettings.nsfwThresholdDesc": "Uploads are rejected when Porn + Hentai probability exceeds this (0-100%)",
+  "adminSettings.nsfwBuiltinDesc": "Uses the built-in nsfwjs model on the server; no external API URL required",
+  "adminSettings.sso": "Single Sign-On (SSO)",
+  "adminSettings.ssoEnable": "Enable SSO Login",
+  "adminSettings.ssoEnableDesc": "Login page will show an SSO button that creates an account on first click",
+  "adminSettings.ssoCompanyName": "Company Display Name",
+  "adminSettings.ssoCompanyNameDesc": "Text shown on the SSO button",
+  "adminSettings.ssoCompanyNamePlaceholder": "e.g. ACME Corp",
+  "adminSettings.ssoCompanyFormalName": "Company Short Name",
+  "adminSettings.ssoCompanyFormalNameDesc": "English letters, digits, _, - only; must start with a letter; used for default username",
+  "adminSettings.ssoCompanyFormalNamePlaceholder": "e.g. acme",
+  "adminSettings.ssoIcon": "SSO Icon",
+  "adminSettings.ssoIconDesc": "Recommended 64x64 PNG/SVG; shown on the SSO button",
+  "adminSettings.ssoIconImageOnly": "Image format required",
+  "adminSettings.ssoIconUpload": "Click to upload icon",
+  "login.ssoButton": "Sign in with {company}",
+  "nsfw.rejected": "Image rejected by content moderation",
+  "chat.deleteConversation": "Delete conversation",
+  "chat.noDms": "No DMs yet",
+  "chat.searchResults": "Search results",
+  "chat.unpin": "Unpin",
+  "chat.workspace": "Workspace",
+  "common.createdAt": "Created at",
+  "common.deleted": "Deleted",
+  "common.detail": "Detail",
+  "common.loadFailed": "Load failed",
+  "common.option": "Option",
+  "common.optional": "Optional",
+  "common.saveSuccess": "Saved successfully",
+  "common.selected": "selected",
+  "common.submitting": "Submitting…",
+  "common.time": "Time",
+  "common.totalCount": "{count} total",
+  "composer.banned": "Banned, cannot send messages",
+  "composer.friendCheckFailed": "Friend check failed",
+  "friends.accepted": "Friend request accepted",
+  "friends.asFriend": "as friend",
+  "friends.noneToInvite": "No friends to invite",
+  "friends.pendingRequest": "This friend has a pending request",
+  "friends.removed": "Friend removed",
+  "friends.requestHint": "Requests will appear here when someone adds you.",
+  "friends.unblocked": "Unblocked",
+  "login.passwordStrength": "Password strength",
+  "login.usernameInvalid": "Username must be 3-20 alphanumeric characters or underscores",
+  "media.audio": "Audio",
+  "media.takePhoto": "Take Photo",
+  "member.memberList": "Member list",
+  "member.noMembers": "No members",
+  "message.card.empty": "[Empty]",
+  "message.card.video": "[Video]",
+  "message.emojiReact": "React",
+  "message.fromChannelName": "From group: {name}",
+  "message.fromConversationName": "From conversation: {name}",
+  "message.mention": "[Mention]",
+  "message.notInChannel": "You are not in this group, cannot open",
+  "message.pollError": "[Poll data error]",
+  "message.totalVoters": "{count} people voted",
+  "patternLock.points": "points",
+  "report.reasonRequired": "Please provide a reason",
+  "server.banSuccess": "Ban successful",
+  "sticker.loadFailed": "Sticker pack load failed",
+  "theme.dark": "Switch to dark",
+  "theme.light": "Switch to light",
+  "user.gender": "Gender",
+
+  "admin.allOperations": "All Operations",
+  "admin.deleteMessage": "Delete Message",
+  "admin.grantAdmin": "Grant Admin",
+  "admin.noData": "No Data",
+  "admin.revokeAdmin": "Revoke Admin",
+  "admin.sensitive.batchPlaceholder": "One sensitive word per line",
+  "admin.sensitive.inputRequired": "Please enter a sensitive word",
+  "admin.sensitivePolicy": "Sensitive Word Policy",
+  "admin.sticker.namePlaceholder": "Enter name",
+  "admin.sticker.nameRequired": "Name is required",
+  "admin.unbanUser": "Unban User",
+  "admin.updateSettings": "Update Settings",
+  "call.cancelled": "Cancelled",
+  "call.calling": "Calling {name}…",
+  "call.connectionError": "Connection Failed",
+  "call.dialing": "Dialing…",
+  "call.mediaError": "Media Device Error",
+  "call.noResponse": "No Response",
+  "call.notAvailable": "Not Available",
+  "call.notSupported": "Not Supported",
+  "call.rejected": "Rejected",
+  "call.screenShareFailed": "Screen Share Failed",
+  "call.screenShareNotSupported": "Screen Share Not Supported",
+  "call.waitingAnswer": "Waiting for answer…",
+  "common.cancelCall": "Cancel Call",
+  "error.callLoadFailed": "Call Load Failed",
+  "error.requestFailed": "Request Failed",
+  "friends.requestReceivedName": "Received Friend Request",
+  "admin.oss.aliyun": "Aliyun OSS",
+  "admin.oss.tencent": "Tencent COS",
+  "admin.oss.qiniu": "Qiniu Kodo",
+  "admin.oss.huawei": "Huawei OBS",
+  "admin.ai.testConnection": "Test Connection",
+  "admin.ai.testFailed": "Test Failed",
+  "admin.ai.assistant": "AI Assistant",
+  "admin.ai.enable": "Enable AI",
+  "admin.ai.apiUrl": "API URL",
+  "admin.ai.apiDesc": "AI service URL, defaults to OpenAI API",
+  "admin.ai.model": "Model",
+  "admin.ai.apiKey": "API Key",
+  "admin.ai.systemPrompt": "System Prompt",
+  "admin.ai.name": "AI Name",
+  "admin.ai.bio": "AI Bio",
+  "admin.ai.avatarUrl": "AI Avatar URL",
+
+  "admin.ai.apiKeyPlaceholder": "Enter API Key",
+  "admin.banned": "Banned",
+  "admin.deleteChannel": "Delete Channel",
+  "admin.notificationPlaceholder": "Enter notification content",
+  "admin.notificationSent": "Notification sent",
+  "admin.notifyUser": "Notify User",
+  "admin.organization": "Organization",
+  "admin.ossStorage": "OSS Storage",
+  "admin.rateLimiting": "Rate Limiting",
+  "admin.sensitiveWords": "Sensitive Words",
+  "admin.stickerPacks": "Sticker Packs",
+  "admin.viewDetail": "View Details",
+  "adminSettings.allowRegisterDesc": "Allow new user registration",
+  "adminSettings.inviteCode": "Invite Code",
+  "composer.scheduleSet": "Scheduled send set",
+  "composer.scheduleTime": "Send Time",
+  "message.read": "Read",
+  "message.you": "You",
+  "user.status": "Status",
+  "lang.de": "German",
+  "lang.en": "English",
+  "lang.es": "Spanish",
+  "lang.fr": "French",
+  "lang.ja": "Japanese",
+  "lang.ko": "Korean",
+  "lang.zh-CN": "Simplified Chinese",
+  "message.translate": "Translate",
+  "translation.apiKey": "API Key",
+  "translation.bing": "Bing Translate",
+  "translation.bingReverse": "Bing Translate (Reverse)",
+  "translation.deepl": "DeepL Translate",
+  "translation.google": "Google Translate",
+  "translation.machineTranslated": "Machine Translation",
+  "translation.provider": "Translation Provider",
+  "translation.selectLang": "Select Target Language",
+  "translation.settings": "Translation Settings",
+  "translation.testFailed": "Test translation failed",
+  "adminSettings.usernameRegistration": "Allow username registration (no email/phone required)",
+  "adminSettings.manageWhitelist": "Manage whitelist…",
+  "adminSettings.emailWhitelist": "Email Whitelist",
+  "adminSettings.phoneWhitelist": "Phone Whitelist",
+  "adminSettings.whitelistHint": "Supports exact match and wildcards (*), e.g. user@example.com or *@example.com; phone like +86138*",
+  "adminSettings.whitelistNotePlaceholder": "Note (optional)",
+  "adminSettings.whitelistAdd": "Add",
+  "adminSettings.whitelistEmpty": "No entries",
+  "adminSettings.ssoOauth": "OAuth 2.0 / OIDC Configuration",
+  "adminSettings.ssoOauthHint": "Any IdP that supports the OAuth 2.0 authorization code flow (Okta, Auth0, Keycloak, WeCom, Google, etc.). PKCE is enabled by default",
+  "adminSettings.ssoAuthorizationEndpoint": "Authorization Endpoint",
+  "adminSettings.ssoTokenEndpoint": "Token Endpoint",
+  "adminSettings.ssoUserInfoEndpoint": "UserInfo Endpoint",
+  "adminSettings.ssoClientId": "Client ID",
+  "adminSettings.ssoClientSecret": "Client Secret",
+  "adminSettings.ssoScopes": "Scopes",
+  "adminSettings.ssoRedirectUri": "Redirect URI",
+  "adminSettings.ssoRedirectUriDesc": "Add this URL as an allowed callback in your IdP console",
+  "adminSettings.ssoConfigIncomplete": "OAuth endpoints or Client ID are incomplete; SSO login will not work",
+  "profile.contact": "Contact",
+  "profile.contactDesc": "Bind email or phone for account recovery and security verification",
+  "profile.contactChannelsClosed": "Administrator has not enabled email/phone channels",
+  "profile.notBound": "Not bound",
+  "profile.bind": "Bind",
+  "profile.unbind": "Unbind",
+  "profile.changeContact": "Change",
+  "profile.bindEmail": "Bind Email",
+  "profile.bindPhone": "Bind Phone",
+  "profile.changeEmail": "Change Email",
+  "profile.changePhone": "Change Phone",
+  "profile.confirmUnbindEmail": "Confirm unbind email? You will not be able to login or recover with this email afterward",
+  "profile.confirmUnbindPhone": "Confirm unbind phone? You will not be able to login or recover with this phone afterward",
+  "profile.contactSaveFailed": "Save failed",
+  "login.newEmail": "New Email",
+  "login.newPhone": "New Phone",
+  "server.passwordIncorrect": "Incorrect password",
+  "server.emailAlreadyUsed": "Email already bound to another account",
+  "server.phoneAlreadyUsed": "Phone already bound to another account",
+  "server.emailNotWhitelisted": "Email not in whitelist",
+  "server.phoneNotWhitelisted": "Phone not in whitelist",
+  "server.usernameChannelClosed": "Username registration is closed",
+  "server.unauthorized": "Not logged in or session expired",
+  "chat.more": "More",
+  "chat.e2eeEnable": "Enable E2EE encryption",
+  "chat.e2eeDisable": "Disable E2EE encryption",
+  "chat.areYouThere": "Are you still there?",
+  "chat.areYouTherePrompt": "{name} asks: Are you still there?",
+  "chat.imHere": "I'm here",
+  "chat.presencePongReceived": "{name} replied: I'm here",
+  "e2ee.dialogTitle": "Enable end-to-end encryption",
+  "e2ee.intro": "You are about to start an end-to-end encrypted conversation with {peer}.",
+  "e2ee.warningsTitle": "Please note",
+  "e2ee.warningBothOnline": "Only available while both parties are online",
+  "e2ee.peerOffline": "Peer is offline; cannot start E2EE encryption",
+  "e2ee.warningNoServerHistory": "The server does not store chat history in E2EE mode; messages are only visible locally",
+  "e2ee.warningFilesAutoDelete": "Files, images and videos in E2EE mode are automatically deleted after exit",
+  "e2ee.warningOffline10min": "If either party is offline for 10 minutes, E2EE will auto-end and clean up all files",
+  "e2ee.enable": "Enable",
+  "e2ee.sessionStarted": "E2EE encrypted conversation started",
+  "e2ee.sessionStartedByPeer": "Peer enabled E2EE encrypted conversation",
+  "e2ee.sessionEnded": "E2EE encrypted conversation ended",
+  "e2ee.sessionEndedTimeout": "E2EE session ended automatically after 10 minutes of inactivity",
+  "e2ee.fileCleaned": "This file has been auto-cleaned after E2EE ended and cannot be viewed",
+};
+
+const ja: Translations = {
+  "app.name": "Navo IM",
+  "app.tagline": "チームの<br />すべての会話が<br />インスピレーションに。",
+  "app.description": "次世代IMチャットソフトウェア",
+  "login.title": "アカウント作成",
+  "login.subtitle": "おかえりなさい",
+  "login.username": "ユーザー名",
+  "login.password": "パスワード",
+  "login.confirmPassword": "パスワード確認",
+  "login.displayName": "表示名",
+  "login.inviteCode": "招待コード",
+  "login.login": "ワークスペースへ",
+  "login.register": "登録してログイン",
+  "login.loggingIn": "ログイン中…",
+  "login.registering": "登録中…",
+  "login.noAccount": "アカウントがありませんか？",
+  "login.hasAccount": "すでにアカウントをお持ちですか？",
+  "login.directLogin": "ログイン",
+  "login.quickRegister": "今すぐ登録",
+  "login.welcomeBack": "おかえりなさい",
+  "login.startChat": "登録してチャットを始めましょう。",
+  "login.passwordStrength.weak": "弱",
+  "login.passwordStrength.medium": "中",
+  "login.passwordStrength.strong": "強",
+  "login.passwordRequirement.length": "8文字以上",
+  "login.passwordRequirement.uppercase": "大文字",
+  "login.passwordRequirement.lowercase": "小文字",
+  "login.passwordRequirement.number": "数字",
+  "login.captcha": "キャプチャ",
+  "login.secondPassword": "第二パスワード",
+  "login.maintenance": "メンテナンス中",
+  "login.banned": "アカウント停止",
+  "login.enterSecondPassword": "第二パスワードを入力",
+  "login.authFailed": "認証失敗",
+  "login.version": "v0.1 · ベータ ·",
+  "login.stats.msgLatency": "メッセージ遅延",
+  "login.stats.horizontalScale": "水平スケール",
+  "login.stats.persistent": "永続化",
+  "login.bannedTitle": "アカウント停止",
+  "login.bannedDesc": "管理者によってアカウントが停止されました。",
+  "login.banReason": "停止理由",
+  "login.maintenanceTitle": "メンテナンス中のため、後でもう一度お試しください",
+  "login.returnToLogin": "ログインに戻る",
+  "login.loginFailed": "ログイン失敗",
+  "login.registerFailed": "登録失敗",
+  "login.verifyFailed": "認証失敗",
+  "login.forgotPassword": "パスワードをお忘れですか？",
+  "login.resetPassword": "パスワードをリセット",
+  "login.resetPasswordSuccess": "パスワードをリセットしました。新しいパスワードでログインしてください。",
+  "login.backToLogin": "ログインに戻る",
+  "login.agreeTerms": "以下に同意します",
+  "login.termsOfService": "利用規約",
+  "login.privacyPolicy": "プライバシーポリシー",
+  "login.mustAgreeTerms": "利用規約とプライバシーポリシーに同意してください",
+  "login.termsContent": "Navo IM へようこそ。\n\n1. 法令を遵守し、違法行為に本サービスを利用しないでください。\n2. アカウントの安全はご自身で管理してください。\n3. 必要に応じてサービスを停止・終了する場合があります。\n4. E2EE 有効時、メッセージ本文は当事者のみが復号できます。",
+  "login.privacyContent": "Navo IM プライバシーポリシー（要約）：\n\n1. サービス提供とセキュリティのためアカウント・端末・ログ情報を収集します。\n2. E2EE セッションの本文はサーバーに平文保存しません。\n3. 個人データを第三者に販売しません。",
+  "login.verificationCode": "認証コード",
+  "login.newPassword": "新しいパスワード",
+  "login.resetMethodEmail": "メールで復旧",
+  "login.resetMethodPhone": "電話番号で復旧",
+  "common.save": "保存",
+  "common.cancel": "キャンセル",
+  "common.confirm": "確認",
+  "common.delete": "削除",
+  "common.edit": "編集",
+  "common.close": "閉じる",
+  "common.search": "検索",
+  "common.loading": "読み込み中…",
+  "common.noData": "データなし",
+  "common.unknown": "不明",
+  "common.retry": "リトライ",
+  "common.send": "送信",
+  "common.saving": "保存中…",
+  "common.saved": "保存済み",
+  "common.submit": "送信",
+  "nav.notifications": "通知",
+  "nav.friends": "友達",
+  "nav.settings": "設定",
+  "nav.chat": "チャット",
+  "nav.contacts": "連絡先",
+  "nav.discover": "発見",
+  "friends.title": "友達",
+  "friends.tab.friends": "友達",
+  "friends.tab.requests": "リクエスト",
+  "friends.tab.add": "追加",
+  "friends.empty": "友達がいません",
+  "friends.searchPlaceholder": "友達を検索…",
+  "friends.pending": "保留中",
+  "friends.blocked": "ブロック済み",
+  "friends.accept": "承認",
+  "friends.decline": "拒否",
+  "friends.addFriend": "友達追加",
+  "friends.sendRequest": "リクエスト送信",
+  "friends.requestSent": "友達リクエストを送信しました",
+  "friends.alreadyFriends": "友達になりました",
+  "friends.sendFailed": "送信失敗",
+  "friends.searchUserPlaceholder": "ユーザー名を検索…",
+  "friends.searchNoResult": "一致するユーザーが見つかりません",
+  "friends.alreadyAdded": "追加済み",
+  "friends.add": "追加",
+  "friends.addHint": "ユーザー名を検索して友達追加",
+  "friends.message": "メッセージ",
+  "friends.editNote": "メモを編集",
+  "friends.saveNote": "保存",
+  "friends.removeFriend": "友達を削除",
+  "friends.blockUser": "ブロック",
+  "friends.unblockUser": "ブロック解除",
+  "friends.clearHistory": "履歴をクリア",
+  "friends.note": "メモ：",
+  "friends.notePlaceholder": "メモを入力…",
+  "friends.noRequests": "新しい友達リクエストはありません",
+  "friends.waitingAccept": "承認待ち ·",
+  "friends.noMatch": "一致する友達なし",
+  "friends.searching": "検索中…",
+  "user.online": "オンライン",
+  "user.offline": "オフライン",
+  "user.away": "離席中",
+  "user.busy": "取り込み中",
+  "user.lastSeen": "最終アクティブ",
+  "user.gender.unspecified": "未設定",
+  "user.gender.male": "男性",
+  "user.gender.female": "女性",
+  "user.gender.other": "その他",
+  "user.bio.placeholder": "自己紹介…",
+  "user.notSet": "未設定",
+  "chat.loading": "過去のメッセージを読み込み中…",
+  "chat.loadFailed": "過去のメッセージの読み込みに失敗",
+  "chat.noConversation": "左側から会話を選択",
+  "chat.loadMore": "過去のメッセージを読み込み中…",
+  "chat.earliest": "これ以上のメッセージはありません",
+  "chat.searchMessage": "メッセージ検索",
+  "chat.searchMessages": "メッセージ検索",
+  "chat.forwardTo": "転送先",
+  "chat.forward": "転送",
+  "chat.forwardIndividual": "個別に転送",
+  "chat.forwardCombined": "まとめて転送",
+  "chat.selected": "選択中",
+  "chat.messages": "件のメッセージ",
+  "chat.searchPlaceholder": "会話を検索…",
+  "chat.noMatchConv": "一致する会話がありません",
+  "chat.pinned": "ピン留め",
+  "chat.pinnedMessages": "件のピン留めメッセージ",
+  "chat.jumpToMessage": "メッセージにジャンプ",
+  "chat.typing": "入力中",
+  "chat.typingMultiple": "らが入力中",
+  "chat.inviteVoice": "ボイスチャンネルに招待",
+  "chat.inviteVideo": "ビデオチャンネルに招待",
+  "chat.inputPlaceholder": "メッセージを入力…",
+  "chat.draft": "下書き",
+  "chat.unnamed": "名称未設定グループ",
+  "chat.dm": "ダイレクトメッセージ",
+  "chat.members": "人のメンバー",
+  "chat.memberCount": "人のメンバー",
+  "chat.hidePanel": "メンバーパネルを隠す",
+  "chat.showPanel": "メンバーパネルを表示",
+  "chat.manageChannel": "チャンネル管理",
+  "chat.recalled": "がメッセージを取り消しました",
+  "chat.recalledMessage": "このメッセージは取り消されました",
+  "chat.sendFailed": "送信タイムアウト",
+  "chat.retry": "リトライ",
+  "chat.unsent": "未送信",
+  "composer.inputPlaceholder": "メッセージを入力…",
+  "composer.inviteToVoice": "ボイスチャンネルに招待",
+  "composer.inviteToVideo": "ビデオチャンネルに招待",
+  "composer.sendingVoiceInvite": "ボイス通話招待を送信",
+  "composer.sendingVideoInvite": "ビデオ通話招待を送信",
+  "profile.title": "プロフィール設定",
+  "profile.aboutUs": "私たちについて",
+  "profile.aboutUsContent": "Navo IM はプライバシーとリアルタイム体験に重点を置いた IM 製品です。E2EE、グループ、AI アシスタントをサポートしています。Navo チームが開発・運用しています。",
+  "profile.nickname": "ニックネーム",
+  "profile.nicknamePlaceholder": "あなたの名前",
+  "profile.bio": "自己紹介",
+  "profile.bioPlaceholder": "自己紹介を書いてください…",
+  "profile.gender": "性別",
+  "profile.avatarColor": "アバターカラー",
+  "profile.uploadAvatar": "アバターをアップロード",
+  "profile.uploading": "アバターアップロード中…",
+  "profile.removeAvatar": "アップロードしたアバターを削除、グラデーションを使用",
+  "profile.status": "ステータス",
+  "profile.privacy": "プライバシー",
+  "profile.friendApproval": "友達承認を必要とする",
+  "profile.friendApprovalDesc": "オフにすると誰でも友達追加できます",
+  "profile.notifications": "通知",
+  "profile.sound": "新着メッセージ音",
+  "profile.soundDesc": "新着メッセージで音を再生; クリックで切替・試聴",
+  "profile.password": "パスワード",
+  "profile.passwordDesc": "変更は次回ログインから有効",
+  "profile.changePassword": "パスワード変更",
+  "profile.currentPassword": "現在のパスワード",
+  "profile.newPassword": "新しいパスワード",
+  "profile.confirmNewPassword": "新しいパスワード確認",
+  "profile.passwordPlaceholder": "6文字以上",
+  "profile.newPasswordPlaceholder": "6文字以上",
+  "profile.confirmPasswordPlaceholder": "新しいパスワードをもう一度",
+  "profile.secondPassword": "第二パスワード",
+  "profile.secondPasswordDesc": "重要な操作のための追加認証",
+  "profile.secondPasswordEnabled": "有効",
+  "profile.secondPasswordDisabled": "無効",
+  "profile.secondPasswordHint": "ヒント：",
+  "profile.secondPasswordNew": "新しい第二パスワード",
+  "profile.secondPasswordNewHint": "新しいヒント",
+  "profile.setSecondPassword": "設定",
+  "profile.modifySecondPassword": "変更",
+  "profile.closeSecondPassword": "無効化",
+  "profile.confirmCloseSecondPassword": "確認して無効化",
+  "profile.closeSecondPasswordConfirm": "第二パスワードを無効にしますか？",
+  "profile.secondPasswordPlaceholder": "4文字以上",
+  "profile.hintPlaceholder": "パスワードを思い出すためのヒント",
+  "profile.dangerZone": "アカウント削除",
+  "profile.deleteAccount": "アカウント削除",
+  "profile.deleteAccountDesc": "この操作は元に戻せません",
+  "profile.deleteAccountWarning": "削除後：",
+  "profile.deleteWarningItems": "すべてのデータ（友達、チャット）が削除されます\n作成したチャンネルは解散します\nプロフィールは削除済みと表示されます\nメッセージは「アカウント削除済み」と表示されます\nユーザー名は解放されます\nプロフィールページにアクセスできなくなります",
+  "profile.deleteConfirmPassword": "パスワード確認",
+  "profile.deletePasswordPlaceholder": "パスワードを入力",
+  "profile.confirmDelete": "削除を確認",
+  "profile.deleting": "削除中…",
+  "profile.logout": "ログアウト",
+  "profile.save": "変更を保存",
+  "profile.saving": "保存中…",
+  "profile.saved": "保存済み",
+  "profile.language": "言語",
+  "profile.languageDesc": "表示言語を選択",
+  "settings": "設定",
+  "accountSecurity": "アカウントセキュリティ",
+  "media.all": "すべて",
+  "media.image": "画像",
+  "media.file": "ファイル",
+  "media.video": "動画",
+  "media.location": "位置情報",
+  "media.poll": "投票",
+  "media.text": "テキスト",
+  "media.ai": "AI",
+  "media.markdown": "MD",
+  "member.owner": "オーナー",
+  "member.admin": "管理者",
+  "member.member": "メンバー",
+  "channel.create": "チャンネル作成",
+  "channel.nameRequired": "チャンネル名を入力してください",
+  "channel.manage": "チャンネル管理",
+  "channel.discover": "チャンネルを探す",
+  "notification.title": "通知",
+  "notification.empty": "通知はありません",
+  "notification.refresh": "更新",
+  "sticker.empty": "スタンパックがありません",
+  "captcha.title": "キャプチャ",
+  "captcha.desc": "レート制限に達しました。キャプチャを完了してください",
+  "captcha.loading": "キャプチャ読み込み中…",
+  "call.video": "ビデオ通話",
+  "call.audio": "音声通話",
+  "call.ended": "通話終了",
+  "call.duration": "通話時間",
+  "call.initiatedBy": "発信者",
+  "status.online": "オンライン",
+  "status.away": "離席中",
+  "status.busy": "取り込み中",
+  "status.offline": "オフライン",
+  "message.card.friend": "[友達カード]",
+  "message.card.channel": "[チャンネルカード]",
+  "message.card.location": "[位置情報]",
+  "message.card.poll": "[投票]",
+  "message.card.forwarded": "[転送]",
+  "message.card.image": "[画像]",
+  "message.card.images": "[画像 ×{count}]",
+  "message.card.file": "[ファイル]",
+  "message.card.files": "[ファイル ×{count}]",
+  "message.card.system": "[システム]",
+  "message.card.sticker": "[スタンプ]",
+  "message.emoji": "[絵文字]",
+  "message.recalled": "このメッセージは取り消されました",
+  "error.unauthorized": "認証が必要です",
+  "error.notFound": "見つかりません",
+  "error.forbidden": "アクセス権限がありません",
+  "error.serverError": "サーバー内部エラー",
+  "error.rateLimited": "リクエストが多すぎます。後でもう一度お試しください",
+  "error.maintenance": "メンテナンス中です。後でもう一度お試しください",
+  "error.uploadFailed": "アップロード失敗",
+  "error.fileTooLarge": "ファイルサイズ制限を超えています ({size} MB)",
+  "error.unsupportedFileType": "サポートされていないファイル形式です: {type}",
+  "error.captchaFailed": "キャプチャ認証失敗",
+  "error.captchaRequired": "キャプチャを完了してください",
+  "error.networkError": "ネットワークエラー",
+  "error.downloadFailed": "ダウンロード失敗 ({status})",
+  "time.justNow": "たった今",
+  "time.minutesAgo": "{n}分前",
+  "time.hoursAgo": "{n}時間前",
+  "time.yesterday": "昨日 {time}",
+  "time.today": "今日",
+  "time.daysAgo": "{n}日前",
+  "admin.dashboard": "ダッシュボード",
+  "admin.title": "デジタルオペレーションセンター",
+  "admin.subtitle": "ユーザー成長、チャンネル活性、メッセージデータのリアルタイム可視化",
+  "admin.totalUsers": "総ユーザー数",
+  "admin.activeUsers": "アクティブユーザー",
+  "admin.channels": "チャンネル数",
+  "admin.messages": "総メッセージ数",
+  "admin.newToday": "本日の新規",
+  "admin.newThisWeek": "今週の新規",
+  "admin.messagesToday": "本日のメッセージ",
+  "admin.messagesThisWeek": "今週のメッセージ",
+  "admin.securityStatus": "セキュリティ状態",
+  "admin.connectionStatus": "接続状態",
+  "admin.runEfficiency": "実行効率",
+  "admin.syncPerformance": "同期パフォーマンス",
+  "admin.stable": "安定",
+  "admin.normal": "正常",
+  "admin.excellent": "優秀",
+  "admin.highSpeed": "高速",
+  "admin.role.superAdmin": "スーパー管理者",
+  "admin.role.admin": "管理者",
+  "admin.role.moderator": "モデレーター",
+  "admin.role.user": "ユーザー",
+  "admin.notification.created": "通知を作成しました",
+  "admin.notification.deleted": "通知を削除しました",
+  "admin.notification.published": "通知を公開しました",
+  "server.accountDeleted": "アカウント削除済み",
+  "server.accountBanned": "アカウントは停止されました{reason}",
+  "server.loginRequired": "認証が必要です。ログインしてください",
+  "server.invalidRequest": "無効なリクエスト",
+  "server.notFound": "見つかりません",
+  "server.rateLimited": "リクエストが多すぎます。後でもう一度お試しください",
+  "server.maintenance": "メンテナンス中です。後でもう一度お試しください",
+  "server.captchaRequired": "キャプチャを完了してください",
+  "server.captchaFailed": "キャプチャ認証に失敗しました。もう一度お試しください",
+  "server.registerClosed": "登録は停止されています",
+  "server.inviteCodeError": "招待コードが無効です",
+  "server.usernameTaken": "このユーザー名は既に使用されています",
+  "server.registrationIncomplete": "すべての登録項目を入力してください",
+  "server.passwordTooShort": "パスワードは8文字以上必要です",
+  "server.passwordRequirements": "パスワードは大文字・小文字・数字を含む必要があります",
+  "server.loginRateLimited": "ログイン試行が多すぎます。後でもう一度お試しください",
+  "server.regRateLimited": "登録試行が多すぎます。後でもう一度お試しください",
+  "server.ipLimit": "このIPは{count}アカウントを登録しています。上限に達しました",
+  "server.wrongCredentials": "ユーザー名またはパスワードが間違っています",
+  "server.userNotFound": "ユーザーが見つかりません",
+  "server.channelNotFound": "チャンネルが見つかりません",
+  "server.messageNotFound": "メッセージが見つかりません",
+  "server.conversationNotFound": "会話が見つかりません",
+  "server.cannotSendDM": "この会話でメッセージを送信する権限がありません",
+  "server.cannotFriendSelf": "自分自身を友達追加できません",
+  "server.alreadyFriends": "すでに友達です",
+  "server.cannotSendFriendRequest": "友達リクエストを送信できません",
+  "server.friendRequestNotFound": "リクエストが見つかりません",
+  "server.targetUserNotFound": "対象ユーザーが見つかりません",
+  "server.memberNotFound": "メンバーが見つかりません",
+  "server.needAdminPermission": "管理者権限が必要です",
+  "server.cannotActionSelf": "自分自身にこの操作は実行できません",
+  "server.cannotActionOwner": "オーナーにこの操作は実行できません",
+  "server.onlyOwnerCanActionAdmin": "オーナーのみが他の管理者を操作できます",
+  "server.onlyOwnerSetRole": "オーナーのみがロールを設定できます",
+  "server.channelNameRequired": "チャンネル名は必須です",
+  "server.messageTooLong": "メッセージが長すぎます。最大{max}文字",
+  "server.rateLimitedMsg": "メッセージ送信頻度が高すぎます",
+  "server.presencePingRateLimited": "{seconds} 秒後にもう一度お試しください",
+  "server.captchaRequiredMsg": "レート制限に達しました。キャプチャを完了してください",
+  "server.blockedByYou": "メッセージ未送信 - このユーザーをブロックしています",
+  "server.blockedByThem": "メッセージ未送信 - このユーザーにブロックされています",
+  "server.nonFriendLimitReached": "非フレンドメッセージ上限(3)に達しました。友達追加してください",
+  "server.youAreMuted": "ミュートされています",
+  "server.channelMuteAll": "このチャンネルは全員ミュートモードです",
+  "server.onlyFriendCard": "フレンドカードは友達にのみ送信できます",
+  "server.sensitiveBlocked": "メッセージに不適切な内容が含まれています",
+  "server.notInConv": "この会話に参加していません",
+  "server.cannotForward": "参加していない会話からは転送できません",
+  "server.channelBanned": "このチャンネルは管理者により停止されました",
+  "server.messageRecalled": "このメッセージは取り消されました",
+  "server.cannotRecall": "自分のメッセージのみ取り消せます",
+  "server.recallTimeout": "送信から5分以上経過したメッセージは取り消せません",
+  "server.pollNotFound": "投票メッセージが見つかりません",
+  "server.invalidPollOption": "無効なオプションです",
+  "server.noPermissionCall": "この通話を管理する権限がありません",
+  "server.authTimeout": "認証タイムアウト",
+  "server.messageTooLarge": "メッセージが大きすぎます",
+  "server.invalidMessageFormat": "無効なメッセージ形式",
+  "server.authRequired": "先に認証してください",
+  "server.authFailed": "認証に失敗しました",
+  "server.uploadNoFile": "ファイルが受信されませんでした",
+  "server.fileTooLarge": "ファイルサイズ制限を超えています ({size} MB)",
+  "server.unsupportedFileType": "サポートされていないファイル形式です: {type}",
+  "server.enterUsernamePassword": "ユーザー名とパスワードを入力してください",
+  "server.enterPassword": "パスワードを入力してください",
+  "server.enterCurrentNewPassword": "現在のパスワードと新しいパスワードを入力してください",
+  "server.enterSecondPassword": "第二パスワードを入力してください",
+  "server.enterHint": "ヒントを入力してください",
+  "server.secondPasswordTooShort": "第二パスワードは4文字以上必要です",
+  "server.secondPasswordSameAsLogin": "第二パスワードはログインパスワードと同じにできません",
+  "server.hintContainsPassword": "ヒントにパスワードを含めることはできません",
+  "server.cannotCreateDMSelf": "自分自身との会話は作成できません",
+  "server.onlyInviteFriends": "友達のみをチャンネルに招待できます",
+  "server.membersCannotInvite": "メンバーは招待できません",
+  "server.cannotLeaveOwner": "オーナーは退出できません。解散のみ可能です",
+  "server.onlyOwnerDisband": "オーナーのみがチャンネルを解散できます",
+  "server.forwardNoMessages": "転送するメッセージがありません",
+  "server.reportMissingFields": "必須フィールドが不足しています",
+  "server.failedToGetStats": "統計情報の取得に失敗",
+  "server.failedToGetRole": "管理者ロールの取得に失敗",
+  "server.failedToGetUsers": "ユーザー一覧の取得に失敗",
+  "server.failedToGrantRole": "ロール付与に失敗",
+  "server.failedToRevokeRole": "ロール剥奪に失敗",
+  "server.failedToBan": "ユーザー停止に失敗",
+  "server.failedToUnban": "ユーザー停止解除に失敗",
+  "server.failedToCheckBan": "停止状態の確認に失敗",
+  "server.failedToDeleteUser": "ユーザー削除に失敗",
+  "server.failedToGetChannels": "チャンネル一覧の取得に失敗",
+  "server.failedToDeleteChannel": "チャンネル削除に失敗",
+  "server.failedToDeleteMessage": "メッセージ削除に失敗",
+  "server.failedToGetSettings": "設定の取得に失敗",
+  "server.failedToUpdateSettings": "設定の更新に失敗",
+  "server.failedToGetCaptchaConfig": "キャプチャ設定の取得に失敗",
+  "server.failedToUpdateCaptchaConfig": "キャプチャ設定の更新に失敗",
+  "server.failedToGetAiConfig": "AI設定の取得に失敗",
+  "server.failedToUpdateAiConfig": "AI設定の更新に失敗",
+  "server.failedToGetAuditLogs": "監査ログの取得に失敗",
+  "server.failedToGetNotifications": "通知一覧の取得に失敗",
+  "server.failedToCreateNotification": "通知の作成に失敗",
+  "server.failedToUpdateNotification": "通知の更新に失敗",
+  "server.failedToDeleteNotification": "通知の削除に失敗",
+  "server.failedToPublishNotification": "通知の公開に失敗",
+  "server.failedToBanChannel": "チャンネル停止に失敗",
+  "server.failedToUnbanChannel": "チャンネル停止解除に失敗",
+  "server.failedToCheckChannelBan": "チャンネル停止状態の確認に失敗",
+  "server.failedToGetReports": "レポート一覧の取得に失敗",
+  "server.failedToHandleReport": "レポート処理に失敗",
+  "server.failedToGetIceConfig": "ICE設定の取得に失敗",
+  "server.failedToUpdateIceConfig": "ICE設定の更新に失敗",
+  "server.failedToAddMember": "メンバー追加に失敗",
+  "server.failedToTransferOwner": "オーナー移行に失敗",
+  "server.failedToCreateStickerPack": "スタンパック作成に失敗",
+  "server.failedToDeleteStickerPack": "スタンパック削除に失敗",
+  "server.failedToAddSticker": "スタンプ追加に失敗",
+  "server.failedToDeleteSticker": "スタンプ削除に失敗",
+  "server.failedToUpdateStickerName": "スタンプ名更新に失敗",
+  "server.adminInitFailed": "管理者初期化に失敗",
+  "server.adminInitKeyError": "初期化キーが無効です",
+  "server.adminAlreadyExists": "管理者は既に存在します",
+  "server.titleContentRequired": "タイトルと内容が必要です",
+  "server.contentRequired": "内容が必要です",
+  "server.orgNameRequired": "組織名が必要です",
+  "server.sensitiveWordsRequired": "不適切な言葉のリストが必要です",
+  "server.idListRequired": "IDリストが必要です",
+  "server.missingRequiredParams": "必須パラメータが不足しています",
+  "server.stickerPackNameRequired": "スタンパック名を入力してください",
+  "server.reportResultRequired": "レポート結果が必要です",
+  "server.aiConnectSuccess": "接続成功",
+  "server.aiConnectFailed": "接続失敗",
+  "server.aiConnectTimeout": "接続タイムアウト",
+  "server.cannotBlockSuperAdmin": "スーパー管理者を停止できません",
+  "server.cannotDeleteSuperAdmin": "スーパー管理者を削除できません",
+  "server.onlySuperAdminGrantSuperAdmin": "スーパー管理者のみがスーパー管理者ロールを付与できます",
+  "server.onlySuperAdminRevokeSuperAdmin": "スーパー管理者のみがスーパー管理者ロールを剥奪できます",
+  "server.unknownChannel": "不明なチャンネル",
+  "server.unknownConversation": "不明な会話",
+  "server.noPermission": "この会話にアクセスする権限がありません",
+  "server.auditUpdateSettings": "システム設定を更新",
+  "server.auditUpdateCaptchaConfig": "キャプチャ設定を更新",
+  "server.auditUpdateAiConfig": "AI設定を更新",
+  "server.auditUpdateIceConfig": "ICE設定を更新",
+  "server.auditSetOrg": "組織を設定",
+  "server.auditBatchAddSensitive": "不適切な言葉を一括追加",
+  "server.auditBatchDeleteSensitive": "不適切な言葉を一括削除",
+  "server.auditAddMember": "メンバーを追加",
+  "server.auditTransferOwner": "オーナーを移行",
+  "server.initialSuperAdmin": "スーパー管理者を初期化",
+  "server.reportStatusActioned": "対応済み",
+  "server.reportStatusRejected": "却下済み",
+  "server.reportStatusReviewed": "レビュー済み",
+  "server.reportNotificationTitle": "レポート通知",
+  "server.reportNotificationContent": "レポートが処理されました。状態: {status}, 結果: {result}",
+  "server.failedToUpdateStickerPackName": "スタンプパック名の更新に失敗",
+  "server.stickerNameRequired": "スタンプ名を入力してください",
+  "profile.avatarBackground": "アバター背景",
+  "profile.captcha": "キャプチャ",
+  "profile.captchaVerify": "認証",
+  "profile.cloudflare": "Cloudflare",
+  "profile.aijian": "愛簡天御",
+  "profile.passwordMatch": "パスワード一致",
+  "profile.passwordMismatch": "パスワード不一致",
+  "profile.organization": "組織",
+  "profile.organizationLoading": "組織を読み込み中…",
+  "profile.organizationUnknown": "不明な組織",
+  "profile.passwordPlaceholderShort": "6文字以上",
+  "profile.captchaVerifyDesc": "キャプチャを完了してください",
+  "profile.edit": "プロフィール編集",
+  "admin.users": "ユーザー",
+  "admin.userManagement": "ユーザー管理",
+  "admin.channelManagement": "チャンネル管理",
+  "admin.reports": "レポート",
+  "admin.audit": "監査",
+  "admin.content": "コンテンツ",
+  "admin.operations": "運用",
+  "admin.banUser": "ユーザー停止",
+  "admin.banReason": "停止理由",
+  "admin.confirmBan": "停止確認",
+  "admin.banReasonPlaceholder": "停止理由を入力",
+  "admin.confirmDeleteUser": "このユーザーを削除しますか？",
+  "admin.deleteUser": "ユーザー削除",
+  "admin.setRoleSuccess": "ロールを設定しました",
+  "admin.setRoleFailed": "ロールの設定に失敗",
+  "admin.unbanSuccess": "停止解除しました",
+  "admin.deleteSuccess": "削除しました",
+  "admin.deleteFailed": "削除に失敗",
+  "admin.banSuccess": "停止しました",
+  "admin.banFailed": "停止に失敗",
+  "admin.totalReports": "レポート総数",
+  "admin.noReports": "レポートはありません",
+  "admin.page": "{page} ページ",
+  "admin.previousPage": "前のページ",
+  "admin.nextPage": "次のページ",
+  "admin.reportDetail": "レポート詳細",
+  "admin.reportTime": "レポート時間",
+  "admin.reporter": "報告者",
+  "admin.reportTarget": "報告対象",
+  "admin.reportReason": "報告理由",
+  "admin.reportScreenshot": "報告スクリーンショット",
+  "admin.reportResult": "処理結果",
+  "admin.reportResultPlaceholder": "処理結果を入力",
+  "admin.reportProcessed": "処理済み",
+  "admin.reportRejected": "却下済み",
+  "admin.reportProcessing": "処理中",
+  "admin.reportAll": "すべて",
+  "admin.reportPending": "未処理",
+  "admin.reportReviewed": "レビュー済み",
+  "admin.notification.privateTitle": "プライベート通知",
+  "admin.notification.privateDesc": "特定のユーザーに通知を送信",
+  "admin.notification.privateEmpty": "プライベート通知はありません",
+  "admin.notification.targetUser": "対象ユーザー",
+  "admin.notification.sendTime": "送信時間",
+  "admin.notification.public": "公開",
+  "admin.notification.private": "プライベート",
+  "admin.sensitive.management": "不適切な言葉管理",
+  "admin.sensitive.policy": "ポリシー",
+  "admin.sensitive.block": "ブロック",
+  "admin.sensitive.mask": "マスク",
+  "admin.sensitive.batchAdd": "一括追加",
+  "admin.sensitive.batchAddHint": "1行に1つの言葉",
+  "admin.sensitive.searchPlaceholder": "不適切な言葉を検索…",
+  "admin.sensitive.deleteSelected": "選択を削除",
+  "admin.sensitive.word": "言葉",
+  "admin.sensitive.addTime": "追加時間",
+  "admin.sensitive.noWords": "不適切な言葉はありません",
+  "admin.sensitive.addSuccess": "追加しました",
+  "admin.sensitive.deleteSuccess": "削除しました",
+  "admin.sticker.management": "スタンプ管理",
+  "admin.sticker.create": "スタンプパック作成",
+  "admin.sticker.createSuccess": "スタンプパックを作成しました",
+  "admin.sticker.deleteSuccess": "スタンプパックを削除しました",
+  "admin.sticker.uploadSuccess": "アップロードしました",
+  "admin.sticker.addSticker": "スタンプ追加",
+  "admin.sticker.uploading": "アップロード中…",
+  "admin.sticker.saving": "保存中…",
+  "admin.sticker.noPacks": "スタンプパックがありません",
+  "admin.sticker.editName": "名前を編集",
+  "admin.sticker.saveName": "名前を保存",
+  "admin.sticker.deleteSticker": "スタンプ削除",
+  "admin.sticker.packName": "パック名",
+  "admin.sticker.packNamePlaceholder": "パック名を入力",
+  "admin.sticker.uploadFailed": "アップロードに失敗",
+  "admin.oss.name": "構成名",
+  "admin.oss.provider": "プロバイダー",
+  "admin.oss.region": "リージョン",
+  "admin.oss.endpoint": "エンドポイント",
+  "admin.oss.bucket": "バケット",
+  "admin.oss.bucketPlaceholder": "バケット名を入力",
+  "admin.oss.user": "ユーザー",
+  "admin.oss.isDefault": "デフォルト",
+  "admin.oss.addTime": "追加時間",
+  "admin.oss.setDefault": "デフォルトに設定",
+  "admin.oss.cancel": "キャンセル",
+  "admin.oss.add": "構成追加",
+  "admin.oss.envPlaceholder": "環境変数名を入力",
+  "admin.oss.regionPlaceholder": "リージョンを入力",
+  "admin.oss.endpointPlaceholder": "エンドポイントURLを入力",
+  "admin.oss.namePlaceholder": "構成名を入力",
+  "admin.oss.nameRequired": "構成名が必要です",
+  "admin.rateLimit.title": "レート制限",
+  "admin.rateLimit.desc": "APIリクエストのレート制限を設定",
+  "admin.rateLimit.message": "メッセージレート制限",
+  "admin.rateLimit.login": "ログインレート制限",
+  "admin.rateLimit.registration": "登録レート制限",
+  "admin.rateLimit.perMinute": "回/分",
+  "admin.rateLimit.window": "ウィンドウ（秒）",
+  "admin.rateLimit.maxPerIp": "IPあたりの最大数",
+  "admin.rateLimit.count": "回数",
+  "admin.rateLimit.hint": "時間ウィンドウ内のIPあたりの最大リクエスト数を設定",
+  "admin.rateLimit.saveFailed": "レート制限設定の保存に失敗",
+  "adminSettings.basic": "基本設定",
+  "adminSettings.registration": "登録設定",
+  "adminSettings.message": "メッセージ設定",
+  "adminSettings.captcha": "キャプチャ設定",
+  "adminSettings.ai": "AI設定",
+  "adminSettings.cdn": "CDN設定",
+  "adminSettings.maintenance": "メンテナンス設定",
+  "adminSettings.ice": "ICE設定",
+  "adminSettings.siteName": "サイト名",
+  "adminSettings.siteDesc": "サイト説明",
+  "adminSettings.allowRegister": "登録を許可",
+  "adminSettings.requireInviteCode": "招待コードを必須",
+  "adminSettings.enableMaintenance": "メンテナンスモードを有効化",
+  "adminSettings.maintenanceMessage": "メンテナンスメッセージ",
+  "adminSettings.maintenanceMessagePlaceholder": "メンテナンスメッセージを入力",
+  "adminSettings.maxFileSize": "最大ファイルサイズ",
+  "adminSettings.currentSize": "現在の制限",
+  "adminSettings.maxMessageLen": "最大メッセージ長",
+  "adminSettings.enableCaptcha": "キャプチャを有効化",
+  "adminSettings.captchaProvider": "キャプチャプロバイダー",
+  "adminSettings.notEnabled": "無効",
+  "adminSettings.aiEnable": "AIを有効化",
+  "adminSettings.aiApiUrl": "API URL",
+  "adminSettings.aiApiKey": "APIキー",
+  "adminSettings.aiModel": "モデル",
+  "adminSettings.aiSystemPrompt": "カスタムプロンプト",
+  "adminSettings.aiName": "AI名",
+  "adminSettings.aiBio": "AI紹介",
+  "adminSettings.aiAvatarUrl": "AIアバターURL",
+  "adminSettings.aiApiKeyPlaceholder": "APIキーを入力",
+  "adminSettings.aiApiDesc": "AIサービスの接続パラメータを設定",
+  "adminSettings.testConnection": "接続テスト",
+  "adminSettings.testing": "テスト中…",
+  "adminSettings.testFailed": "接続テストに失敗",
+  "adminSettings.cdnGoogleFonts": "Google Fontsミラー",
+  "adminSettings.cdnGoogleFontsPlaceholder": "Google FontsミラーURLを入力",
+  "adminSettings.cdnGoogleFontsExample": "例：https://fonts.example.com",
+  "adminSettings.vconsole": "VConsole",
+  "adminSettings.vconsoleDesc": "VConsoleデバッグツールを有効化",
+  "adminSettings.stunTurn": "STUN/TURN設定",
+  "adminSettings.stun": "STUNサーバー",
+  "adminSettings.turn": "TURNサーバー",
+  "adminSettings.addStun": "STUN追加",
+  "adminSettings.addTurn": "TURN追加",
+  "adminSettings.usernameRequired": "ユーザー名（任意）",
+  "adminSettings.passwordOptional": "パスワード（任意）",
+  "adminSettings.serverRequired": "サーバーアドレスが必要です",
+  "adminSettings.stunDesc": "STUNはパブリックIPアドレスの取得に使用",
+  "adminSettings.turnDesc": "TURNは中継転送に使用",
+  "adminSettings.loadFailed": "設定の読み込みに失敗",
+  "adminSettings.saveFailed": "設定の保存に失敗",
+  "channel.info": "チャンネル情報",
+  "channel.public": "公開",
+  "channel.private": "非公開",
+  "channel.description": "説明",
+  "channel.descriptionPlaceholder": "チャンネルの説明を入力",
+  "channel.announcement": "お知らせ",
+  "channel.announcementPlaceholder": "チャンネルのお知らせを入力",
+  "channel.noAnnouncement": "お知らせはありません",
+  "channel.muteAll": "全員ミュート",
+  "channel.muteAllDesc": "有効にすると管理者のみが送信できます",
+  "channel.allowInvite": "招待を許可",
+  "channel.allowInviteDesc": "メンバーが他のメンバーを招待できる",
+  "channel.makePublic": "公開にする",
+  "channel.makePublicDesc": "公開チャンネルは発見ページで検索可能",
+  "channel.saveInfo": "情報を保存",
+  "channel.adminCanEdit": "管理者が編集可能",
+  "channel.dangerZone": "危険操作",
+  "channel.disband": "チャンネル解散",
+  "channel.leave": "チャンネル退出",
+  "channel.ownerCannotLeave": "オーナーは退出できません",
+  "channel.report": "チャンネル報告",
+  "channel.disbandConfirm": "チャンネルを解散しますか？",
+  "channel.disbandDesc": "すべてのメッセージが削除され、復元できません",
+  "channel.leaveConfirm": "チャンネルを退出しますか？",
+  "channel.leaveDesc": "再入室には招待が必要です",
+  "channel.bannedMembers": "停止されたメンバー",
+  "channel.banChannel": "チャンネルをBAN",
+  "channel.addFriendHint": "友達リストから選択",
+  "channel.noFriendToAdd": "追加できる友達がいません",
+  "channel.cancelAdmin": "管理者解除",
+  "channel.setAdmin": "管理者に設定",
+  "channel.transferOwner": "オーナー移行",
+  "channel.unmute": "ミュート解除",
+  "channel.mute": "ミュート",
+  "channel.removeMember": "メンバー削除",
+  "channel.unban": "停止解除",
+  "channel.you": "あなた",
+  "channel.lastActive": "最終アクティブ",
+  "channel.createdAt": "作成日時",
+  "channel.saveFailed": "保存に失敗",
+  "channel.leaveSuccess": "チャンネルを退出しました",
+  "channel.disbandSuccess": "チャンネルを解散しました",
+  "channel.joined": "参加済み",
+  "channel.join": "参加",
+  "channel.publicChannel": "公開チャンネル",
+  "channel.memberCount": "{count} 人のメンバー",
+  "channel.alreadyJoined": "参加済み",
+  "channel.joinChannel": "チャンネルに参加",
+  "composer.scheduledAt": "予約送信",
+  "composer.scheduleInFuture": "未来の時間を選択してください",
+  "composer.pollOnlyChannel": "チャンネルのみ投票",
+  "composer.pollMinOptions": "最低2つの選択肢が必要",
+  "composer.pollMaxOptions": "最大10の選択肢",
+  "composer.pollQuestion": "投票質問",
+  "composer.pollQuestionPlaceholder": "投票質問を入力",
+  "composer.pollOptions": "投票選択肢",
+  "composer.addOption": "選択肢を追加",
+  "composer.anonymousPoll": "匿名投票",
+  "composer.pollAnonymousDesc": "投票者の表示を非表示",
+  "composer.publishPoll": "投票を公開",
+  "composer.voiceCall": "音声通話",
+  "composer.videoCall": "ビデオ通話",
+  "composer.emoji": "絵文字",
+  "composer.sticker": "スタンプ",
+  "composer.recommendFriend": "友達を紹介",
+  "composer.shareChannel": "チャンネルを共有",
+  "composer.scheduleSend": "予約送信",
+  "composer.markdownSend": "Markdownで送信",
+  "composer.normalSend": "テキストで送信",
+  "composer.dragToUpload": "ファイルをドラッグしてアップロード",
+  "composer.blockedByBan": "停止されました",
+  "composer.everyone": "全員",
+  "composer.more": "もっと",
+  "composer.stickerLoading": "スタンプ読み込み中…",
+  "composer.stickerLoadFailed": "スタンプの読み込みに失敗",
+  "composer.loadMoreStickers": "もっとスタンプを読み込む",
+  "composer.searchUser": "ユーザー検索",
+  "composer.searchChannel": "チャンネル検索",
+  "composer.noMatch": "結果なし",
+  "composer.createPoll": "投票作成",
+  "composer.pollOnlyChannelErr": "投票はチャンネルでのみ作成できます",
+  "composer.pollMinErr": "最低2つの選択肢が必要です",
+  "composer.pollMaxErr": "最大10の選択肢までです",
+  "composer.pollQuestionErr": "投票質問を入力してください",
+  "composer.friendCardSent": "友達カードを送信しました",
+  "composer.notFriendAnymore": "このユーザーは友達ではなくなりました",
+  "composer.recording": "録音中…",
+  "composer.voiceRecord": "音声メッセージ",
+  "call.ringing": "呼び出し中…",
+  "call.connecting": "接続中…",
+  "call.inviteYou": "通話に招待されています",
+  "call.latency": "レイテンシ",
+  "call.jitter": "ジッター",
+  "call.packetLoss": "パケットロス",
+  "call.manage": "通話管理",
+  "call.mute": "ミュート",
+  "call.unmute": "ミュート解除",
+  "call.removeMember": "メンバー削除",
+  "call.screen": "画面共有",
+  "call.mySelf": "自分",
+  "call.incomingCall": "着信",
+  "call.someone": "誰か",
+  "media.searchHint": "メディアファイルを検索",
+  "media.searchResults": "検索結果",
+  "media.preview": "プレビュー",
+  "media.jumpToMessage": "メッセージにジャンプ",
+  "media.backToResults": "結果に戻る",
+  "media.download": "ダウンロード",
+  "media.zoomIn": "拡大",
+  "media.zoomOut": "縮小",
+  "media.zoomReset": "リセット",
+  "media.emptyHint": "メディアファイルはありません",
+  "media.loadMore": "もっと読み込む",
+  "media.locationInfo": "位置情報",
+  "media.emptyMessage": "メッセージはありません",
+  "media.returnResults": "結果に戻る",
+  "message.reply": "返信",
+  "message.copy": "コピー",
+  "message.recall": "取り消し",
+  "message.report": "報告",
+  "message.pin": "ピン留め",
+  "message.unpin": "ピン解除",
+  "message.edited": "編集済み",
+  "message.sending": "送信中…",
+  "message.retrySend": "再送信",
+  "message.seenBy": "既読",
+  "message.unread": "未読",
+  "message.anonymous": "匿名",
+  "message.votes": "票",
+  "message.voted": "投票済み",
+  "message.totalVotes": "総投票数",
+  "message.anonymousVote": "匿名投票",
+  "message.seenStatus": "既読状態",
+  "message.readCount": "{count} 人が既読",
+  "message.unreadCount": "{count} 人が未読",
+  "message.fromUser": "ユーザーから",
+  "message.fromChannel": "チャンネルから",
+  "message.notJoined": "未参加",
+  "message.notJoinedDesc": "このチャンネルに参加していません",
+  "message.notJoinedHint": "参加してメッセージを表示",
+  "message.openChannel": "チャンネルを開く",
+  "message.clickToView": "クリックして表示",
+  "message.invalidLocation": "無効な位置情報",
+  "message.pollDataError": "投票データエラー",
+  "message.loadFailed": "メッセージの読み込みに失敗",
+  "report.title": "報告",
+  "report.type": "報告種類",
+  "report.submitted": "報告しました",
+  "report.reason": "理由",
+  "report.reasonPlaceholder": "理由を説明してください",
+  "report.screenshot": "スクリーンショット",
+  "report.uploadScreenshot": "スクリーンショットをアップロード",
+  "report.uploadingScreenshot": "スクリーンショットアップロード中…",
+  "report.captcha": "キャプチャ",
+  "report.submitting": "送信中…",
+  "report.submit": "報告を送信",
+  "report.screenshotFailed": "スクリーンショットのアップロードに失敗",
+  "member.detail": "メンバー詳細",
+  "member.friendList": "友達リスト",
+  "member.noFriendToAdd": "追加できる友達がいません",
+  "member.adding": "追加中…",
+  "member.you": "あなた",
+  "member.lastActive": "最終アクティブ",
+  "member.add": "追加",
+  "member.detailInfo": "詳細情報",
+  "sticker.searchPlaceholder": "スタンプを検索…",
+  "sticker.noMatch": "一致するスタンプがありません",
+  "sticker.noEmoji": "一致する絵文字がありません",
+  "error.somethingWentWrong": "エラーが発生しました",
+  "error.refreshPage": "ページを更新",
+  "error.microphoneDenied": "マイクアクセスが拒否されました",
+  "messageSearch.all": "すべて",
+  "messageSearch.text": "テキスト",
+  "messageSearch.image": "画像",
+  "messageSearch.file": "ファイル",
+  "messageSearch.location": "位置情報",
+  "messageSearch.video": "動画",
+  "messageSearch.voice": "音声",
+  "messageSearch.hint": "メッセージを検索",
+  "messageSearch.viewInChat": "チャットで表示",
+  "userCard.removeFriend": "友達削除",
+  "userCard.acceptRequest": "リクエスト承認",
+  "userCard.unblock": "ブロック解除",
+  "userCard.block": "ブロック",
+  "userCard.report": "報告",
+  "userCard.gender": "性別",
+  "userCard.lastActive": "最終アクティブ",
+  "userCard.removeSuccess": "削除しました",
+  "userCard.acceptSuccess": "承認しました",
+  "userCard.unblockSuccess": "ブロック解除しました",
+  "userCard.blockSuccess": "ブロックしました",
+  "location.selectTitle": "位置を選択",
+  "location.myLocation": "現在地",
+  "location.locating": "位置情報取得中…",
+  "location.useMyLocation": "現在地を使用",
+  "location.mapPreview": "地図プレビュー",
+  "location.noPreview": "プレビュー不可",
+  "location.searchHint": "位置を検索",
+  "location.openInAmap": "高德地図で開く",
+  "location.searchFailed": "検索に失敗",
+  "location.noPermission": "位置情報の権限がありません",
+  "location.timeout": "位置情報の取得がタイムアウト",
+  "location.failed": "位置情報の取得に失敗",
+  "location.notSupported": "位置情報がサポートされていません",
+  "location.selected": "選択した位置",
+  "location.permissionHint": "ブラウザ設定で位置情報へのアクセスを許可してください",
+  "contextMenu.forward": "転送",
+  "contextMenu.reply": "返信",
+  "contextMenu.copy": "コピー",
+  "contextMenu.recall": "取り消し",
+  "contextMenu.report": "報告",
+  "contextMenu.pin": "ピン留め",
+  "contextMenu.unpin": "ピン解除",
+  "contextMenu.delete": "削除",
+  "admin.addTime": "追加日時",
+  "admin.auditLog": "監査ログ",
+  "admin.banReasonOptional": "BAN理由（任意）",
+  "admin.banStatus": "BAN状態",
+  "admin.channel": "チャンネル",
+  "admin.confirmDeleteChannel": "このチャンネルを削除しますか？この操作は取り消せません！",
+  "admin.confirmDeleteNotification": "この通知を削除しますか？この操作は取り消せません。",
+  "admin.confirmDeleteOrg": "この組織を削除しますか？サブ組織はトップレベルになり、メンバーオーガニゼーション情報は消去されます。",
+  "admin.conversation": "会話",
+  "admin.createNotification": "通知を作成",
+  "admin.createOrg": "組織を作成",
+  "admin.dataVisualization": "データ可視化マトリクス",
+  "admin.deleteNotification": "通知を削除",
+  "admin.editNotification": "通知を編集",
+  "admin.forwarded": "転送",
+  "admin.imagePreview": "画像プレビュー",
+  "admin.imageUrl": "画像URL",
+  "admin.markdownSupported": "Markdown対応",
+  "admin.messageAudit": "メッセージ監査",
+  "admin.noNotifications": "通知がありません",
+  "admin.sendNotification": "通知を送信",
+  "admin.noOrganization": "組織なし",
+  "admin.noOrgs": "組織がありません",
+  "admin.notificationContentPlaceholder": "通知内容を入力（Markdown対応）...",
+  "admin.notificationTitle": "通知タイトルを入力",
+  "admin.operator": "操作者",
+  "admin.orgCreated": "組織を作成しました",
+  "admin.orgDeleted": "組織を削除しました",
+  "admin.orgDescOptional": "説明（任意）",
+  "admin.orgManagement": "組織管理",
+  "admin.orgUpdated": "組織情報を更新しました",
+  "admin.oss.addBinding": "バインディングを追加",
+  "admin.oss.bindings": "OSS バインディング",
+  "admin.oss.confirmDelete": "このOSSバインディングを削除しますか？",
+  "admin.oss.created": "OSSバインディングを追加しました",
+  "admin.oss.fillRequired": "すべての必須項目を入力してください",
+  "admin.oss.setDefaultSuccess": "デフォルトに設定しました",
+  "admin.oss.urlPlaceholder": "例：https://oss-cn-hangzhou.aliyuncs.com",
+  "admin.oss.userIdPlaceholder": "OSS所有者のユーザーID",
+  "admin.poll": "投票",
+  "admin.position": "役職",
+  "admin.positionPlaceholder": "例：技術責任者",
+  "admin.publishNotification": "通知を公開",
+  "admin.publishToAll": "すべての連絡先に公開",
+  "admin.rateLimit.captchaHint": "超過時にキャプチャが必要",
+  "admin.rateLimit.maxAccountsPerIp": "IPあたり最大アカウント数",
+  "admin.rateLimit.maxLogins": "ウィンドウ内最大ログイン数",
+  "admin.rateLimit.maxMessages": "毎分最大メッセージ数",
+  "admin.rateLimit.maxRegistrations": "ウィンドウ内最大登録数",
+  "admin.rateLimit.overLimit": "超過時に429を返す",
+  "admin.rateLimit.seconds": "秒",
+  "admin.rateLimit.times": "回",
+  "admin.rateLimit.windowDesc": "統計時間ウィンドウ",
+  "admin.rateLimit.presencePing": "「まだいますか？」レート制限",
+  "admin.rateLimit.presencePingMax": "ウィンドウ内最大送信回数",
+  "admin.rateLimit.presencePingWindow": "ウィンドウ（秒）",
+  "admin.rateLimit.presencePingDesc": "DM メニューの「まだいますか？」をユーザー・会話ごとに制限",
+  "admin.report.pending": "保留中",
+  "admin.report.processed": "処理済み",
+  "admin.report.rejected": "却下済み",
+  "admin.report.reporter": "通報者",
+  "admin.report.messageId": "メッセージ ID",
+  "admin.report.messageTime": "メッセージ時刻",
+  "admin.report.reviewed": "レビュー済み",
+  "admin.role": "役割",
+  "admin.roleSet": "{role} に設定しました",
+  "admin.saveOrgInfo": "組織情報を保存",
+  "admin.searchChannelPlaceholder": "チャンネルを検索...",
+  "admin.searchMessagePlaceholder": "メッセージ内容を検索...",
+  "admin.sendFailed": "送信失敗",
+  "admin.sensitive.added": "{count} 個のセンシティブワードを追加しました",
+  "admin.sensitive.confirmDelete": "{count} 個のセンシティブワードを削除しますか？",
+  "admin.sensitive.deleted": "{count} 個のセンシティブワードを削除しました",
+  "admin.sensitive.wordCount": "{count} 個のワード",
+  "admin.sticker.addEmoji": "絵文字を追加",
+  "admin.sticker.noPacksHint": "スタンプパックがありません。先に作成してください",
+  "admin.system": "システム",
+  "admin.systemSettings": "システム設定",
+  "admin.topLevelOrg": "トップレベル組織",
+  "admin.totalChannels": "{count} チャンネル",
+  "admin.totalCount": "合計 {count} 件",
+  "admin.type": "タイプ",
+  "admin.userId": "ユーザーID",
+  "admin.userIdFilter": "ユーザーIDでフィルタ",
+  "adminSettings.captchaBackend": "バックエンドAPI URL",
+  "adminSettings.captchaFrontend": "フロントエンドWidget URL",
+  "adminSettings.inviteCodePlaceholder": "招待コードを設定",
+  "adminSettings.emailRegistration": "メール登録を許可",
+  "adminSettings.phoneRegistration": "電話番号登録を許可",
+  "adminSettings.sms": "SMS サービス",
+  "adminSettings.smsProvider": "SMS プロバイダ",
+  "adminSettings.smsProviderNone": "無効",
+  "adminSettings.smsProviderTencent": "Tencent Cloud SMS",
+  "adminSettings.smsProviderAliyun": "Alibaba Cloud SMS",
+  "adminSettings.smsSdkAppId": "アプリ ID (SdkAppId)",
+  "adminSettings.smsSdkAppIdDesc": "Tencent Cloud SMS コンソールで取得した SdkAppId。Aliyun では不要",
+  "adminSettings.smsAccessKeyId": "AccessKeyId / SecretId",
+  "adminSettings.smsAccessKeyIdDesc": "クラウドプロバイダのコンソールで取得したアクセスキー ID",
+  "adminSettings.smsAccessKeySecret": "AccessKeySecret / SecretKey",
+  "adminSettings.smsAccessKeySecretDesc": "アクセスキーの Secret 部分。厳重に管理してください",
+  "adminSettings.smsSignName": "SMS 署名",
+  "adminSettings.smsSignNameDesc": "審査済みの SMS 署名",
+  "adminSettings.smsTemplateCode": "テンプレート ID",
+  "adminSettings.smsTemplateCodeDesc": "審査済みの認証コードテンプレート ID。{code} 変数を 1 つ含めてください",
+  "adminSettings.smsRegion": "リージョン",
+  "adminSettings.smsRegionDesc": "Aliyun の regionId（例: cn-hangzhou）。Tencent では不要",
+  "adminSettings.smsEndpoint": "エンドポイント（任意）",
+  "adminSettings.smsEndpointDesc": "デフォルトは最寄りリージョン。例: sms.ap-guangzhou.tencentcloudapi.com",
+  "adminSettings.smsTest": "テスト SMS を送信",
+  "adminSettings.smsTestPlaceholder": "テスト電話番号（国番号付き、例: +8613800138000）",
+  "adminSettings.smsTestSuccess": "テスト SMS 送信成功",
+  "adminSettings.smsTestFailed": "テスト SMS 送信失敗",
+  "adminSettings.smtp": "メール SMTP",
+  "adminSettings.smtpDesc": "メール送信は system_settings の smtp_* フィールドで設定します。テンプレートは「メールテンプレート」タブで管理してください",
+  "adminSettings.email": "メール SMTP",
+  "adminSettings.smtpHost": "SMTP ホスト",
+  "adminSettings.smtpPort": "ポート",
+  "adminSettings.smtpSecure": "暗号化方式",
+  "adminSettings.smtpSsl": "SSL（ポート 465）",
+  "adminSettings.smtpStartTls": "STARTTLS（ポート 25/587）",
+  "adminSettings.smtpUser": "ユーザー名",
+  "adminSettings.smtpUserDesc": "通常は送信元メールと同じです。一部プロバイダは別ユーザーが必要です",
+  "adminSettings.smtpPassword": "パスワード / 認証コード",
+  "adminSettings.smtpPasswordDesc": "SMTP ログインパスワード、またはプロバイダ発行の認証コード",
+  "adminSettings.smtpFromName": "送信者名",
+  "adminSettings.smtpFromEmail": "送信元メール",
+  "adminSettings.emailConfigured": "SMTP 設定済み",
+  "adminSettings.emailNotConfigured": "SMTP 設定が未完了です。メール登録は送信できません",
+  "adminSettings.emailTest": "テストメール送信",
+  "adminSettings.emailTestPlaceholder": "受信メールアドレスを入力",
+  "adminSettings.emailTestSuccess": "テストメール送信成功",
+  "adminSettings.emailTestFailed": "テストメール送信失敗",
+  "login.email": "メール",
+  "login.phone": "電話番号",
+  "login.emailPlaceholder": "メールアドレスを入力",
+  "login.phonePlaceholder": "電話番号を入力（国番号付き）",
+  "login.code": "認証コード",
+  "login.codePlaceholder": "6 桁のコード",
+  "login.sendCode": "コードを送信",
+  "login.resendCode": "{seconds}s 後に再送",
+  "login.codeResent": "コードを再送しました",
+  "login.codeSent": "コードを送信しました",
+  "login.methodUsername": "ユーザー名",
+  "login.methodEmail": "メール",
+  "login.methodPhone": "電話番号",
+  "server.emailCodeError": "メールコードが無効または期限切れです",
+  "server.phoneCodeError": "SMS コードが無効または期限切れです",
+  "server.emailRegistered": "このメールは登録済みです",
+  "server.phoneRegistered": "この電話番号は登録済みです",
+  "server.smsNotConfigured": "SMS サービスが設定されていません",
+  "server.smsSendFailed": "SMS の送信に失敗しました",
+  "server.emailNotConfigured": "メールサービスが設定されていません",
+  "server.emailSendFailed": "メールの送信に失敗しました",
+  "server.codeSendFailed": "認証コードの送信に失敗しました",
+  "server.codeRateLimited": "リクエストが多すぎます。しばらくしてから再試行してください",
+  "server.codeInvalid": "認証コードが無効または期限切れです",
+  "server.accountNotFound": "このメールまたは電話番号に紐づくアカウントが見つかりません",
+  "server.invalidPhone": "電話番号の形式が正しくありません",
+  "server.invalidEmail": "メールアドレスの形式が正しくありません",
+  "server.emailChannelClosed": "メール登録は無効です",
+  "server.phoneChannelClosed": "電話番号登録は無効です",
+  "server.ssoDisabled": "SSO は無効です",
+  "app.checkServer": "サーバーが正しいポートで稼働しているか確認して、再試行してください。",
+  "app.connecting": "サーバーに接続中…",
+  "app.connectionFailed": "{elapsed}s 待ちましたが、WebSocket に接続できません。",
+  "app.connectionTimeout": "接続タイムアウト ({elapsed}s) — サーバーが起動しているか確認してください",
+  "app.disconnected": "切断されました",
+  "app.reconnecting": "再接続中、同期中…",
+  "appshell.jumpToPlaceholder": "グループ、DM、または連絡先にジャンプ…",
+  "call.incomingInvite": "{name}通話に招待中",
+  "call.network": "ネットワーク",
+  "call.publishUpstream": "上流 PC を公開",
+  "call.title": "通話",
+  "channel.addMember": "メンバー追加",
+  "channel.allowMemberInvite": "メンバーが友達を招待できる",
+  "channel.avatar": "グループアバター",
+  "channel.banFailed": "チャンネルのBANに失敗",
+  "channel.banReason": "BAN理由",
+  "channel.banned": "チャンネルがBANされました",
+  "channel.bannedChannel": "このグループチャットは管理者によりBANされました",
+  "channel.bannedDM": "このDMは管理者によりBANされました",
+  "channel.canAddMembers": "メンバーを追加可能",
+  "channel.changeAvatar": "カメラをクリックしてグループアバターを変更",
+  "channel.icon": "アイコン",
+  "channel.inviteAllowed": "メンバーが友達を招待できるようになりました",
+  "channel.inviteForbidden": "メンバーの友達招待を禁止しました",
+  "channel.inviteMember": "メンバーを招待",
+  "channel.memberAdded": "メンバーを追加しました",
+  "channel.memberInvitePermission": "メンバー招待権限",
+  "channel.name": "名前",
+  "channel.namePlaceholder": "例：プロジェクト議論",
+  "channel.noMatch": "一致するグループがありません",
+  "channel.noMemberData": "メンバーデータなし（まずチャットでこのチャンネルを開いてください）",
+  "channel.noReason": "未入力",
+  "channel.onlyOwnerAdmin": "閉じるとオーナーと管理者のみ",
+  "channel.owner": "オーナー",
+  "channel.privateDesc": "招待されたメンバーのみ表示・参加可能",
+  "channel.setAsOwner": "オーナーに設定",
+  "channel.transferConfirm": "チャンネル所有権を移転しますか？この操作は取り消せません。",
+  "channel.transferFailed": "移転に失敗",
+  "channel.transferOwnership": "所有権の移転",
+  "channel.transferSuccess": "所有権を移転しました",
+  "channel.unbanChannel": "チャンネルのBAN解除",
+  "channel.unbanFailed": "チャンネルのBAN解除に失敗しました",
+  "channel.unbanned": "チャンネルのBANが解除されました",
+  "fileDetails.title": "ファイル詳細",
+  "fileDetails.size": "サイズ",
+  "fileDetails.dimensions": "解像度",
+  "fileDetails.duration": "長さ",
+  "fileDetails.download": "ダウンロード",
+  "adminSettings.nsfw": "画像モデレーション (NSFW)",
+  "adminSettings.nsfwEnable": "NSFW モデレーションを有効化",
+  "adminSettings.nsfwEnableDesc": "有効化すると画像・動画アップロード時に NSFW 検出を行います",
+  "adminSettings.nsfwApiUrl": "モデレーションサービス URL",
+  "adminSettings.nsfwApiUrlDesc": "自社ホストまたはサードパーティの NSFW 検出サービスの完全 URL（POST multipart/form-data, フィールド: file）。空欄の場合サーバー側検出は無効です。",
+  "adminSettings.nsfwThreshold": "拒否閾値",
+  "adminSettings.nsfwThresholdDesc": "Porn + Hentai 確率がこの値を超えると拒否（0-100%）",
+  "adminSettings.nsfwBuiltinDesc": "サーバー内蔵の nsfwjs モデルを使用。外部 API の設定は不要です",
+  "adminSettings.sso": "シングルサインオン (SSO)",
+  "adminSettings.ssoEnable": "SSO ログインを有効化",
+  "adminSettings.ssoEnableDesc": "ログインページに SSO ボタンが表示され、初回クリックでアカウントが作成されます",
+  "adminSettings.ssoCompanyName": "企業表示名",
+  "adminSettings.ssoCompanyNameDesc": "SSO ボタンに表示されるテキスト",
+  "adminSettings.ssoCompanyNamePlaceholder": "例：サンプル株式会社",
+  "adminSettings.ssoCompanyFormalName": "企業ショートネーム",
+  "adminSettings.ssoCompanyFormalNameDesc": "英字・数字・_・- のみ、先頭は英字。デフォルトユーザー名生成に使用",
+  "adminSettings.ssoCompanyFormalNamePlaceholder": "例：acme",
+  "adminSettings.ssoIcon": "SSO アイコン",
+  "adminSettings.ssoIconDesc": "推奨 64x64 PNG/SVG",
+  "adminSettings.ssoIconImageOnly": "画像形式のみ対応",
+  "adminSettings.ssoIconUpload": "クリックでアイコンをアップロード",
+  "login.ssoButton": "{company} でサインイン",
+  "nsfw.rejected": "画像がコンテンツモデレーションにより拒否されました",
+  "chat.deleteConversation": "トークを削除",
+  "chat.noDms": "DMがありません",
+  "chat.searchResults": "検索結果",
+  "chat.unpin": "ピン解除",
+  "chat.workspace": "ワークスペース",
+  "common.createdAt": "作成日時",
+  "common.deleted": "削除済み",
+  "common.detail": "詳細",
+  "common.loadFailed": "読み込み失敗",
+  "common.option": "オプション",
+  "common.optional": "任意",
+  "common.saveSuccess": "保存しました",
+  "common.selected": "選択済み",
+  "common.submitting": "送信中…",
+  "common.time": "時間",
+  "common.totalCount": "合計 {count} 件",
+  "composer.banned": "BANされています、メッセージを送信できません",
+  "composer.friendCheckFailed": "友達関係の確認に失敗",
+  "friends.accepted": "友達申請を承認しました",
+  "friends.asFriend": "として友達に",
+  "friends.noneToInvite": "招待できる友達がいません",
+  "friends.pendingRequest": "この友達には保留中の申請があります",
+  "friends.removed": "友達を削除しました",
+  "friends.requestHint": "誰かがあなたを追加すると、ここに表示されます。",
+  "friends.unblocked": "ブロック解除しました",
+  "login.passwordStrength": "パスワード強度",
+  "login.usernameInvalid": "ユーザー名は3〜20文字の英数字またはアンダースコア",
+  "media.audio": "音声",
+  "media.takePhoto": "写真を撮る",
+  "member.memberList": "メンバー一覧",
+  "member.noMembers": "メンバーがいません",
+  "message.card.empty": "[空メッセージ]",
+  "message.card.video": "[動画]",
+  "message.emojiReact": "リアクション",
+  "message.fromChannelName": "グループから：{name}",
+  "message.fromConversationName": "トークから：{name}",
+  "message.mention": "[メンション]",
+  "message.notInChannel": "このグループに参加していないため開けません",
+  "message.pollError": "[投票データエラー]",
+  "message.totalVoters": "{count} 人が投票しました",
+  "patternLock.points": "ポイント",
+  "report.reasonRequired": "通報理由を入力してください",
+  "server.banSuccess": "BANしました",
+  "sticker.loadFailed": "スタンプパックの読み込みに失敗",
+  "theme.dark": "ダークに切替",
+  "theme.light": "ライトに切替",
+  "user.gender": "性別",
+
+  "admin.allOperations": "すべての操作",
+  "admin.deleteMessage": "メッセージを削除",
+  "admin.grantAdmin": "管理者を付与",
+  "admin.noData": "データなし",
+  "admin.revokeAdmin": "管理者を取り消す",
+  "admin.sensitive.batchPlaceholder": "1行に1つの敏感語",
+  "admin.sensitive.inputRequired": "敏感語を入力してください",
+  "admin.sensitivePolicy": "敏感語ポリシー",
+  "admin.sticker.namePlaceholder": "名前を入力",
+  "admin.sticker.nameRequired": "名前は必須です",
+  "admin.unbanUser": "ユーザーの制限を解除",
+  "admin.updateSettings": "設定を更新",
+  "call.cancelled": "キャンセル済み",
+  "call.calling": "{name} に発信中",
+  "call.connectionError": "接続失敗",
+  "call.dialing": "発信中…",
+  "call.mediaError": "メディアデバイスエラー",
+  "call.noResponse": "応答なし",
+  "call.notAvailable": "利用不可",
+  "call.notSupported": "サポート外",
+  "call.rejected": "拒否済み",
+  "call.screenShareFailed": "画面共有失敗",
+  "call.screenShareNotSupported": "画面共有はサポート外",
+  "call.waitingAnswer": "応答を待機中…",
+  "common.cancelCall": "通話をキャンセル",
+  "error.callLoadFailed": "通話の読み込み失敗",
+  "error.requestFailed": "リクエスト失敗",
+  "friends.requestReceivedName": "友達リクエストを受信",
+  "admin.oss.aliyun": "阿里雲 OSS",
+  "admin.oss.tencent": "Tencent COS",
+  "admin.oss.qiniu": "七牛雲 Kodo",
+  "admin.oss.huawei": "華為 OBS",
+  "admin.ai.testConnection": "接続テスト",
+  "admin.ai.testFailed": "テスト失敗",
+  "admin.ai.assistant": "AIアシスタント",
+  "admin.ai.enable": "AIを有効化",
+  "admin.ai.apiUrl": "API URL",
+  "admin.ai.apiDesc": "AIサービスのURL、デフォルトはOpenAI API",
+  "admin.ai.model": "モデル",
+  "admin.ai.apiKey": "API Key",
+  "admin.ai.systemPrompt": "カスタムプロンプト",
+  "admin.ai.name": "AI名",
+  "admin.ai.bio": "AI紹介",
+  "admin.ai.avatarUrl": "AIアバターURL",
+
+  "admin.ai.apiKeyPlaceholder": "APIキーを入力",
+  "admin.banned": "BAN済み",
+  "admin.deleteChannel": "チャンネルを削除",
+  "admin.notificationPlaceholder": "通知内容を入力",
+  "admin.notificationSent": "通知を送信しました",
+  "admin.notifyUser": "ユーザーに通知",
+  "admin.organization": "組織",
+  "admin.ossStorage": "OSSストレージ",
+  "admin.rateLimiting": "レート制限",
+  "admin.sensitiveWords": "敏感語",
+  "admin.stickerPacks": "ステッカーパック",
+  "admin.viewDetail": "詳細を見る",
+  "adminSettings.allowRegisterDesc": "新規ユーザー登録を許可",
+  "adminSettings.inviteCode": "招待コード",
+  "composer.scheduleSet": "予約送信を設定",
+  "composer.scheduleTime": "送信時間",
+  "message.read": "既読",
+  "message.you": "あなた",
+  "user.status": "ステータス",
+  "lang.de": "ドイツ語",
+  "lang.en": "英語",
+  "lang.es": "スペイン語",
+  "lang.fr": "フランス語",
+  "lang.ja": "日本語",
+  "lang.ko": "韓国語",
+  "lang.zh-CN": "簡体字中国語",
+  "message.translate": "翻訳",
+  "translation.apiKey": "API キー",
+  "translation.bing": "Bing 翻訳",
+  "translation.bingReverse": "Bing 翻訳(リバース)",
+  "translation.deepl": "DeepL 翻訳",
+  "translation.google": "Google 翻訳",
+  "translation.machineTranslated": "機械翻訳",
+  "translation.provider": "翻訳プロバイダー",
+  "translation.selectLang": "翻訳先言語を選択",
+  "translation.settings": "翻訳設定",
+  "translation.testFailed": "テスト翻訳に失敗しました",
+  "adminSettings.usernameRegistration": "ユーザー名登録を許可(メール/電話不要)",
+  "adminSettings.manageWhitelist": "ホワイトリスト管理…",
+  "adminSettings.emailWhitelist": "メールホワイトリスト",
+  "adminSettings.phoneWhitelist": "電話ホワイトリスト",
+  "adminSettings.whitelistHint": "完全一致とワイルドカード(*)をサポート。例: user@example.com、*@example.com; 電話: +86138*",
+  "adminSettings.whitelistNotePlaceholder": "メモ(任意)",
+  "adminSettings.whitelistAdd": "追加",
+  "adminSettings.whitelistEmpty": "エントリなし",
+  "adminSettings.ssoOauth": "OAuth 2.0 / OIDC 設定",
+  "adminSettings.ssoOauthHint": "OAuth 2.0 認可コードフローに準拠する IdP(Okta、Auth0、Keycloak、WeCom、Google 等)。PKCE はデフォルトで有効",
+  "adminSettings.ssoAuthorizationEndpoint": "認可エンドポイント (Authorization Endpoint)",
+  "adminSettings.ssoTokenEndpoint": "トークンエンドポイント (Token Endpoint)",
+  "adminSettings.ssoUserInfoEndpoint": "ユーザー情報エンドポイント (UserInfo Endpoint)",
+  "adminSettings.ssoClientId": "クライアント ID",
+  "adminSettings.ssoClientSecret": "クライアントシークレット",
+  "adminSettings.ssoScopes": "スコープ",
+  "adminSettings.ssoRedirectUri": "リダイレクト URI",
+  "adminSettings.ssoRedirectUriDesc": "IdP コンソールでこの URL を許可されたコールバックとして登録してください",
+  "adminSettings.ssoConfigIncomplete": "OAuth エンドポイントまたは Client ID が未設定のため SSO ログインは動作しません",
+  "profile.contact": "連絡先",
+  "profile.contactDesc": "アカウント復元とセキュリティ確認のためメール/電話を绑定",
+  "profile.contactChannelsClosed": "管理者がメール/電話チャネルを有効にしていません",
+  "profile.notBound": "未绑定",
+  "profile.bind": "绑定",
+  "profile.unbind": "解除",
+  "profile.changeContact": "変更",
+  "profile.bindEmail": "メールを绑定",
+  "profile.bindPhone": "電話を绑定",
+  "profile.changeEmail": "メール変更",
+  "profile.changePhone": "電話変更",
+  "profile.confirmUnbindEmail": "メールを解除しますか？解除後、このメールでログイン/復元できなくなります",
+  "profile.confirmUnbindPhone": "電話を解除しますか？解除後、この電話でログイン/復元できなくなります",
+  "profile.contactSaveFailed": "保存に失敗しました",
+  "login.newEmail": "新しいメール",
+  "login.newPhone": "新しい電話",
+  "server.passwordIncorrect": "パスワードが正しくありません",
+  "server.emailAlreadyUsed": "このメールは既に他のアカウントに绑定されています",
+  "server.phoneAlreadyUsed": "この電話は既に他のアカウントに绑定されています",
+  "server.emailNotWhitelisted": "このメールはホワイトリストにありません",
+  "server.phoneNotWhitelisted": "この電話はホワイトリストにありません",
+  "server.usernameChannelClosed": "ユーザー名登録は閉じられています",
+  "server.unauthorized": "未ログインまたはセッションが期限切れです",
+  "chat.more": "その他",
+  "chat.e2eeEnable": "E2EE 暗号化を有効化",
+  "chat.e2eeDisable": "E2EE 暗号化を無効化",
+  "chat.areYouThere": "まだいますか？",
+  "chat.areYouTherePrompt": "{name} さんから：まだいますか？",
+  "chat.imHere": "います",
+  "chat.presencePongReceived": "{name} さんが「います」と返答しました",
+  "e2ee.dialogTitle": "エンドツーエンド暗号化を有効化",
+  "e2ee.intro": "{peer} との間でエンドツーエンド暗号化通話を開始します。",
+  "e2ee.warningsTitle": "ご注意ください",
+  "e2ee.warningBothOnline": "両方がオンラインの場合のみ利用可能",
+  "e2ee.peerOffline": "相手がオフラインのため E2EE 暗号化を開始できません",
+  "e2ee.warningNoServerHistory": "E2EE モードではサーバーは履歴を保存せず、メッセージはローカルでのみ閲覧可能",
+  "e2ee.warningFilesAutoDelete": "E2EE モードのファイル/画像/動画は退出後に自動削除されます",
+  "e2ee.warningOffline10min": "いずれかが 10 分間オフラインになると、E2EE は自動終了し全ファイルが削除されます",
+  "e2ee.enable": "有効化",
+  "e2ee.sessionStarted": "E2EE 暗号化通話を開始しました",
+  "e2ee.sessionStartedByPeer": "相手が E2EE 暗号化通話を開始しました",
+  "e2ee.sessionEnded": "E2EE 暗号化通話を終了しました",
+  "e2ee.sessionEndedTimeout": "10 分以上操作がなかったため E2EE 暗号化通話は自動的に終了しました",
+  "e2ee.fileCleaned": "このファイルは E2EE 終了後自動削除されたため閲覧できません",
+};
+
+const dictionaries: Record<Language, Translations> = {
+  "zh-CN": zhCN,
+  "en": en,
+  "ja": ja,
+};
+
+export function t(lang: Language, key: TranslationKey, params?: Record<string, string | number>): string {
+  const dict = dictionaries[lang] ?? dictionaries["zh-CN"];
+  let text = dict[key];
+  if (text === undefined) {
+    text = dictionaries["zh-CN"][key] ?? key;
+  }
+  if (params) {
+    for (const [k, v] of Object.entries(params)) {
+      text = text.replace(`{${k}}`, String(v));
+    }
+  }
+  return text;
+}
+
+export function getLanguageLabel(lang: Language): string {
+  return LANGUAGES.find((l) => l.value === lang)?.label ?? lang;
+}

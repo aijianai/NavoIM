@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+web/dist_apk/
+
+# Android / APK (not distributed in this repository)
+android/
+*.apk
+
+# Runtime data & uploads
+server/data/
+server/uploads/*
+!server/uploads/.gitkeep
+
+# Env & secrets
+.env
+.env.local
+.env.*.local
+.env.apk
+web/.env.apk
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Archives (do not commit deployment backups)
+*.tar.gz
+*.zip

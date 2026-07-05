@@ -1,0 +1,22 @@
+---
+description: Navo IM WebRTC SFU test conventions
+globs: tests/**/*
+alwaysApply: false
+---
+
+# Tests
+
+## Scope
+
+WebRTC SFU integration tests under `tests/server/sfu/`. Each test file covers one aspect: signaling, ICE, track lifecycle, media transmission, error scenarios.
+
+## Doc Lookup
+
+Test file `tests/server/sfu/webrtc-ice.test.ts` → doc `docs-src/tests/server/sfu/webrtc-ice.md` (drop `.test` from stem).
+
+Helper: `tests/server/helpers.ts` → `docs-src/tests/server/helpers.md`
+
+## Conventions
+
+- No test runner configured in root `package.json` — verify how tests are executed before adding new ones
+- Tests interact with SFU module directly; read `docs-src/server/src/sfu.md` for SFU internals

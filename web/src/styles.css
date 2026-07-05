@@ -1,0 +1,216 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================================
+   Navo IM — Design tokens
+   Mapped 1:1 from the brand palette. Tailwind reads these via rgb(var(--x)).
+   Light mode uses the warm off-white App Background; dark uses Deep Navy.
+   ============================================================================ */
+:root {
+  /* Surfaces */
+  --app: 247 251 255;          /* #F7FBFF */
+  --surface: 255 255 255;      /* #FFFFFF */
+  --surface-soft: 234 245 255; /* #EAF5FF */
+  --surface-deep: 14 27 53;    /* #0E1B35 */
+
+  /* Text */
+  --ink-primary: 19 35 63;     /* #13233F */
+  --ink-secondary: 95 111 137; /* #5F6F89 */
+  --ink-muted: 155 168 186;    /* #9BA8BA */
+  --ink-inverse: 255 255 255;  /* #FFFFFF */
+
+  /* Bubbles */
+  --bubble-ai: 255 255 255;        /* #FFFFFF */
+  --bubble-ai-alt: 240 247 255;    /* #F0F7FF */
+  --bubble-border: 215 232 250;    /* #D7E8FA */
+
+  /* Lines & glass */
+  --line-light: 221 234 247;       /* #DDEAF7 */
+  --glass: 223 244 255;            /* #DFF4FF */
+
+  /* Brand stops (for raw use in gradients) */
+  --brand-1: #66B8FF;
+  --brand-2: #2F7DFF;
+  --brand-3: #8A6CFF;
+  --brand-4: #8EEBFF;
+}
+
+.dark {
+  --app: 8 16 32;                  /* deeper than navy for layering */
+  --surface: 18 30 56;             /* card */
+  --surface-soft: 22 38 70;        /* soft block */
+  --surface-deep: 14 27 53;        /* #0E1B35 */
+
+  --ink-primary: 232 240 255;
+  --ink-secondary: 167 182 207;
+  --ink-muted: 124 140 166;
+  --ink-inverse: 14 27 53;
+
+  --bubble-ai: 22 38 70;
+  --bubble-ai-alt: 18 30 56;
+  --bubble-border: 36 56 96;
+
+  --line-light: 36 56 96;
+  --glass: 32 50 88;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  @apply bg-app text-ink-primary font-sans;
+  font-feature-settings: "ss01", "cv11";
+  margin: 0;
+}
+
+/* Selection */
+::selection {
+  background: rgba(47, 125, 255, 0.22);
+  color: rgb(var(--ink-primary));
+}
+
+/* Custom scrollbars (subtle, matches the palette) */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(155, 168, 186, 0.35);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background-color: rgba(95, 111, 137, 0.5); background-clip: padding-box; }
+
+/* ============================================================================
+   Reusable component classes
+   ============================================================================ */
+@layer components {
+  .glass-panel {
+    @apply bg-surface/70 backdrop-blur-xl border border-line-light/70;
+  }
+
+  .text-gradient-brand {
+    background-image: linear-gradient(135deg, #66B8FF 0%, #2F7DFF 50%, #8A6CFF 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .ring-focus-aqua {
+    box-shadow: 0 0 0 3px rgba(142, 235, 255, 0.45);
+  }
+
+  /* Animated aurora background blob — pure CSS, GPU friendly */
+  .aurora-bg {
+    position: absolute;
+    inset: -20%;
+    background-image:
+      radial-gradient(60% 60% at 20% 10%, rgba(142, 235, 255, 0.55) 0%, transparent 60%),
+      radial-gradient(50% 50% at 85% 20%, rgba(138, 108, 255, 0.45) 0%, transparent 60%),
+      radial-gradient(60% 60% at 50% 100%, rgba(47, 125, 255, 0.45) 0%, transparent 60%);
+    filter: blur(40px) saturate(120%);
+    animation: aurora-drift 18s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .dark .aurora-bg {
+    background-image:
+      radial-gradient(60% 60% at 20% 10%, rgba(142, 235, 255, 0.18) 0%, transparent 60%),
+      radial-gradient(50% 50% at 85% 20%, rgba(138, 108, 255, 0.22) 0%, transparent 60%),
+      radial-gradient(60% 60% at 50% 100%, rgba(47, 125, 255, 0.22) 0%, transparent 60%);
+  }
+
+  .grain {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    opacity: 0.6;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium text-white
+           bg-brand-gradient shadow-soft transition-all
+           hover:shadow-glow hover:-translate-y-0.5 active:translate-y-0
+           focus:outline-none focus-visible:ring-focus-aqua disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl font-medium
+           text-ink-secondary hover:text-ink-primary hover:bg-surface-soft transition-colors;
+  }
+
+  .input-base {
+    @apply w-full px-4 py-2.5 rounded-xl bg-surface border border-line-light text-ink-primary
+           placeholder:text-ink-muted transition-all
+           focus:outline-none focus:border-aqua focus:ring-focus-aqua;
+  }
+
+  .badge-dot {
+    @apply inline-block w-2 h-2 rounded-full;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+  .scrollbar-none { scrollbar-width: none; }
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+
+  .msg-flash {
+    animation: msg-flash 1.4s ease-out;
+  }
+
+  /* Performance: skip off-screen content rendering */
+  .content-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 80px;
+  }
+
+  /* iOS momentum scrolling */
+  .ios-scroll {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent pull-to-refresh on iOS for the chat scroller */
+  .no-overscroll {
+    overscroll-behavior: contain;
+  }
+
+  /* Smooth entrance for new messages */
+  .msg-enter {
+    animation: msg-enter 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* Press feedback for interactive elements */
+  .press-feedback {
+    transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .press-feedback:active {
+    transform: scale(0.96);
+  }
+}
+
+@keyframes msg-flash {
+  0%   { background-color: rgba(47, 125, 255, 0.18); box-shadow: 0 0 0 6px rgba(47, 125, 255, 0.12); }
+  60%  { background-color: rgba(47, 125, 255, 0.10); box-shadow: 0 0 0 6px rgba(47, 125, 255, 0.06); }
+  100% { background-color: transparent; box-shadow: 0 0 0 0 transparent; }
+}
+
+@keyframes msg-enter {
+  0%   { opacity: 0; transform: translateY(4px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}

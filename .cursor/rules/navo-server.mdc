@@ -1,0 +1,37 @@
+---
+description: Navo IM server package conventions
+globs: server/**/*
+alwaysApply: false
+---
+
+# Server Package (`@navo/server`)
+
+## Entry Points
+
+- Boot: `server/src/index.ts` — HTTP + WS + FCM + scheduler
+- REST: `server/src/http.ts` — Express routes
+- Real-time: `server/src/ws.ts` — WebSocket hub, `ServerEvent` dispatch
+- WebRTC: `server/src/sfu.ts` — SFU for calls
+- Data: `server/src/db.ts` (MySQL), `server/src/redis.ts` (pub/sub, presence)
+
+## Key Modules
+
+| Module | Role |
+|--------|------|
+| `auth.ts` | JWT, login, registration |
+| `admin-routes.ts` | Admin REST API |
+| `ai.ts` | AI chat integration |
+| `config.ts` | Env vars from root `.env` |
+| `verification.ts` | Email/SMS verification |
+| `scheduler.ts` | Scheduled message delivery |
+
+## Conventions
+
+- ES modules with `.js` extension in imports (e.g. `import { x } from './db.js'`)
+- All functions need type annotations; comments in Simplified Chinese
+- `db.ts` runs migrations on import — must load before server starts
+- Redis keys prefixed with `navo:im:`
+
+## Doc Reference
+
+Read `docs-src/server/src/<module>.md` before editing `server/src/<module>.ts`.

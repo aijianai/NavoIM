@@ -1,0 +1,34 @@
+---
+description: Navo IM coding standards and change discipline
+alwaysApply: true
+---
+
+# Coding Standards
+
+## Language
+
+- Explanations to user: Simplified Chinese
+- Code identifiers: English
+- Code comments and docstrings: Simplified Chinese, PEP 257 style
+- All functions/methods: type annotations required
+
+## Change Discipline
+
+- Minimal diff — no speculative features or abstractions
+- One coherent task per session
+- No error handling for impossible edge cases
+- Match existing naming, import style, and patterns in surrounding code
+
+## Monorepo Layout
+
+| Package | Path | Framework |
+|---------|------|-----------|
+| `@navo/shared` | `shared/` | TypeScript types + i18n |
+| `@navo/server` | `server/` | Express + ws + MySQL + Redis |
+| `@navo/web` | `web/` | React + Vite + Tailwind + Zustand |
+| Android | `android/` | Capacitor Gradle |
+
+## Agent Reference
+
+Full agent instructions: `AGENTS.md` at repo root.
+Module index: `.cursor/PROJECT_INDEX.md`.
