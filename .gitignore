@@ -38,3 +38,9 @@ npm-debug.log*
 # Archives (do not commit deployment backups)
 *.tar.gz
 *.zip
+
+# Local-only: AI docs, Cursor rules, large emoji assets (not for GitHub)
+docs-src/
+.cursor/
+AGENTS.md
+web/public/emoji/
