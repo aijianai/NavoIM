@@ -80,6 +80,9 @@ NavoIM/
 
 完整变更记录见 [CHANGELOG.md](./CHANGELOG.md)。
 
+**在线演示：** https://navo.airoe.cn  
+**开源仓库：** https://github.com/aijianai/NavoIM
+
 ## 许可证
 
 专有软件 — NavoIM 专业版。未经授权不得复制、分发或用于商业用途。

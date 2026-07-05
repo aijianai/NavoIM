@@ -13,6 +13,7 @@ import { useViewportHeight } from "./lib/useViewportHeight";
 import { useT } from "./lib/i18n";
 import { onAppStateChange } from "./lib/app-state";
 import { requestNotificationPermission } from "./lib/notification";
+import { OpenSourcePromoModal } from "./components/OpenSourcePromoModal";
 import { catchUpStaleConversations } from "./lib/message-sync";
 
 // Lazy-loaded heavy components — not needed for first paint
@@ -105,6 +106,7 @@ export function App() {
   // Show ban screen if user is banned
   if (banInfo?.banned) {
     return (
+      <>
       <div className="relative min-h-screen overflow-hidden bg-app">
         <div className="aurora-bg" />
         <div className="grain" />
@@ -140,15 +142,27 @@ export function App() {
           </div>
         </div>
       </div>
+      <OpenSourcePromoModal />
+      </>
     );
   }
 
   if (!token) {
-    return <Login onLogin={(t) => setToken(t)} />;
+    return (
+      <>
+        <Login onLogin={(t) => setToken(t)} />
+        <OpenSourcePromoModal />
+      </>
+    );
   }
 
   if (!ready) {
-    return <BootScreen />;
+    return (
+      <>
+        <BootScreen />
+        <OpenSourcePromoModal />
+      </>
+    );
   }
 
   const showSyncOverlay = wsStatus !== "connected";
@@ -165,6 +179,7 @@ export function App() {
       <CaptchaDialog />
       <PresencePingModal />
       {showSyncOverlay && <SyncOverlay status={wsStatus} />}
+      <OpenSourcePromoModal />
     </Suspense>
   );
 }

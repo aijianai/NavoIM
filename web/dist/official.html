@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NavoIM · 新一代全功能即时通讯</title>
+    <meta name="description" content="NavoIM —— 100+ 功能、27 大模块的全栈即时通讯平台。实时消息、SFU 音视频、AI 助手、企业级管理后台，开箱即用。" />
+    <link rel="icon" href="/appicon.png" />
+    <link rel="apple-touch-icon" href="/appicon.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind Play CDN -->
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        app: 'rgb(var(--app) / <alpha-value>)',
+                        surface: {
+                            DEFAULT: 'rgb(var(--surface) / <alpha-value>)',
+                            soft: 'rgb(var(--surface-soft) / <alpha-value>)',
+                            deep: 'rgb(var(--surface-deep) / <alpha-value>)',
+                        },
+                        ink: {
+                            primary: 'rgb(var(--ink-primary) / <alpha-value>)',
+                            secondary: 'rgb(var(--ink-secondary) / <alpha-value>)',
+                            muted: 'rgb(var(--ink-muted) / <alpha-value>)',
+                            inverse: 'rgb(var(--ink-inverse) / <alpha-value>)',
+                        },
+                        bubble: {
+                            ai: 'rgb(var(--bubble-ai) / <alpha-value>)',
+                            'ai-alt': 'rgb(var(--bubble-ai-alt) / <alpha-value>)',
+                            border: 'rgb(var(--bubble-border) / <alpha-value>)',
+                        },
+                        line: {
+                            light: 'rgb(var(--line-light) / <alpha-value>)',
+                        },
+                        glass: 'rgb(var(--glass) / <alpha-value>)',
+                        aqua: '#8EEBFF',
+                        'brand-1': '#66B8FF',
+                        'brand-2': '#2F7DFF',
+                        'brand-3': '#8A6CFF',
+                        'brand-4': '#8EEBFF',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'PingFang SC',
+                            'Hiragino Sans GB', 'Microsoft YaHei', 'sans-serif'
+                        ],
+                    },
+                    backgroundImage: {
+                        'brand-gradient': 'linear-gradient(135deg, #66B8FF 0%, #2F7DFF 50%, #8A6CFF 100%)',
+                    },
+                    boxShadow: {
+                        soft: '0 8px 30px rgba(19, 35, 63, 0.08)',
+                        glow: '0 14px 44px rgba(47, 125, 255, 0.32)',
+                    },
+                    borderRadius: {
+                        '2.5xl': '1.25rem',
+                        '4xl': '2rem',
+                    },
+                },
+            },
+        };
+    </script>
+
+    <!-- Base tokens + raw styles -->
+    <style>
+        :root {
+            --app: 247 251 255;
+            --surface: 255 255 255;
+            --surface-soft: 234 245 255;
+            --surface-deep: 14 27 53;
+            --ink-primary: 19 35 63;
+            --ink-secondary: 95 111 137;
+            --ink-muted: 155 168 186;
+            --ink-inverse: 255 255 255;
+            --bubble-ai: 255 255 255;
+            --bubble-ai-alt: 240 247 255;
+            --bubble-border: 215 232 250;
+            --line-light: 221 234 247;
+            --glass: 223 244 255;
+            --brand-1: #66B8FF;
+            --brand-2: #2F7DFF;
+            --brand-3: #8A6CFF;
+            --brand-4: #8EEBFF;
+        }
+
+        .dark {
+            --app: 8 16 32;
+            --surface: 18 30 56;
+            --surface-soft: 22 38 70;
+            --surface-deep: 14 27 53;
+            --ink-primary: 232 240 255;
+            --ink-secondary: 167 182 207;
+            --ink-muted: 124 140 166;
+            --ink-inverse: 14 27 53;
+            --bubble-ai: 22 38 70;
+            --bubble-ai-alt: 18 30 56;
+            --bubble-border: 36 56 96;
+            --line-light: 36 56 96;
+            --glass: 32 50 88;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-feature-settings: "ss01", "cv11";
+        }
+
+        ::selection {
+            background: rgba(47, 125, 255, 0.22);
+            color: rgb(var(--ink-primary));
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(155, 168, 186, 0.35);
+            border-radius: 999px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(95, 111, 137, 0.5);
+            background-clip: padding-box;
+        }
+
+        @keyframes aurora-drift {
+            0%,
+            100% {
+                transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+            }
+            33% {
+                transform: translate3d(2%, -3%, 0) rotate(4deg) scale(1.05);
+            }
+            66% {
+                transform: translate3d(-2%, 2%, 0) rotate(-3deg) scale(0.98);
+            }
+        }
+
+        @keyframes float-y {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        @keyframes msg-enter {
+            0% {
+                opacity: 0;
+                transform: translateY(4px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% center;
+            }
+            100% {
+                background-position: -200% center;
+            }
+        }
+
+        .float-y {
+            animation: float-y 6s ease-in-out infinite;
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        .reveal.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+            .float-y,
+            .aurora-bg {
+                animation: none;
+            }
+        }
+    </style>
+
+    <!-- Tailwind component & utility layers (from the provided design system) -->
+    <style type="text/tailwindcss">
+        @layer components {
+            .glass-panel {
+                @apply bg-surface/70 backdrop-blur-xl border border-line-light/70;
+            }
+
+            .text-gradient-brand {
+                background-image: linear-gradient(135deg, #66B8FF 0%, #2F7DFF 50%, #8A6CFF 100%);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
+
+            .ring-focus-aqua {
+                box-shadow: 0 0 0 3px rgba(142, 235, 255, 0.45);
+            }
+
+            .aurora-bg {
+                position: absolute;
+                inset: -20%;
+                background-image: radial-gradient(60% 60% at 20% 10%, rgba(142, 235, 255, 0.55) 0%, transparent 60%),
+                    radial-gradient(50% 50% at 85% 20%, rgba(138, 108, 255, 0.45) 0%, transparent 60%),
+                    radial-gradient(60% 60% at 50% 100%, rgba(47, 125, 255, 0.45) 0%, transparent 60%);
+                filter: blur(40px) saturate(120%);
+                animation: aurora-drift 18s ease-in-out infinite;
+                pointer-events: none;
+            }
+
+            .dark .aurora-bg {
+                background-image: radial-gradient(60% 60% at 20% 10%, rgba(142, 235, 255, 0.18) 0%, transparent 60%),
+                    radial-gradient(50% 50% at 85% 20%, rgba(138, 108, 255, 0.22) 0%, transparent 60%),
+                    radial-gradient(60% 60% at 50% 100%, rgba(47, 125, 255, 0.22) 0%, transparent 60%);
+            }
+
+            .grain {
+                position: absolute;
+                inset: 0;
+                background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+                pointer-events: none;
+                mix-blend-mode: overlay;
+                opacity: 0.6;
+            }
+
+            .btn-primary {
+                @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium text-white bg-brand-gradient shadow-soft transition-all hover:shadow-glow hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus-visible:ring-focus-aqua disabled:opacity-50 disabled:cursor-not-allowed;
+            }
+
+            .btn-ghost {
+                @apply inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl font-medium text-ink-secondary hover:text-ink-primary hover:bg-surface-soft transition-colors;
+            }
+
+            .input-base {
+                @apply w-full px-4 py-2.5 rounded-xl bg-surface border border-line-light text-ink-primary placeholder:text-ink-muted transition-all focus:outline-none focus:border-aqua focus:ring-focus-aqua;
+            }
+
+            .badge-dot {
+                @apply inline-block w-2 h-2 rounded-full;
+            }
+        }
+
+        @layer utilities {
+            .text-balance {
+                text-wrap: balance;
+            }
+
+            .text-pretty {
+                text-wrap: pretty;
+            }
+
+            .press-feedback {
+                transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            .press-feedback:active {
+                transform: scale(0.96);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-app text-ink-primary font-sans antialiased">
+
+    <!-- ===================== NAV ===================== -->
+    <header class="fixed top-0 inset-x-0 z-50">
+        <nav class="glass-panel mx-auto mt-3 flex max-w-6xl items-center justify-between rounded-2xl px-4 py-2.5 sm:px-5">
+            <a href="#top" class="flex items-center gap-2.5 press-feedback">
+                <img src="/appicon.png" alt="NavoIM" class="h-9 w-9 rounded-xl shadow-soft" />
+                <span class="text-lg font-extrabold tracking-tight">Navo<span class="text-gradient-brand">IM</span></span>
+            </a>
+
+            <div class="hidden items-center gap-1 md:flex">
+                <a href="#features" class="btn-ghost text-sm">功能特性</a>
+                <a href="#modules" class="btn-ghost text-sm">全模块</a>
+                <a href="#compare" class="btn-ghost text-sm">版本对比</a>
+                <a href="#download" class="btn-ghost text-sm">下载</a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button id="themeToggle" class="btn-ghost h-10 w-10 !px-0 press-feedback" aria-label="切换主题">
+                    <svg class="h-5 w-5 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="4" />
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                    </svg>
+                    <svg class="hidden h-5 w-5 dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </button>
+                <a href="#download" class="btn-primary press-feedback text-sm">立即下载</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===================== HERO ===================== -->
+    <section id="top" class="relative overflow-hidden pb-24 pt-36 sm:pt-44">
+        <div class="aurora-bg"></div>
+        <div class="grain"></div>
+
+        <div class="relative mx-auto max-w-6xl px-5">
+            <div class="mx-auto max-w-3xl text-center">
+                <div class="reveal mb-7 flex justify-center">
+                    <img src="/appicon.png" alt="NavoIM 图标" class="float-y h-28 w-28 rounded-[28px] shadow-glow ring-1 ring-white/40 sm:h-32 sm:w-32" />
+                </div>
+
+                <div class="reveal mb-5 inline-flex items-center gap-2 rounded-full glass-panel px-4 py-1.5 text-sm font-medium text-ink-secondary">
+                    <span class="badge-dot bg-brand-2 animate-pulse"></span> 100+ 功能 · 27 大模块 · 开箱即用
+                </div>
+
+                <h1 class="reveal text-balance text-5xl font-black leading-[1.05] tracking-tight sm:text-7xl">
+                    为团队而生的<br class="hidden sm:block" />
+                    <span class="text-gradient-brand">全功能即时通讯</span>
+                </h1>
+
+                <p class="reveal mx-auto mt-6 max-w-xl text-pretty text-lg leading-relaxed text-ink-secondary sm:text-xl">
+                    实时消息、SFU 音视频通话、内置 AI 助手、企业级管理后台。
+                    NavoIM 把现代沟通需要的一切，浓缩进一个流畅、安全、可自部署的平台。
+                </p>
+
+                <div class="reveal mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                    <a href="/" target="_blank" rel="noopener" class="btn-primary press-feedback w-full px-6 py-3.5 text-base sm:w-auto">
+                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                        </svg>
+                        打开网页版
+                    </a>
+                    <a href="/navoim.apk" download class="press-feedback inline-flex w-full items-center justify-center gap-2 rounded-xl border border-line-light bg-surface px-6 py-3.5 text-base font-medium text-ink-primary shadow-soft transition-all hover:-translate-y-0.5 hover:bg-surface-soft sm:w-auto">
+                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.6 9.48l1.84-3.18a.4.4 0 0 0-.69-.4l-1.86 3.22a11.5 11.5 0 0 0-9.78 0L5.25 5.9a.4.4 0 1 0-.69.4L6.4 9.48A11.36 11.36 0 0 0 .5 18.5h23a11.36 11.36 0 0 0-5.9-9.02M7.04 15.3a1.06 1.06 0 1 1 0-2.12 1.06 1.06 0 0 1 0 2.12m9.92 0a1.06 1.06 0 1 1 0-2.12 1.06 1.06 0 0 1 0 2.12" />
+                        </svg>
+                        下载 Android APK
+                    </a>
+                </div>
+
+                <p class="reveal mt-4 text-sm text-ink-muted">
+                    免安装直接体验网页版 · APK 体积小巧 · 支持深色模式
+                </p>
+            </div>
+
+            <!-- Floating chat mockup -->
+            <div class="reveal relative mx-auto mt-16 max-w-3xl">
+                <div class="glass-panel overflow-hidden rounded-4xl p-3 shadow-glow sm:p-4">
+                    <div class="rounded-3xl bg-app/60 p-4 sm:p-6">
+                        <div class="mb-5 flex items-center gap-3">
+                            <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-gradient text-white shadow-soft font-bold">N</div>
+                            <div class="flex-1">
+                                <div class="font-semibold leading-tight">Navo 助手</div>
+                                <div class="flex items-center gap-1.5 text-xs text-ink-secondary">
+                                    <span class="badge-dot bg-emerald-400"></span> 在线 · AI
+                                </div>
+                            </div>
+                            <div class="flex gap-2 text-ink-muted">
+                                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M23 7l-7 5 7 5V7z" />
+                                    <rect x="1" y="5" width="15" height="14" rx="2" />
+                                </svg>
+                                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 text-sm">
+                            <div style="animation: msg-enter .4s both .1s" class="ml-auto max-w-[78%] rounded-2xl rounded-br-md bg-brand-gradient px-4 py-2.5 text-white shadow-soft">
+                                帮我总结下今天的项目进度 📊
+                            </div>
+                            <div style="animation: msg-enter .4s both .25s" class="max-w-[82%] rounded-2xl rounded-bl-md border border-bubble-border bg-bubble-ai px-4 py-2.5 text-ink-primary shadow-soft">
+                                已为你梳理：后端联调完成 80%，新增 SFU 多人通话与消息撤回功能，今日共 1,240 条消息。需要我生成投票收集大家意见吗？
+                            </div>
+                            <div style="animation: msg-enter .4s both .4s" class="flex items-center gap-2">
+                                <div class="flex gap-1 rounded-2xl border border-bubble-border bg-bubble-ai-alt px-4 py-3 shadow-soft">
+                                    <span class="h-2 w-2 animate-bounce rounded-full bg-ink-muted [animation-delay:-0.3s]"></span>
+                                    <span class="h-2 w-2 animate-bounce rounded-full bg-ink-muted [animation-delay:-0.15s]"></span>
+                                    <span class="h-2 w-2 animate-bounce rounded-full bg-ink-muted"></span>
+                                </div>
+                                <span class="text-xs text-ink-muted">Navo 助手正在输入…</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 flex items-center gap-2">
+                            <div class="input-base flex items-center text-ink-muted">发送消息…</div>
+                            <button class="btn-primary press-feedback h-11 w-11 !px-0">
+                                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== STATS ===================== -->
+    <section class="relative mx-auto max-w-6xl px-5 py-8">
+        <div class="reveal grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+            <div class="glass-panel rounded-2xl p-5 text-center">
+                <div class="text-3xl font-black text-gradient-brand sm:text-4xl">100+</div>
+                <div class="mt-1 text-sm text-ink-secondary">独立功能</div>
+            </div>
+            <div class="glass-panel rounded-2xl p-5 text-center">
+                <div class="text-3xl font-black text-gradient-brand sm:text-4xl">27</div>
+                <div class="mt-1 text-sm text-ink-secondary">功能模块</div>
+            </div>
+            <div class="glass-panel rounded-2xl p-5 text-center">
+                <div class="text-3xl font-black text-gradient-brand sm:text-4xl">3</div>
+                <div class="mt-1 text-sm text-ink-secondary">语言国际化</div>
+            </div>
+            <div class="glass-panel rounded-2xl p-5 text-center">
+                <div class="text-3xl font-black text-gradient-brand sm:text-4xl">27</div>
+                <div class="mt-1 text-sm text-ink-secondary">数据表结构</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== FEATURE BENTO ===================== -->
+    <section id="features" class="relative mx-auto max-w-6xl px-5 py-20">
+        <div class="reveal mx-auto mb-14 max-w-2xl text-center">
+            <span class="text-sm font-semibold uppercase tracking-widest text-brand-2">核心能力</span>
+            <h2 class="mt-3 text-balance text-4xl font-black tracking-tight sm:text-5xl">沟通该有的样子</h2>
+            <p class="mt-4 text-pretty text-lg text-ink-secondary">从毫秒级实时消息到多方音视频，每一个细节都为流畅与可靠而打磨。</p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <!-- Large: realtime -->
+            <article class="reveal group glass-panel relative overflow-hidden rounded-4xl p-7 md:col-span-2">
+                <div class="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand-gradient opacity-20 blur-3xl transition-opacity group-hover:opacity-30"></div>
+                <div class="relative">
+                    <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gradient text-white shadow-soft">
+                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold">实时消息引擎</h3>
+                    <p class="mt-2 max-w-lg text-pretty text-ink-secondary">基于 WebSocket 的持久双向通道：JWT 鉴权、心跳保活、断线增量补偿。支持编辑、撤回、表情回应、已读回执、定时发送与全文搜索。</p>
+                    <div class="mt-5 flex flex-wrap gap-2">
+                        <span class="rounded-full bg-surface-soft px-3 py-1 text-sm text-ink-secondary">输入状态</span>
+                        <span class="rounded-full bg-surface-soft px-3 py-1 text-sm text-ink-secondary">消息撤回</span>
+                        <span class="rounded-full bg-surface-soft px-3 py-1 text-sm text-ink-secondary">表情回应</span>
+                        <span class="rounded-full bg-surface-soft px-3 py-1 text-sm text-ink-secondary">定时发送</span>
+                        <span class="rounded-full bg-surface-soft px-3 py-1 text-sm text-ink-secondary">已读回执</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- AI -->
+            <article class="reveal group glass-panel relative overflow-hidden rounded-4xl p-7">
+                <div class="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-brand-3 opacity-20 blur-3xl"></div>
+                <div class="relative">
+                    <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gradient text-white shadow-soft">
+                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a3 3 0 0 1 3 3v1a3 3 0 0 1 3 3 3 3 0 0 1 0 6 3 3 0 0 1-3 3v1a3 3 0 0 1-6 0v-1a3 3 0 0 1-3-3 3 3 0 0 1 0-6 3 3 0 0 1 3-3V5a3 3 0 0 1 3-3z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold">内置 AI 助手</h3>
+                    <p class="mt-2 text-pretty text-ink-secondary">每位新用户自带 Navo 助手。兼容 OpenAI 接口，支持多模态视觉、40 条上下文，串行回复保序。</p>
+                </div>
+            </article>
+
+            <!-- SFU calls -->
+            <article class="reveal group glass-panel relative overflow-hidden rounded-4xl p-7">
+                <div class="absolute -left-12 -bottom-12 h-40 w-40 rounded-full bg-brand-1 opacity-20 blur-3xl"></div>
+                <div class="relative">
+                    <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gradient text-white shadow-soft">
+                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 7l-7 5 7 5V7z" />
+                            <rect x="1" y="5" width="15" height="14" rx="2" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold">SFU 音视频通话</h3>
+                    <p class="mt-2 text-pretty text-ink-secondary">服务端选择性转发架构，支持多方音频、视频与屏幕共享，带宽自适应、ICE 穿透与管理员控场。</p>
+                </div>
+            </article>
+
+            <!-- Security -->
+            <article class="reveal group glass-panel relative overflow-hidden rounded-4xl p-7">
+                <div class="relative">
+                    <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gradient text-white shadow-soft">
+                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold">企业级安全</h3>
+                    <p class="mt-2 text-pretty text-ink-secondary">多重限流、二级密码、验证码锁、敏感词过滤、封禁检测与审计日志，全方位守护。</p>
+                </div>
+            </article>
+
+            <!-- Admin -->
+            <article class="reveal group glass-panel relative overflow-hidden rounded-4xl p-7 md:col-span-2">
+                <div class="absolute -right-16 -bottom-16 h-48 w-48 rounded-full bg-brand-gradient opacity-20 blur-3xl"></div>
+                <div class="relative">
+                    <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gradient text-white shadow-soft">
+                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7" rx="1" />
+                            <rect x="14" y="3" width="7" height="7" rx="1" />
+                            <rect x="14" y="14" width="7" height="7" rx="1" />
+                            <rect x="3" y="14" width="7" height="7" rx="1" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold">完整管理后台</h3>
+                    <p class="mt-2 max-w-lg text-pretty text-ink-secondary">数据看板、用户与频道治理、系统设置、通知广播、举报处理、组织架构、OSS 绑定、AI / ICE / 翻译配置，一应俱全。多级角色权限，精细可控。</p>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- ===================== ALL MODULES ===================== -->
+    <section id="modules" class="relative mx-auto max-w-6xl px-5 py-20">
+        <div class="reveal mx-auto mb-14 max-w-2xl text-center">
+            <span class="text-sm font-semibold uppercase tracking-widest text-brand-2">全景</span>
+            <h2 class="mt-3 text-balance text-4xl font-black tracking-tight sm:text-5xl">27 大模块，全栈覆盖</h2>
+            <p class="mt-4 text-pretty text-lg text-ink-secondary">从账户体系到 Android 原生集成，每个模块都已实现并可投入生产。</p>
+        </div>
+        <div id="moduleGrid" class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4"></div>
+    </section>
+
+    <!-- ===================== COMPARISON ===================== -->
+    <section id="compare" class="relative mx-auto max-w-6xl px-5 py-20">
+        <div class="reveal mx-auto mb-10 max-w-2xl text-center">
+            <span class="text-sm font-semibold uppercase tracking-widest text-brand-2">版本对比</span>
+            <h2 class="mt-3 text-balance text-4xl font-black tracking-tight sm:text-5xl">盒子IM vs NavoIM</h2>
+            <p class="mt-4 text-pretty text-ink-secondary">以下为核心差异项，具体功能范围与交付内容请以文档说明为准。</p>
+        </div>
+
+        <div class="reveal glass-panel overflow-hidden rounded-4xl shadow-soft">
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[640px] border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-line-light">
+                            <th class="sticky left-0 z-10 bg-surface/80 px-5 py-4 text-left font-bold backdrop-blur-xl">功能项</th>
+                            <th class="px-4 py-4 text-center font-semibold text-ink-secondary">
+                                盒子IM<br /><span class="text-xs font-normal text-ink-muted">个人版（开源）</span>
+                            </th>
+                            <th class="px-4 py-4 text-center font-semibold text-ink-secondary">
+                                盒子IM<br /><span class="text-xs font-normal text-ink-muted">企业版（商业）</span>
+                            </th>
+                            <th class="relative px-4 py-4 text-center">
+                                <div class="mx-auto inline-flex flex-col items-center rounded-2xl bg-brand-gradient px-4 py-2 text-white shadow-glow">
+                                    <span class="font-extrabold">NavoIM</span>
+                                    <span class="text-[11px] font-medium opacity-90">全功能</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="compareBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <p class="reveal mt-4 text-center text-xs text-ink-muted">说明：表中 ✓ 代表已支持，× 代表不支持。NavoIM 默认提供全部核心能力。</p>
+    </section>
+
+    <!-- ===================== DOWNLOAD CTA ===================== -->
+    <section id="download" class="relative mx-auto max-w-6xl px-5 py-20">
+        <div class="reveal relative overflow-hidden rounded-[2.5rem] bg-surface-deep p-10 text-center shadow-glow sm:p-16">
+            <div class="aurora-bg opacity-70"></div>
+            <div class="grain"></div>
+            <div class="relative">
+                <img src="/appicon.png" alt="NavoIM" class="mx-auto mb-6 h-20 w-20 rounded-3xl shadow-glow ring-1 ring-white/30" />
+                <h2 class="text-balance text-4xl font-black tracking-tight text-white sm:text-5xl">现在就开始使用 NavoIM</h2>
+                <p class="mx-auto mt-4 max-w-xl text-pretty text-lg text-white/70">网页端免安装即开即用，移动端下载 APK 获得原生推送与后台保活体验。</p>
+                <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                    <a href="/" target="_blank" rel="noopener" class="btn-primary press-feedback w-full px-7 py-4 text-base sm:w-auto">
+                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                        </svg>
+                        打开网页版
+                    </a>
+                    <a href="/navoim.apk" download class="press-feedback inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white/10 px-7 py-4 text-base font-medium text-white ring-1 ring-white/25 backdrop-blur-xl transition-all hover:-translate-y-0.5 hover:bg-white/20 sm:w-auto">
+                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.6 9.48l1.84-3.18a.4.4 0 0 0-.69-.4l-1.86 3.22a11.5 11.5 0 0 0-9.78 0L5.25 5.9a.4.4 0 1 0-.69.4L6.4 9.48A11.36 11.36 0 0 0 .5 18.5h23a11.36 11.36 0 0 0-5.9-9.02M7.04 15.3a1.06 1.06 0 1 1 0-2.12 1.06 1.06 0 0 1 0 2.12m9.92 0a1.06 1.06 0 1 1 0-2.12 1.06 1.06 0 0 1 0 2.12" />
+                        </svg>
+                        下载 Android APK
+                    </a>
+                </div>
+                <div class="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-white/60">
+                    <span class="inline-flex items-center gap-1.5"><span class="badge-dot bg-emerald-400"></span> 支持自部署</span>
+                    <span class="inline-flex items-center gap-1.5"><span class="badge-dot bg-brand-4"></span> Redis 横向扩展</span>
+                    <span class="inline-flex items-center gap-1.5"><span class="badge-dot bg-brand-3"></span> 深色 / 浅色主题</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="border-t border-line-light">
+        <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-5 py-8 sm:flex-row">
+            <div class="flex items-center gap-2.5">
+                <img src="/appicon.png" alt="NavoIM" class="h-8 w-8 rounded-lg" />
+                <span class="font-extrabold">Navo<span class="text-gradient-brand">IM</span></span>
+            </div>
+            <p class="text-sm text-ink-muted">© 2026 NavoIM · 全功能即时通讯平台</p>
+            <div class="flex items-center gap-2">
+                <a href="/" target="_blank" rel="noopener" class="btn-ghost text-sm">网页版</a>
+                <a href="/navoim.apk" download class="btn-ghost text-sm">Android</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ---------- Theme toggle (respects saved + system preference) ---------- */
+        (function() {
+            const root = document.documentElement;
+            const saved = localStorage.getItem('navo-theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (saved === 'dark' || (!saved && prefersDark)) root.classList.add('dark');
+
+            document.getElementById('themeToggle').addEventListener('click', function() {
+                root.classList.toggle('dark');
+                localStorage.setItem('navo-theme', root.classList.contains('dark') ? 'dark' : 'light');
+            });
+        })();
+
+        /* ---------- Module grid ---------- */
+        (function() {
+            const modules = [
+                ['认证与账户', 'JWT 登录、二级密码、封禁检测、注销匿名化'],
+                ['实时消息', 'WebSocket、撤回、编辑、回应、定时发送'],
+                ['会话与频道', '私聊、多人频道、角色权限、禁言与置顶'],
+                ['好友系统', '请求审核、备注、黑名单、防骚扰限制'],
+                ['音视频通话', 'SFU 多方、屏幕共享、带宽控制、控场'],
+                ['AI 助手', '兼容 OpenAI、多模态视觉、上下文记忆'],
+                ['文件与附件', '上传、视频首帧、OSS / 本地存储'],
+                ['管理后台', '看板、治理、设置、通知、审计'],
+                ['通知系统', '系统 / 私信通知、FCM 推送、未读计数'],
+                ['限流与安全', '多重限流、验证码锁、敏感词过滤'],
+                ['消息翻译', 'DeepL / Google / Bing 多引擎，7 种语言'],
+                ['投票', '实时投票、单选去重、匿名支持'],
+                ['表情贴纸', '贴纸包管理、个性表情消息'],
+                ['用户资料', '昵称、简介、头像、组织与头衔'],
+                ['组织架构', '树形组织、成员管理、路径查询'],
+                ['举报系统', '用户 / 频道 / 消息举报与状态流转'],
+                ['消息转发', '批量转发、来源归属、转发卡片'],
+                ['名片分享', '好友名片、频道名片一键分享'],
+                ['位置共享', '地图查看、位置选取、地理定位'],
+                ['媒体浏览', '图片 / 视频查看器、媒体网格浏览'],
+                ['架构特性', 'Redis 扩展、断线补偿、优雅停机'],
+                ['管理前端', '数据 / 用户 / 频道 / 设置全标签页'],
+                ['Android 集成', 'Capacitor 推送、保活、原生相机'],
+                ['国际化', '中 / 英 / 日，4000+ 翻译键'],
+                ['审计日志', '管理操作全量留痕、可筛选查看'],
+                ['邮件系统', 'SMTP、模板、验证码、白名单'],
+                ['数据库架构', '27 张表、幂等迁移、死锁重试'],
+            ];
+
+            const grid = document.getElementById('moduleGrid');
+            grid.innerHTML = modules.map(function(m, i) {
+                return (
+                    '<div class="reveal group glass-panel rounded-2xl p-4 transition-all hover:-translate-y-1 hover:shadow-soft" style="transition-delay:' +
+                    (i % 4) * 40 + 'ms">' +
+                    '<div class="mb-2 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-surface-soft text-xs font-bold text-brand-2 group-hover:bg-brand-gradient group-hover:text-white transition-colors">' +
+                    (i + 1) + '</div>' +
+                    '<h3 class="font-semibold leading-tight">' + m[0] + '</h3>' +
+                    '<p class="mt-1 text-xs leading-relaxed text-ink-secondary">' + m[1] + '</p>' +
+                    '</div>'
+                );
+            }).join('');
+        })();
+
+        /* ---------- Comparison table ---------- */
+        (function() {
+            const rows = [
+                '多人音视频通话', '视频消息', '名片消息', '消息引用', '消息转发',
+                '系统消息', '消息草稿', '表情消息', '历史消息查询', '文件预览',
+                '手机 / 邮箱注册', '好友备注', '好友审核', '好友黑名单',
+                '群管理员', '群禁言', '群消息置顶', '扫一扫',
+                'App 自动更新', 'App 消息提醒', 'App 后台保活',
+                '桌面端（Electron）', '语言国际化',
+            ];
+
+            const yes =
+                '<span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-500"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>';
+            const no =
+                '<span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-ink-muted/15 text-ink-muted"><svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>';
+            const yesBrand =
+                '<span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-brand-gradient text-white shadow-soft"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>';
+
+            const body = document.getElementById('compareBody');
+            body.innerHTML = rows.map(function(name, i) {
+                const zebra = i % 2 ? 'bg-surface-soft/40' : '';
+                return (
+                    '<tr class="border-b border-line-light/60 ' + zebra + '">' +
+                    '<td class="sticky left-0 z-10 bg-surface/70 px-5 py-3 font-medium backdrop-blur-xl">' + name +
+                    '</td>' +
+                    '<td class="px-4 py-3 text-center">' + no + '</td>' +
+                    '<td class="px-4 py-3 text-center">' + yes + '</td>' +
+                    '<td class="px-4 py-3 text-center">' + yesBrand + '</td>' +
+                    '</tr>'
+                );
+            }).join('');
+        })();
+
+        /* ---------- Scroll reveal ---------- */
+        (function() {
+            const io = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('in');
+                        io.unobserve(e.target);
+                    }
+                });
+            }, {
+                threshold: 0.12,
+                rootMargin: '0px 0px -40px 0px'
+            });
+
+            document.querySelectorAll('.reveal').forEach(function(el) {
+                io.observe(el);
+            });
+        })();
+    </script>
+
+</body>
+
+</html>

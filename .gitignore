@@ -4,7 +4,7 @@ node_modules/
 .pnp.js
 
 # Build output
-dist/
+server/dist/
 build/
 *.tsbuildinfo
 web/dist_apk/

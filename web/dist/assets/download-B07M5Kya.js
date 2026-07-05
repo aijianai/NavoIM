@@ -1,0 +1,1 @@
+async function c(o,n){const e=document.createElement("a");e.href=o,e.download=n,document.body.appendChild(e),e.click(),document.body.removeChild(e)}async function t(o,n){const e=URL.createObjectURL(o);try{await c(e,n)}finally{URL.revokeObjectURL(e)}}export{c as downloadFile,t as saveBlob};

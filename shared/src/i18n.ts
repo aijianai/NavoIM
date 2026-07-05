@@ -955,6 +955,11 @@ export type TranslationKey =
   | "app.connectionTimeout"
   | "app.disconnected"
   | "app.reconnecting"
+  | "app.ossPromo.title"
+  | "app.ossPromo.message"
+  | "app.ossPromo.star"
+  | "app.ossPromo.demo"
+  | "app.ossPromo.dismiss"
   | "appshell.jumpToPlaceholder"
   | "call.incomingInvite"
   | "call.network"
@@ -2310,6 +2315,11 @@ const zhCN: Translations = {
   "app.connectionTimeout": "连接超时 ({elapsed}s) — 请确认服务器已启动",
   "app.disconnected": "连接已断开",
   "app.reconnecting": "重新连接中，正在同步信息…",
+  "app.ossPromo.title": "开源版提示",
+  "app.ossPromo.message": "本项目已发布开源版，欢迎前往 GitHub 点个 Star 支持我们！在线演示站点也可直接体验。",
+  "app.ossPromo.star": "去 GitHub 点 Star",
+  "app.ossPromo.demo": "访问演示站",
+  "app.ossPromo.dismiss": "知道了，不再提示",
   "appshell.jumpToPlaceholder": "跳转到群组、私聊或联系人…",
   "call.incomingInvite": "邀请你加入{name}通话",
   "call.network": "网络",
@@ -3588,6 +3598,11 @@ const en: Translations = {
   "app.connectionTimeout": "Connection timeout ({elapsed}s) — please ensure server is running",
   "app.disconnected": "Disconnected",
   "app.reconnecting": "Reconnecting, syncing…",
+  "app.ossPromo.title": "Open Source Edition",
+  "app.ossPromo.message": "This project is available on GitHub — give us a Star! You can also try the live demo site.",
+  "app.ossPromo.star": "Star on GitHub",
+  "app.ossPromo.demo": "Visit Demo Site",
+  "app.ossPromo.dismiss": "Got it, don't show again",
   "appshell.jumpToPlaceholder": "Jump to group, DM or contact…",
   "call.incomingInvite": "Inviting you to a {name} call",
   "call.network": "Network",
@@ -4866,6 +4881,11 @@ const ja: Translations = {
   "app.connectionTimeout": "接続タイムアウト ({elapsed}s) — サーバーが起動しているか確認してください",
   "app.disconnected": "切断されました",
   "app.reconnecting": "再接続中、同期中…",
+  "app.ossPromo.title": "オープンソース版のお知らせ",
+  "app.ossPromo.message": "このプロジェクトは GitHub で公開中です。Star をお願いします！デモサイトでもお試しください。",
+  "app.ossPromo.star": "GitHub で Star",
+  "app.ossPromo.demo": "デモサイトへ",
+  "app.ossPromo.dismiss": "了解、今後表示しない",
   "appshell.jumpToPlaceholder": "グループ、DM、または連絡先にジャンプ…",
   "call.incomingInvite": "{name}通話に招待中",
   "call.network": "ネットワーク",
